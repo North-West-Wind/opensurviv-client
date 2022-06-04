@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Jura';
+    src: url('../../assets/fonts/jura.ttf');
+}
+
+body {
+    font-family: 'Jura', Arial, Helvetica, sans-serif;
+    color: white;
+    background-color: #80B251;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+}
