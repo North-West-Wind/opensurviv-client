@@ -4,6 +4,9 @@ An open-source implementation of [surviv.io](https://surviv.io), a 2D battle roy
 ### Client
 This repository is the client side code of Open Surviv.io. All assets (images, sounds) are stored here and rendering happens here.
 
+## Usage
+This part is very uncertain currently.
+
 ## The Story Behind
 [surviv.io](https://surviv.io) has existed since 2017. It was at first quite popular, and really fun, until the initial developers, Justin Kim and Nick Clark, sold it to Kongregate (Kong) in March 2020. Unfortunately, Kong did not pay enough attention to their acquisition, and ended up just squeezing profits from [surviv.io](https://surviv.io) in the mobile market.
 
