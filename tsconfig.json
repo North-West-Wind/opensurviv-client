@@ -3,17 +3,15 @@
         "target": "es6",
         "module": "commonjs",
         "declaration": true,
-        "outDir": "./lib",
+        "outDir": "./scripts/js",
         "strict": true,
         "esModuleInterop": true
     },
     "include": [
-        "src"
+        "typescripts"
     ],
     "exclude": [
         "node_modules",
-        "**/__tests__/*",
-		"public",
-        "views"
+        "**/__tests__/*"
     ]
 }

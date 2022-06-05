@@ -1,6 +1,4 @@
-import { CircleHitbox, Hitbox, Vec2 } from "./maths";
-
-export class Entity {
+class Entity {
 	type: string = "";
 	position: Vec2;
 	velocity: Vec2 = Vec2.ZERO;
@@ -8,7 +6,7 @@ export class Entity {
 	hitbox: Hitbox = CircleHitbox.ZERO;
 }
 
-export class Player extends Entity {
+class Player extends Entity {
 	type = "player";
 	id: string;
 	health: number = 100;
@@ -16,7 +14,7 @@ export class Player extends Entity {
 	scope: number = 1;
 }
 
-export class Bullet extends Entity {
+class Bullet extends Entity {
 	type = "bullet";
 	damage: number;
 	ticks: number;

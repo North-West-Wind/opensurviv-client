@@ -68,6 +68,6 @@ export class MouseMovePacket implements IPacket {
 
 export class GamePacket implements IPacket {
 	type = "game";
-	entities: Entity[];
-	player: Player;
+	entities!: Entity[];
+	player!: Player;
 }
