@@ -1,51 +1,103 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GamePacket = exports.MouseMovePacket = exports.MouseReleasePacket = exports.MousePressPacket = exports.MovementReleasePacket = exports.MovementPressPacket = exports.PingPacket = void 0;
+/** @class Packet to ping the server */
 class PingPacket {
-    constructor() {
-        this.type = "ping";
-    }
+	/** @constant */
+	type = "ping";
 }
-exports.PingPacket = PingPacket;
+
+/** @class Packet to notify movement key press */
 class MovementPressPacket {
-    constructor(direction) {
-        this.type = "movementpress";
-        this.direction = direction;
-    }
+	/** @constant */
+	type = "movementpress";
+
+	/**
+	 * @constructor
+	 * @param {MovementDirection} direction 
+	 */
+	constructor(direction) {
+		this.direction = direction;
+	}
 }
-exports.MovementPressPacket = MovementPressPacket;
+
+/** @class Packet to notify movement key release */
 class MovementReleasePacket {
-    constructor(direction) {
-        this.type = "movementrelease";
-        this.direction = direction;
-    }
+	/** @constant */
+	type = "movementrelease";
+
+	/**
+	 * @constructor
+	 * @param {MovementDirection} direction 
+	 */
+	constructor(direction) {
+		this.direction = direction;
+	}
 }
-exports.MovementReleasePacket = MovementReleasePacket;
+
+/** @class Packet to notify mouse button press */
 class MousePressPacket {
-    constructor(button) {
-        this.type = "mousepress";
-        this.button = button;
-    }
+	/** @constant */
+	type = "mousepress";
+	
+	/**
+	 * @constructor
+	 * @param {number} button 
+	 */
+	constructor(button) {
+		this.button = button;
+	}
 }
-exports.MousePressPacket = MousePressPacket;
+
+/** @class Packet to notify mouse button release */
 class MouseReleasePacket {
-    constructor(button) {
-        this.type = "mouserelease";
-        this.button = button;
-    }
+	/** @constant */
+	type = "mouserelease";
+
+	/**
+	 * @constructor
+	 * @param {number} button 
+	 */
+	constructor(button) {
+		this.button = button;
+	}
 }
-exports.MouseReleasePacket = MouseReleasePacket;
+
+/** @class Packet to notify mouse movement */
 class MouseMovePacket {
-    constructor(x, y) {
-        this.type = "mousemove";
-        this.x = x;
-        this.y = y;
-    }
+	/** @constant */
+	type = "mousemove";
+
+	/**
+	 * @constructor
+	 * @param {number} x 
+	 * @param {number} y 
+	 */
+	constructor(x, y) {
+		this.x = x;
+		this.y = y;
+	}
 }
-exports.MouseMovePacket = MouseMovePacket;
+
+/** @class Packet to notify client window resize in order to get suitable range of data */
+class ResizePacket {
+	/** @constant */
+	type = "resize";
+
+	/**
+	 * @constructor
+	 * @param {number} width 
+	 * @param {number} height 
+	 */
+	constructor(width, height) {
+		this.width = width;
+		this.height = height;
+	}
+}
+
+/** @class Packet from server containing game data */
 class GamePacket {
-    constructor() {
-        this.type = "game";
-    }
+	/** @constant */
+	type = "game";
+	/** @type {Entity[]} */
+	entities;
+	/** @type {Player} */
+	player;
 }
-exports.GamePacket = GamePacket;

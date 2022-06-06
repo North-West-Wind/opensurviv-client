@@ -1,30 +1,29 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Bullet = exports.Player = exports.Entity = void 0;
-const maths_1 = require("./maths");
+/** @class An entity with position, velocity and hitbox */
 class Entity {
-    constructor() {
-        this.type = "";
-        this.velocity = maths_1.Vec2.ZERO;
-        this.direction = maths_1.Vec2.ONE;
-        this.hitbox = maths_1.CircleHitbox.ZERO;
-    }
+	type = "";
+	/** @type {Vec2} */
+	position;
+	direction = Vec2.ONE;
+	/** @type {RectHitbox | CircleHitbox} */
+	hitbox;
 }
-exports.Entity = Entity;
+
 class Player extends Entity {
-    constructor() {
-        super(...arguments);
-        this.type = "player";
-        this.health = 100;
-        this.boost = 1;
-        this.scope = 1;
-    }
+	/** @constant */
+	type = "player";
+	/** @type {string} */
+	id;
+	health = 100;
+	maxHealth = 100;
+	boost = 1;
+	scope = 1;
 }
-exports.Player = Player;
+
 class Bullet extends Entity {
-    constructor() {
-        super(...arguments);
-        this.type = "bullet";
-    }
+	/** @constant */
+	type = "bullet";
+	/** @type {number} */
+	damage;
+	/** @type {number} */
+	ticks;
 }
-exports.Bullet = Bullet;
