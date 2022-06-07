@@ -5,5 +5,16 @@ const COMMON_ANGLES = {
 }
 const ENTITY_ASSIGNS = {
 	position: (pos) => new Vec2(pos.x, pos.y),
-	direction: (dir) => new Vec2(dir.x, dir.y)
+	direction: (dir) => new Vec2(dir.x, dir.y),
+	hitbox: (box) => {
+		if (box.type === "rect") return new RectHitbox(box.width, box.height);
+		else return new CircleHitbox(box.radius);
+	}
+}
+const OBJECT_ASSIGNS = {
+	position: (pos) => new Vec2(pos.x, pos.y),
+	hitbox: (box) => {
+		if (box.type === "rect") return new RectHitbox(box.width, box.height);
+		else return new CircleHitbox(box.radius);
+	}
 }

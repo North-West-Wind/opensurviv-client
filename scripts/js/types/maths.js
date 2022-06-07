@@ -42,6 +42,7 @@ class Vec2 {
 	 */
 	unit() {
 		const mag = this.magnitude();
+		if (mag === 0) return Vec2.ZERO;
 		return new Vec2(this.x / mag, this.y / mag);
 	}
 
@@ -149,6 +150,14 @@ class RectHitbox {
 		this.width = width;
 		this.height = height;
 	}
+
+	/**
+	 * A value for comparison.
+	 * @returns {number}
+	 */
+	comparable() {
+		return this.width;
+	}
 }
 
 /** Circular hitbox with a radius */
@@ -165,6 +174,14 @@ class CircleHitbox {
 	 */
 	constructor(radius) {
 		this.radius = radius;
+	}
+
+	/**
+	 * A value for comparison.
+	 * @returns {number}
+	 */
+	comparable() {
+		return this.radius;
 	}
 }
 

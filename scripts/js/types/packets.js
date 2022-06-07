@@ -76,28 +76,14 @@ class MouseMovePacket {
 	}
 }
 
-/** @class Packet to notify client window resize in order to get suitable range of data */
-class ResizePacket {
-	/** @constant */
-	type = "resize";
-
-	/**
-	 * @constructor
-	 * @param {number} width 
-	 * @param {number} height 
-	 */
-	constructor(width, height) {
-		this.width = width;
-		this.height = height;
-	}
-}
-
 /** @class Packet from server containing game data */
 class GamePacket {
 	/** @constant */
 	type = "game";
 	/** @type {Entity[]} */
 	entities;
+	/** @type {GameObject[]} */
+	objects;
 	/** @type {Player} */
 	player;
 }

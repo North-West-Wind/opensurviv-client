@@ -6,6 +6,8 @@ class Entity {
 	direction = Vec2.ONE;
 	/** @type {RectHitbox | CircleHitbox} */
 	hitbox;
+	health = 100;
+	maxHealth = 100;
 }
 
 class Player extends Entity {
@@ -13,8 +15,6 @@ class Player extends Entity {
 	type = "player";
 	/** @type {string} */
 	id;
-	health = 100;
-	maxHealth = 100;
 	boost = 1;
 	scope = 1;
 }

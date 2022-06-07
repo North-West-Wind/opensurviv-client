@@ -9,7 +9,10 @@ var size;
 /** @type {Player} */
 var player;
 /** @type {Entity[]} */
-var entities = [], connected = false;
+var entities = [];
+/** @type {GameObject[]} */
+var objects = [];
+var connected = false;
 ws.onmessage = (event) => {
 	const data = msgpack.decode(new Uint8Array(event.data));
 	id = data.id;
@@ -32,7 +35,13 @@ ws.onmessage = (event) => {
 				for (const prop in ENTITY_ASSIGNS) copy[prop] = ENTITY_ASSIGNS[prop](entity[prop]);
 				return copy;
 			});
-			player = entities.find(entity => entity.id === id);
+			objects = packet.objects.map(object => {
+				const copy = object;
+				for (const prop in OBJECT_ASSIGNS) copy[prop] = OBJECT_ASSIGNS[prop](object[prop]);
+				return copy;
+			});
+			player = packet.player;
+			for (const prop in ENTITY_ASSIGNS) player[prop] = ENTITY_ASSIGNS[prop](player[prop]);
 		}
 	}
 }
