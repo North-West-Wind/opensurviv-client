@@ -27,21 +27,26 @@ ws.onmessage = (event) => {
 
 	ws.onmessage = (event) => {
 		const data = msgpack.decode(new Uint8Array(event.data));
-		if (data.type === "game") {
-			/** @type {GamePacket} */
-			const packet = data;
-			entities = packet.entities.map(entity => {
-				const copy = entity;
-				for (const prop in ENTITY_ASSIGNS) copy[prop] = ENTITY_ASSIGNS[prop](entity[prop]);
-				return copy;
-			});
-			objects = packet.objects.map(object => {
-				const copy = object;
-				for (const prop in OBJECT_ASSIGNS) copy[prop] = OBJECT_ASSIGNS[prop](object[prop]);
-				return copy;
-			});
-			player = packet.player;
-			for (const prop in ENTITY_ASSIGNS) player[prop] = ENTITY_ASSIGNS[prop](player[prop]);
+		switch (data.type) {
+			case "game":
+				/** @type {GamePacket} */
+				const gamePkt = data;
+				entities = gamePkt.entities.map(entity => {
+					const copy = entity;
+					for (const prop in ENTITY_ASSIGNS) copy[prop] = ENTITY_ASSIGNS[prop](entity[prop]);
+					return copy;
+				});
+				objects = gamePkt.objects.map(object => {
+					const copy = object;
+					for (const prop in OBJECT_ASSIGNS) copy[prop] = OBJECT_ASSIGNS[prop](object[prop]);
+					return copy;
+				});
+				player = gamePkt.player;
+				for (const prop in ENTITY_ASSIGNS) player[prop] = ENTITY_ASSIGNS[prop](player[prop]);
+				break;
+			case "map":
+				/** @type {MapPacket} */
+				const mapPkt = data;
 		}
 	}
 }

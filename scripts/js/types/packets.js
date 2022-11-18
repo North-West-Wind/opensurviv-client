@@ -87,3 +87,11 @@ class GamePacket {
 	/** @type {Player} */
 	player;
 }
+
+/** @class Packet from server containing map data */
+class MapPacket {
+	/** @constant */
+	type = "map";
+	/** @type {GameObject[]} */
+	objects;
+}

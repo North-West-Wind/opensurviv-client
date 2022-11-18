@@ -15,3 +15,25 @@ canvas {
     left: 0;
     padding: 0;
 }
+
+div#scopes {
+    position: fixed;
+    height: 10vh;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.scope {
+    border-width: 0;
+    border-radius: 50%;
+    border-color: #7CFC00;
+    opacity: 0.6;
+    color: #fff;
+    transition: all ease .5s;
+}
+
+.scope:hover {
+    border-width: 2px;
+    transition: all ease .5s;
+}

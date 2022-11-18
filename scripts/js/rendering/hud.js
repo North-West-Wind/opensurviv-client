@@ -13,7 +13,10 @@ function drawHealth(player, canvas, ctx) {
 	ctx.fillStyle = "#000000";
 	ctx.globalAlpha = 0.2;
 	roundRect(ctx, (canvas.width - width) / 2, canvas.height - height - padding, width, height, padding / 2);
-	ctx.fillStyle = "#ffffff";
+	if (player.health == player.maxHealth) ctx.fillStyle = "#ccc";
+	else if (player.health / player.maxHealth < 0.8) ctx.fillStyle = "#fdd";
+	else if (player.health / player.maxHealth < 0.25) ctx.fillStyle = "#daa";
+	else ctx.fillStyle = "#fff";
 	ctx.globalAlpha = 1;
 	roundRect(ctx, (canvas.width - innerWidth) / 2, canvas.height - height, innerWidth * player.health / player.maxHealth, innerHeight, padding / 2);
 }
