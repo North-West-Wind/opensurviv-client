@@ -95,3 +95,4 @@ class MapPacket {
 	/** @type {GameObject[]} */
 	objects;
 }
+

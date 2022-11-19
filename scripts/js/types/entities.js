@@ -1,3 +1,23 @@
+/** @interface Data about attacks */
+class AttackAttribute {
+	/** @type {string} */
+	name;
+	/** @type {number} */
+	duration;
+}
+
+/** @interface Weapon data */
+class Weapon {
+	/** @type {string} */
+	name;
+}
+
+/** @interface Inventory data */
+class Inventory {
+	/** @type {Weapon} */
+	holding;
+}
+
 /** @class An entity with position, velocity and hitbox */
 class Entity {
 	type = "";
@@ -8,6 +28,10 @@ class Entity {
 	hitbox;
 	health = 100;
 	maxHealth = 100;
+	/** @type {AttackAttribute} */
+	attack;
+	/** @type {Inventory} */
+	inventory;
 }
 
 class Player extends Entity {

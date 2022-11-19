@@ -12,6 +12,8 @@ var player;
 var entities = [];
 /** @type {GameObject[]} */
 var objects = [];
+/** @type {number} */
+var ticks = 0;
 var connected = false;
 ws.onmessage = (event) => {
 	const data = msgpack.decode(new Uint8Array(event.data));
@@ -77,4 +79,16 @@ window.onkeyup = (event) => {
 window.onmousemove = (event) => {
 	if (!connected) return;
 	ws.send(msgpack.encode(new MouseMovePacket(event.x - window.innerWidth / 2, event.y - window.innerHeight / 2)).buffer);
+}
+
+/** @param {MouseEvent} event */
+window.onmousedown = (event) => {
+	if (!connected) return;
+	ws.send(msgpack.encode(new MousePressPacket(event.button)));
+}
+
+/** @param {MouseEvent} event */
+window.onmouseup = (event) => {
+	if (!connected) return;
+	ws.send(msgpack.encode(new MouseReleasePacket(event.button)));
 }
