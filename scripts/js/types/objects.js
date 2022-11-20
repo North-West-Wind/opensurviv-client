@@ -11,3 +11,7 @@ class GameObject {
 class Tree extends GameObject {
 	type = "tree";
 }
+/** @class Barrel */
+class Bush extends GameObject{
+	type = "bush";
+}

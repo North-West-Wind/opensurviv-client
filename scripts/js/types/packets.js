@@ -95,4 +95,30 @@ class MapPacket {
 	/** @type {GameObject[]} */
 	objects;
 }
+/** @class Packet for handling right click (emotes) */
+class RightClickMousePress{
+	/** @constant */
+	type = "rightmousepress";
+	
+	/**
+	 * @constructor
+	 * @param {number} button 
+	 */
+	constructor(button) {
+		this.button = button;
+	}
+}
 
+/** @class Packet to notify right mouse click release */
+class RightClickMouseRelease {
+	/** @constant */
+	type = "rightmouserelease";
+
+	/**
+	 * @constructor
+	 * @param {number} button 
+	 */
+	constructor(button) {
+		this.button = button;
+	}
+}
