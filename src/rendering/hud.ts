@@ -1,10 +1,8 @@
-/**
- * Draws the player's health
- * @param {Player} player 
- * @param {HTMLCanvasElement} canvas 
- * @param {CanvasRenderingContext2D} ctx 
- */
-function drawHealth(player, canvas, ctx) {
+import { Player } from "../store/entities";
+import { roundRect } from "../utils";
+
+// Draws the player's health
+export function drawHealth(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
 	const width = canvas.width / 4;
 	const height = canvas.height / 20;
 	const padding = Math.min(canvas.width, canvas.height) / 100;
