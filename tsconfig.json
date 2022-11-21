@@ -2,9 +2,11 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
+        "moduleResolution": "node",
         "declaration": true,
-        "outDir": "./typescript/js",
-        "strict": true
+        "outDir": "./typescript",
+        "strict": true,
+        "sourceMap": true
     },
     "include": [
         "src"

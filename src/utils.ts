@@ -1,27 +1,27 @@
 // Promisified setTimeout
-function wait(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
+export function wait(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
 // Capping value with limits
-function clamp(val: number, min: number, max: number) {
+export function clamp(val: number, min: number, max: number) {
 	if (val < min) return min;
 	if (val > max) return max;
 	return val;
 }
 // Draws circle with canvas
-function circle(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
+export function circle(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
 	ctx.beginPath();
 	ctx.arc(x + radius, y + radius, radius, 0, 2 * Math.PI, false);
 	if (fill) ctx.fill();
 	if (stroke) ctx.stroke();
 }
 // Draws circle with x, y center
-function circleFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
+export function circleFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
 	ctx.beginPath();
 	ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
 	if (fill) ctx.fill();
 	if (stroke) ctx.stroke();
 }
 // Strokes a line between (x1, y1) and (x2, y2)
-function lineBetween(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, stroke = true) {
+export function lineBetween(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, stroke = true) {
 	ctx.beginPath();
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
@@ -29,7 +29,7 @@ function lineBetween(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: 
 	if (stroke) ctx.stroke();
 }
 // Draws a rounded rectangle
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number | { tl?: number, tr?: number, br?: number, bl?: number }, fill = true, stroke = false) {
+export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number | { tl?: number, tr?: number, br?: number, bl?: number }, fill = true, stroke = false) {
 	if (typeof radius === 'undefined') {
 		radius = 5;
 	}
@@ -56,6 +56,6 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: n
 	if (stroke) ctx.stroke();
 }
 // Converts radian to degrees
-function toDegrees(radian: number) {
+export function toDegrees(radian: number) {
 	return radian * 180 / Math.PI;
 }

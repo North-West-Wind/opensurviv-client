@@ -1,6 +1,7 @@
-import { Player } from "../types/entities";
+import { Player } from "../store/entities";
+import { roundRect } from "../utils";
 
-//Draws the player's health
+// Draws the player's health
 export function drawHealth(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
 	const width = canvas.width / 4;
 	const height = canvas.height / 20;

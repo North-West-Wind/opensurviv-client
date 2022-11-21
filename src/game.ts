@@ -1,22 +1,31 @@
 import { encode, decode } from "msgpack-lite";
-import { ENTITY_ASSIGNS, OBJECT_ASSIGNS } from "./constants";
-import { castCorrectEntity } from "./store/entities";
+import { animate } from "./renderer";
+import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObject } from "./store/objects";
-import { Entity, Player, MinEntity } from "./types/entities";
-import { MinGameObject } from "./types/minimized";
+import { Entity } from "./types/entities";
+import { MinEntity, MinGameObject } from "./types/minimized";
 import { GameObject } from "./types/objects";
 import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket } from "./types/packets";
+
+// Start animating fromt the very beginning
+animate();
 
 // Address for debugging
 const ws = new WebSocket("ws://localhost:8080");
 ws.binaryType = "arraybuffer";
 
-export var id: string;
-export var size: number[];
-export var player: Player;
-export var entities: Entity[] = [];
-export var objects: GameObject[] = [];
-var ticks: number = 0;
+var id: string;
+var size: number[];
+var player: Player;
+var entities: Entity[] = [];
+var objects: GameObject[] = [];
+
+export function getId() { return id; }
+export function getSize() { return size; }
+export function getPlayer() { return player; }
+export function getEntities() { return entities; }
+export function getObjects() { return objects; }
+
 var connected = false;
 ws.onmessage = (event) => {
 	const data = decode(new Uint8Array(event.data));
@@ -37,7 +46,7 @@ ws.onmessage = (event) => {
 				const gamePkt = <GamePacket> data;
 				entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
 				objects = gamePkt.objects.map((object: MinGameObject) => castCorrectObject(object));
-				player = gamePkt.player;
+				player = new Player(gamePkt.player);
 				break;
 			case "map":
 				const mapPkt = <MapPacket> data;

@@ -1,5 +1,8 @@
+import { Player } from "../store/entities";
+import { castCorrectWeapon } from "../store/weapons";
 import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./maths";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "./minimized";
+import { Weapon } from "./weapons";
 
 // Data about animations
 export interface Animation {
@@ -7,20 +10,24 @@ export interface Animation {
 	duration: number;
 }
 
-// Weapon data
-export interface Weapon {
-	name: string;
+// Inventory, mainly for players
+export class Inventory {
+	holding: Weapon;
+
+	constructor(minInv: MinInventory) {
+		this.holding = castCorrectWeapon(minInv.holding);
+	}
 }
 
 // An entity with position, velocity and hitbox
 export class Entity {
-	type!: string;
-	position!: Vec2;
-	direction!: Vec2;
-	hitbox!: Hitbox;
-	animation!: Animation;
-	health!: number;
-	maxHealth!: number;
+	type: string;
+	position: Vec2;
+	direction: Vec2;
+	hitbox: Hitbox;
+	animation: Animation;
+	health: number;
+	maxHealth: number;
 
 	constructor(minEntity: MinEntity) {
 		this.type = minEntity.type;
@@ -36,4 +43,6 @@ export class Entity {
 		this.animation = minEntity.animation;
 		this.health = this.maxHealth = 100;
 	}
+
+	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) { }
 }

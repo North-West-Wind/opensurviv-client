@@ -4,7 +4,7 @@
   "description": "An open-source implementation of surviv.io (client)",
   "main": "index.html",
   "scripts": {
-    "build": "tsc && browserify typescript/main.js",
+    "build": "tsc && browserify typescript/game.js -o javascript/bundle.js && uglifyjs javascript/bundle.js -m -c -o scripts/bundle.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,12 +22,14 @@
   "homepage": "https://github.com/North-West-Wind/opensurviv-client#readme",
   "devDependencies": {
     "@types/msgpack-lite": "^0.1.8",
-    "@types/node": "^17.0.38",
+    "@types/node": "^18.11.9",
     "@types/ws": "^8.5.3",
-    "typescript": "^4.7.2"
+    "browserify": "^17.0.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.7.2",
+    "uglify-js": "^3.17.4"
   },
   "dependencies": {
-    "browserify": "^17.0.0",
     "msgpack-lite": "^0.1.26",
     "ws": "^8.7.0"
   },

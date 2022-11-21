@@ -1,7 +1,6 @@
-import { entities, objects, player, size } from "./game";
+import { getPlayer, getEntities, getObjects, getSize } from "./game";
 import { drawHealth } from "./rendering/hud";
-import { drawPlayer } from "./rendering/player";
-import { Player } from "./types/entities";
+import { lineBetween } from "./utils";
 
 const canvas = <HTMLCanvasElement> document.getElementById("game");
 canvas.width = window.innerWidth;
@@ -11,18 +10,22 @@ window.onresize = () => {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 };
+
 const ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
-function animate() {
+export function animate() {
 	// Don't panic when drawing error
 	try {
 		ctx.fillStyle = "#80B251";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-	
+		
+		const player = getPlayer();
 		if (player) {
+			console.log("drawing")
 			// 1 unit to x pixels
 			const scale = Math.max(canvas.width, canvas.height) / (40 * player.scope);
 			ctx.strokeStyle = "#000000";
 			ctx.lineWidth = canvas.width / 200;
+			const size = getSize();
 			ctx.strokeRect(canvas.width / 2 - (player.position.x + player.hitbox.comparable()) * scale, canvas.height / 2 - (player.position.y + player.hitbox.comparable()) * scale, (size[0] + player.hitbox.comparable() * 2) * scale, (size[1] + player.hitbox.comparable() * 2) * scale);
 			const interval = 20;
 			ctx.lineWidth /= 2;
@@ -31,21 +34,21 @@ function animate() {
 			for (let ii = 0; ii <= size[1]; ii += interval) lineBetween(ctx, 0, canvas.height / 2 - (player.position.y - ii) * scale, canvas.width, canvas.height / 2 - (player.position.y - ii) * scale);
 			ctx.globalAlpha = 1;
 	
-			drawPlayer(player, player, canvas, ctx, scale);
+			player.render(player, canvas, ctx, scale);
+
+			const entities = getEntities();
 			entities.forEach(entity => {
-				if (entity.type === "player") drawPlayer(player, <Player> entity, canvas, ctx, scale);
+				entity.render(player, canvas, ctx, scale);
 			});
 	
+			const objects = getObjects();
 			objects.forEach(object => {
-				if (object.type === "tree") drawTree(player, object, canvas, ctx, scale);
-				if (object.type === "bush") drawBush(player, object, canvas, ctx, scale);
+				object.render(player, canvas, ctx, scale);
 			});
 	
 			drawHealth(player, canvas, ctx);
 		}
-	} catch (err) { }
+	} catch (err) { console.error(err); }
 
 	requestAnimationFrame(animate);
 }
-
-animate();
