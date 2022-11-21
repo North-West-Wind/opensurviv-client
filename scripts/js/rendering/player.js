@@ -14,7 +14,7 @@ function drawPlayer(you, other, canvas, ctx, scale) {
 	ctx.fillStyle = "#F8C675";
 	circleFromCenter(ctx, canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale, radius);
 	// If player is holding nothing, render fist
-	if (!other.inventory.holding || other.inventory.holding.name == "fist") {
+	if (!other.inventory.holding || other.inventory.holding.name == "fists") {
 		const scale = radius * 1.2 * COMMON_NUMBERS.SIN45;
 		const fistExtend = Vec2.ONE.scaleAll(scale);
 		const fists = [];

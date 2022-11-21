@@ -1,6 +1,3 @@
-/** @type {[key: string]: number} */
-const animationCounter = {};
-
 /** @class Defines animation path */
 class Animation {
 	/** @type {Vec2[]} Position at different keyframes. */
