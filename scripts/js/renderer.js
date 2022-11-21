@@ -34,6 +34,7 @@ function animate() {
 	
 			objects.forEach(object => {
 				if (object.type === "tree") drawTree(player, object, canvas, ctx, scale);
+				if (object.type === "bush") drawBush(player, object, canvas, ctx, scale);
 			});
 	
 			drawHealth(player, canvas, ctx);

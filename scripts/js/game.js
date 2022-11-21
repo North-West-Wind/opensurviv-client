@@ -92,3 +92,8 @@ window.onmouseup = (event) => {
 	if (!connected) return;
 	ws.send(msgpack.encode(new MouseReleasePacket(event.button)));
 }
+// /** @param {MouseEvent} event */
+// window.oncontextmenu = (event) => {
+// 	if (!connected) return;
+// 	ws.send(msgpack.encode(new PingPacket(event.button)))
+// }
