@@ -23,8 +23,10 @@ export default class Player extends Entity {
 		this.id = minEntity.id;
 		this.boost = minEntity.boost;
 		this.scope = minEntity.scope;
-		if (typeof minEntity.inventory.holding === "number") this.inventory = <Inventory> (<any> minEntity.inventory).weapons[minEntity.inventory.holding];
-		else this.inventory = new Inventory(minEntity.inventory);
+		if (typeof minEntity.inventory.holding === "number") {
+			const weapon = (<any> minEntity.inventory).weapons[minEntity.inventory.holding];
+			this.inventory = new Inventory({ holding: weapon });
+		} else this.inventory = new Inventory(minEntity.inventory);
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
@@ -33,7 +35,6 @@ export default class Player extends Entity {
 		ctx.fillStyle = "#F8C675";
 		circleFromCenter(ctx, canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale, radius);
 		// If player is holding nothing, render fist
-		console.log(this.inventory.holding);
 		(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
 	}
 }

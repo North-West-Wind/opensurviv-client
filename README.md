@@ -5,7 +5,11 @@ An open-source implementation of [surviv.io](https://surviv.io), a 2D battle roy
 This repository is the client side code of Open Surviv.io. All assets (images, sounds) are stored here and rendering happens here.
 
 ## Usage
-This part is very uncertain currently.
+The required JavaScript file is pre-compiled. It should be sufficient to just open the HTML file in a browser.  
+Do note that you will need [opensurviv-server](https://github.com/North-West-Wind/opensurviv-server) to host a server.
+
+If you made or want to make changes to the code, please install Node.js and run `npm install` in the directory where the files are located.  
+You should then compile the Typescript code back into Javascript by running `npm run build`. That's all.
 
 ## The Story Behind
 [surviv.io](https://surviv.io) has existed since 2017. It was at first quite popular, and really fun, until the initial developers, Justin Kim and Nick Clark, sold it to Kongregate (Kong) in March 2020. Unfortunately, Kong did not pay enough attention to their acquisition, and ended up just squeezing profits from [surviv.io](https://surviv.io) in the mobile market.
