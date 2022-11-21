@@ -4,7 +4,7 @@
   "description": "An open-source implementation of surviv.io (client)",
   "main": "index.html",
   "scripts": {
-    "build": "tsc && browserify typescript/game.js -o javascript/bundle.js && uglifyjs javascript/bundle.js -m -c -o scripts/bundle.min.js",
+    "build": "tsc && browserify tmp/game.js -o tmp/bundle.js && uglifyjs tmp/bundle.js -m -c -o scripts/bundle.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

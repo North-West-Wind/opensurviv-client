@@ -20,7 +20,6 @@ export function animate() {
 		
 		const player = getPlayer();
 		if (player) {
-			console.log("drawing")
 			// 1 unit to x pixels
 			const scale = Math.max(canvas.width, canvas.height) / (40 * player.scope);
 			ctx.strokeStyle = "#000000";

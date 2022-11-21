@@ -26,7 +26,6 @@ export default class Fists extends Weapon {
 					const position = anim.positions[ii].addVec(anim.positions[ii + 1].addVec(anim.positions[ii].inverse()).scaleAll((portion - anim.keyframes[ii]) / (anim.keyframes[ii + 1] - anim.keyframes[ii]))).scaleAll(fistScale);
 					// TODO: handle rotation
 					//const rotation = anim.rotations[ii]
-					console.log(position);
 					fists.push(fistExtend.addVec(position).addAngle(player.direction.angle()));
 					break;
 				}

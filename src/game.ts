@@ -7,13 +7,6 @@ import { MinEntity, MinGameObject } from "./types/minimized";
 import { GameObject } from "./types/objects";
 import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket } from "./types/packets";
 
-// Start animating fromt the very beginning
-animate();
-
-// Address for debugging
-const ws = new WebSocket("ws://localhost:8080");
-ws.binaryType = "arraybuffer";
-
 var id: string;
 var size: number[];
 var player: Player;
@@ -25,6 +18,13 @@ export function getSize() { return size; }
 export function getPlayer() { return player; }
 export function getEntities() { return entities; }
 export function getObjects() { return objects; }
+
+// Start animating fromt the very beginning
+animate();
+
+// Address for debugging
+const ws = new WebSocket("ws://localhost:8080");
+ws.binaryType = "arraybuffer";
 
 var connected = false;
 ws.onmessage = (event) => {

@@ -1,4 +1,4 @@
-import { Entity } from "../../types/entities";
+import { Entity, Inventory } from "../../types/entities";
 import { CircleHitbox } from "../../types/maths";
 import { MinEntity, MinInventory } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
@@ -16,14 +16,15 @@ export default class Player extends Entity {
 	id: string;
 	boost: number;
 	scope: number;
-	inventory: MinInventory;
+	inventory: Inventory;
 
 	constructor(minEntity: (MinEntity & AdditionalEntity) | Player) {
 		super(minEntity);
 		this.id = minEntity.id;
 		this.boost = minEntity.boost;
 		this.scope = minEntity.scope;
-		this.inventory = minEntity.inventory;
+		if (typeof minEntity.inventory.holding === "number") this.inventory = <Inventory> (<any> minEntity.inventory).weapons[minEntity.inventory.holding];
+		else this.inventory = new Inventory(minEntity.inventory);
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
@@ -32,6 +33,7 @@ export default class Player extends Entity {
 		ctx.fillStyle = "#F8C675";
 		circleFromCenter(ctx, canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale, radius);
 		// If player is holding nothing, render fist
-		(this.inventory.holding || new Fists());
+		console.log(this.inventory.holding);
+		(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
 	}
 }

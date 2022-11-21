@@ -4,7 +4,7 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
-        "outDir": "./typescript",
+        "outDir": "./tmp",
         "strict": true,
         "sourceMap": true
     },
