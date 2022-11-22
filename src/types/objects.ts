@@ -6,11 +6,15 @@ import { MinCircleHitbox, MinGameObject, MinRectHitbox } from "./minimized";
 export class GameObject {
 	type = "";
 	position: Vec2;
+	direction: Vec2;
 	hitbox: Hitbox;
+	despawn: boolean;
+	zIndex = 0;
 
 	constructor(minObject: MinGameObject) {
 		this.type = minObject.type;
 		this.position = new Vec2(minObject.position.x, minObject.position.y);
+		this.direction = new Vec2(minObject.direction.x, minObject.direction.y);
 		if (minObject.hitbox.type === "rect") {
 			const rect = <MinRectHitbox> minObject.hitbox;
 			this.hitbox = new RectHitbox(rect.width, rect.height);
@@ -18,6 +22,7 @@ export class GameObject {
 			const circle = <MinCircleHitbox> minObject.hitbox;
 			this.hitbox = new CircleHitbox(circle.radius);
 		}
+		this.despawn = minObject.despawn;
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) { };

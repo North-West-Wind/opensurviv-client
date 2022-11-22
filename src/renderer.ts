@@ -11,6 +11,9 @@ window.onresize = () => {
 	canvas.height = window.innerHeight;
 };
 
+var running = false;
+export function setRunning(r: boolean) { running = r; }
+
 const ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
 export function animate() {
 	// Don't panic when drawing error
@@ -40,7 +43,7 @@ export function animate() {
 				entity.render(player, canvas, ctx, scale);
 			});
 	
-			const objects = getObjects();
+			const objects = getObjects().sort((a, b) => a.zIndex - b.zIndex);
 			objects.forEach(object => {
 				object.render(player, canvas, ctx, scale);
 			});
@@ -49,5 +52,5 @@ export function animate() {
 		}
 	} catch (err) { console.error(err); }
 
-	requestAnimationFrame(animate);
+	if (running) requestAnimationFrame(animate);
 }

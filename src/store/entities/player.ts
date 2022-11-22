@@ -31,9 +31,12 @@ export default class Player extends Entity {
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const relative = this.position.addVec(you.position.inverse());
-		const radius = scale * (<CircleHitbox>this.hitbox).radius;
+		const radius = scale * this.hitbox.comparable();
+		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
+		ctx.rotate(-this.direction.angle());
 		ctx.fillStyle = "#F8C675";
-		circleFromCenter(ctx, canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale, radius);
+		circleFromCenter(ctx, 0, 0, radius);
+		ctx.resetTransform();
 		// If player is holding nothing, render fist
 		(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
 	}

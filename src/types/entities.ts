@@ -28,6 +28,7 @@ export class Entity {
 	animation: Animation;
 	health: number;
 	maxHealth: number;
+	despawn: boolean;
 
 	constructor(minEntity: MinEntity) {
 		this.type = minEntity.type;
@@ -42,6 +43,7 @@ export class Entity {
 		}
 		this.animation = minEntity.animation;
 		this.health = this.maxHealth = 100;
+		this.despawn = minEntity.despawn;
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) { }
