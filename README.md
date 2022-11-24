@@ -8,8 +8,15 @@ This repository is the client side code of Open Surviv.io. All assets (images, s
 The required JavaScript file is pre-compiled. It should be sufficient to just open the HTML file in a browser.  
 Do note that you will need [opensurviv-server](https://github.com/North-West-Wind/opensurviv-server) to host a server.
 
-If you made or want to make changes to the code, please install Node.js and run `npm install` in the directory where the files are located.  
-You should then compile the Typescript code back into Javascript by running `npm run build`. That's all.
+### Requirements
+Install [Node.js](https://nodejs.org) before hand.
+
+### Instructions
+You will only need to do this if you modified the code.
+
+1. Clone this repository by either `git clone` or downloading as ZIP and extracting it.
+2. Open your terminal and `cd` into the directory it is cloned.
+3. Run `npm run build` and open `index.html` in a browser.
 
 ## The Story Behind
 [surviv.io](https://surviv.io) has existed since 2017. It was at first quite popular, and really fun, until the initial developers, Justin Kim and Nick Clark, sold it to Kongregate (Kong) in March 2020. Unfortunately, Kong did not pay enough attention to their acquisition, and ended up just squeezing profits from [surviv.io](https://surviv.io) in the mobile market.
