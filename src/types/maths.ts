@@ -1,4 +1,6 @@
-// Calculus paid off! (2D vector)
+import { Player } from "../store/entities";
+
+// Linear algebra paid off! (2D vector)
 export class Vec2 {
 	static ZERO = new Vec2(0, 0);
 	static ONE = new Vec2(1, 0);
@@ -69,6 +71,19 @@ export class Vec2 {
 	scaleAll(ratio: number) {
 		return this.scale(ratio, ratio);
 	}
+
+	// For debug purposes
+	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number, position: Vec2) {
+		const relative = position.addVec(you.position.inverse());
+		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
+		ctx.strokeStyle = "#ff0000";
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		ctx.lineTo(this.x * scale, this.y * scale);
+		ctx.stroke();
+		ctx.resetTransform();
+	}
 }
 
 // Rectangle hitbox with a width and height
@@ -78,14 +93,12 @@ export class RectHitbox {
 	type = "rect";
 	width: number;
 	height: number;
+	comparable: number;
 
 	constructor(width: number, height: number) {
 		this.width = width;
 		this.height = height;
-	}
-
-	comparable() {
-		return this.width;
+		this.comparable = Math.sqrt(Math.pow(this.width / 2, 2) + Math.pow(this.height / 2, 2));
 	}
 }
 
@@ -95,13 +108,10 @@ export class CircleHitbox {
 
 	type = "circle";
 	radius: number;
+	comparable: number;
 
 	constructor(radius: number) {
-		this.radius = radius;
-	}
-
-	comparable() {
-		return this.radius;
+		this.comparable = this.radius = radius;
 	}
 }
 

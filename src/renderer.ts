@@ -1,5 +1,7 @@
 import { getPlayer, getEntities, getObjects, getSize } from "./game";
 import { drawHealth } from "./rendering/hud";
+import { Entity } from "./types/entities";
+import { GameObject } from "./types/objects";
 import { lineBetween } from "./utils";
 
 const canvas = <HTMLCanvasElement> document.getElementById("game");
@@ -28,7 +30,7 @@ export function animate() {
 			ctx.strokeStyle = "#000000";
 			ctx.lineWidth = canvas.width / 200;
 			const size = getSize();
-			ctx.strokeRect(canvas.width / 2 - (player.position.x + player.hitbox.comparable()) * scale, canvas.height / 2 - (player.position.y + player.hitbox.comparable()) * scale, (size[0] + player.hitbox.comparable() * 2) * scale, (size[1] + player.hitbox.comparable() * 2) * scale);
+			ctx.strokeRect(canvas.width / 2 - (player.position.x + player.hitbox.comparable) * scale, canvas.height / 2 - (player.position.y + player.hitbox.comparable) * scale, (size[0] + player.hitbox.comparable * 2) * scale, (size[1] + player.hitbox.comparable * 2) * scale);
 			const interval = 20;
 			ctx.lineWidth /= 2;
 			ctx.globalAlpha = 0.2;
@@ -36,17 +38,11 @@ export function animate() {
 			for (let ii = 0; ii <= size[1]; ii += interval) lineBetween(ctx, 0, canvas.height / 2 - (player.position.y - ii) * scale, canvas.width, canvas.height / 2 - (player.position.y - ii) * scale);
 			ctx.globalAlpha = 1;
 	
-			player.render(player, canvas, ctx, scale);
+			var combined: (Entity | GameObject)[] = [];
+			combined = combined.concat(getEntities(), getObjects());
+			combined.push(player);
 
-			const entities = getEntities();
-			entities.forEach(entity => {
-				entity.render(player, canvas, ctx, scale);
-			});
-	
-			const objects = getObjects().sort((a, b) => a.zIndex - b.zIndex);
-			objects.forEach(object => {
-				object.render(player, canvas, ctx, scale);
-			});
+			combined.sort((a, b) => a.zIndex - b.zIndex).forEach(thing => thing.render(player, canvas, ctx, scale));
 	
 			drawHealth(player, canvas, ctx);
 		}

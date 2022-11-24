@@ -29,6 +29,7 @@ export class Entity {
 	health: number;
 	maxHealth: number;
 	despawn: boolean;
+	zIndex = 0;
 
 	constructor(minEntity: MinEntity) {
 		this.type = minEntity.type;

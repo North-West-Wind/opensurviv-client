@@ -17,6 +17,7 @@ export default class Player extends Entity {
 	boost: number;
 	scope: number;
 	inventory: Inventory;
+	zIndex = 1;
 
 	constructor(minEntity: (MinEntity & AdditionalEntity) | Player) {
 		super(minEntity);
@@ -31,7 +32,7 @@ export default class Player extends Entity {
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const relative = this.position.addVec(you.position.inverse());
-		const radius = scale * this.hitbox.comparable();
+		const radius = scale * this.hitbox.comparable;
 		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
 		ctx.rotate(-this.direction.angle());
 		ctx.fillStyle = "#F8C675";
