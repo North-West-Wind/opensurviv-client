@@ -1,6 +1,6 @@
 import { Player } from "../entities";
 import { GameObject } from "../../types/objects";
-import { Vec2 } from "../../types/maths";
+import { MinGameObject } from "../../types/minimized";
 
 const treeImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 treeImg.onload = () => treeImg.loaded = true;
@@ -14,13 +14,19 @@ export default class Tree extends GameObject {
 	type = "tree";
 	zIndex = 1000;
 
+	constructor(minObject: MinGameObject) {
+		super(minObject);
+		if (this.despawn) this.zIndex = 0;
+	}
+
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		if (!treeImg.loaded || !treeResidueImg.loaded) return;
 		const relative = this.position.addVec(you.position.inverse());
-		const width = scale * this.hitbox.comparable * (this.despawn ? 0.1 : 10), height = width * treeImg.naturalWidth / treeImg.naturalHeight;
 		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
 		ctx.rotate(-this.direction.angle());
-		ctx.drawImage(this.despawn ? treeResidueImg : treeImg, -width / 2, -height / 2, width, height);
+		const img = this.despawn ? treeResidueImg : treeImg;
+		const width = scale * this.hitbox.comparable * 2 * (this.despawn ? 1 : 3.6), height = width * img.naturalWidth / img.naturalHeight;
+		ctx.drawImage(img, -width / 2, -height / 2, width, height);
 		ctx.resetTransform();
 	}
 }

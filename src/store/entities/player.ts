@@ -1,5 +1,4 @@
 import { Entity, Inventory } from "../../types/entities";
-import { CircleHitbox } from "../../types/maths";
 import { MinEntity, MinInventory } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
 import { Fists } from "../weapons";
