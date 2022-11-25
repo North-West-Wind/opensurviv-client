@@ -21,15 +21,21 @@ export default class Crate extends GameObject {
 		ctx.rotate(-this.direction.angle());
 		ctx.drawImage(this.despawn ? crateResidueImg : crateImg, -width / 2, -height / 2, width, height);
 		ctx.resetTransform();
+		//this.position.render(you, canvas, ctx, scale, you.position);
 		/*const hitbox = (<RectHitbox> this.hitbox);
-		const rectStartingPoint = this.position.addVec(new Vec2(-hitbox.width / 2, -hitbox.height).addAngle(this.direction.angle()));
+		const rectStartingPoint = this.position.addVec(new Vec2(-hitbox.width / 2, -hitbox.height / 2).addAngle(this.direction.angle()));
 		const rectPoints = [
 			rectStartingPoint,
 			rectStartingPoint.addVec(new Vec2(hitbox.width, 0).addAngle(this.direction.angle())),
 			rectStartingPoint.addVec(new Vec2(hitbox.width, hitbox.height).addAngle(this.direction.angle())),
 			rectStartingPoint.addVec(new Vec2(0, hitbox.height).addAngle(this.direction.angle()))
 		];
-		for (const point of rectPoints) point.render(you, canvas, ctx, scale, this.position);*/
-		
+		//rectPoints.forEach(p => p.render(you, canvas, ctx, scale, you.position));
+		for (let ii = 0; ii < rectPoints.length; ii++) {
+			const point1 = rectPoints[ii], point2 = rectPoints[(ii + 1) % rectPoints.length];
+			//point1.render(you, canvas, ctx, scale, this.position);
+			//point2.addVec(point1).render(you, canvas, ctx, scale, point1);
+			point2.addVec(point1.inverse()).render(you, canvas, ctx, scale, point1);
+		}*/
 	}
 }

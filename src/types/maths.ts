@@ -84,6 +84,18 @@ export class Vec2 {
 		ctx.stroke();
 		ctx.resetTransform();
 	}
+
+	renderPoint(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number, position: Vec2) {
+		const relative = position.addVec(you.position.inverse());
+		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
+		ctx.strokeStyle = "#ff0000";
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		ctx.lineTo((this.x - position.x) * scale, (this.y - position.y) * scale);
+		ctx.stroke();
+		ctx.resetTransform();
+	}
 }
 
 // Rectangle hitbox with a width and height
