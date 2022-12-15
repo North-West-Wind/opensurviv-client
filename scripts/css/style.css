@@ -1,7 +1,4 @@
-@font-face {
-    font-family: 'Jura';
-    src: url('../../assets/fonts/jura.ttf');
-}
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
 
 body {
     font-family: 'Jura', Arial, Helvetica, sans-serif;

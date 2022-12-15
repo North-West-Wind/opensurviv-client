@@ -3,8 +3,13 @@ import { MinEntity, MinInventory } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
 import { Fists } from "../weapons";
 
+const deathImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
+deathImg.onload = () => deathImg.loaded = true;
+deathImg.src = "assets/images/game/entities/death.png";
+
 interface AdditionalEntity {
 	id: string;
+	username: string;
 	boost: number;
 	scope: number;
 	inventory: MinInventory;
@@ -13,6 +18,7 @@ interface AdditionalEntity {
 export default class Player extends Entity {
 	type = "player";
 	id: string;
+	username: string;
 	boost: number;
 	scope: number;
 	inventory: Inventory;
@@ -21,6 +27,7 @@ export default class Player extends Entity {
 	constructor(minEntity: (MinEntity & AdditionalEntity) | Player) {
 		super(minEntity);
 		this.id = minEntity.id;
+		this.username = minEntity.username;
 		this.boost = minEntity.boost;
 		this.scope = minEntity.scope;
 		if (typeof minEntity.inventory.holding === "number") {
@@ -33,11 +40,20 @@ export default class Player extends Entity {
 		const relative = this.position.addVec(you.position.inverse());
 		const radius = scale * this.hitbox.comparable;
 		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
-		ctx.rotate(-this.direction.angle());
-		ctx.fillStyle = "#F8C675";
-		circleFromCenter(ctx, 0, 0, radius);
-		ctx.resetTransform();
-		// If player is holding nothing, render fist
-		(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
+		if (!this.despawn) {
+			ctx.rotate(-this.direction.angle());
+			ctx.fillStyle = "#F8C675";
+			circleFromCenter(ctx, 0, 0, radius);
+			ctx.resetTransform();
+			// If player is holding nothing, render fist
+			(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
+		} else {
+			ctx.drawImage(deathImg, -radius, -radius, radius * 2, radius * 2);
+			ctx.textAlign = "center";
+			ctx.textBaseline = "top";
+			ctx.font = `400 ${scale / 2}px Jura`;
+			ctx.fillText(this.username, 0, radius);
+			ctx.resetTransform();
+		}
 	}
 }

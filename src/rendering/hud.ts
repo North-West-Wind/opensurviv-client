@@ -1,8 +1,13 @@
 import { Player } from "../store/entities";
 import { roundRect } from "../utils";
 
+// Calls all the HUD related functions
+export function drawHud(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+	drawHealth(player, canvas, ctx);
+}
+
 // Draws the player's health
-export function drawHealth(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+function drawHealth(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
 	const width = canvas.width / 4;
 	const height = canvas.height / 20;
 	const padding = Math.min(canvas.width, canvas.height) / 100;

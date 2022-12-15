@@ -11,5 +11,5 @@ export class Weapon implements MinWeapon {
 		this.name = minWeapon.name;
 	}
 
-	render(player: Player, relative: Vec2, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) { };
+	render(_player: Player, _relative: Vec2, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }

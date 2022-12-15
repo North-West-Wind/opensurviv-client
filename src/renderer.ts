@@ -1,5 +1,6 @@
 import { getPlayer, getEntities, getObjects, getSize } from "./game";
-import { drawHealth } from "./rendering/hud";
+import { drawHud } from "./rendering/hud";
+import { isHudHidden } from "./states";
 import { Entity } from "./types/entities";
 import { GameObject } from "./types/objects";
 import { lineBetween } from "./utils";
@@ -44,7 +45,7 @@ export function animate() {
 
 			combined.sort((a, b) => a.zIndex - b.zIndex).forEach(thing => thing.render(player, canvas, ctx, scale));
 	
-			drawHealth(player, canvas, ctx);
+			if (!isHudHidden()) drawHud(player, canvas, ctx);
 		}
 	} catch (err) { console.error(err); }
 

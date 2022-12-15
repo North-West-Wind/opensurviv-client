@@ -25,5 +25,5 @@ export class GameObject {
 		this.despawn = minObject.despawn;
 	}
 
-	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) { };
+	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }

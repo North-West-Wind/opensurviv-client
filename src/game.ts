@@ -1,5 +1,7 @@
 import { encode, decode } from "msgpack-lite";
+import { KeyBind, movementKeys } from "./constants";
 import { animate, setRunning } from "./renderer";
+import { addKeyPressed, addMousePressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleHud, toggleMenu } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObject } from "./store/objects";
 import { Entity } from "./types/entities";
@@ -55,7 +57,7 @@ function init(address: string) {
 					player = new Player(gamePkt.player);
 					break;
 				case "map":
-					const mapPkt = <MapPacket> data;
+					const _mapPkt = <MapPacket> data;
 			}
 		}
 	}
@@ -84,45 +86,50 @@ document.getElementById("disconnect")?.addEventListener("click", () => {
 	document.getElementById("settings")?.classList.add("hidden");
 });
 
-const movementKeys = ["d", "w", "a", "s"];
-const movementSent = [false, false, false, false];
 window.onkeydown = (event) => {
 	if (!connected) return;
+	event.stopPropagation();
+	addKeyPressed(event.key);
 	const settingsElem = document.getElementById("settings");
-	if (event.key == "Escape") {
-		if (settingsElem?.classList.contains("hidden")) settingsElem.classList.remove("hidden");
+	if (event.key == KeyBind.MENU) {
+		if (isMenuHidden()) settingsElem?.classList.remove("hidden");
 		else settingsElem?.classList.add("hideen");
+		toggleMenu();
 	}
-	if (settingsElem?.classList.contains("hidden")) {
+	if (event.key == KeyBind.HIDE_HUD) toggleHud();
+	if (isMenuHidden()) {
 		const index = movementKeys.indexOf(event.key);
-		if (index >= 0 && !movementSent[index]) {
+		if (index >= 0)
 			ws.send(encode(new MovementPressPacket(index)).buffer);
-			movementSent[index] = true;
-		}
 	}
 }
 
 window.onkeyup = (event) => {
 	if (!connected) return;
+	event.stopPropagation();
+	removeKeyPressed(event.key);
 	const index = movementKeys.indexOf(event.key);
-	if (index >= 0) {
+	if (index >= 0)
 		ws.send(encode(new MovementReleasePacket(index)).buffer);
-		movementSent[index] = false;
-	}
 }
 
 window.onmousemove = (event) => {
 	if (!connected) return;
+	event.stopPropagation();
 	ws.send(encode(new MouseMovePacket(event.x - window.innerWidth / 2, event.y - window.innerHeight / 2)).buffer);
 }
 
 window.onmousedown = (event) => {
 	if (!connected) return;
+	event.stopPropagation();
+	addMousePressed(event.button);
 	ws.send(encode(new MousePressPacket(event.button)));
 }
 
 window.onmouseup = (event) => {
 	if (!connected) return;
+	event.stopPropagation();
+	removeMousePressed(event.button);
 	ws.send(encode(new MouseReleasePacket(event.button)));
 }
 // /** @param {MouseEvent} event */

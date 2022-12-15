@@ -1,4 +1,4 @@
-import { RectHitbox, Vec2 } from "../../types/maths";
+import { RectHitbox } from "../../types/maths";
 import { GameObject } from "../../types/objects";
 import { Player } from "../entities";
 

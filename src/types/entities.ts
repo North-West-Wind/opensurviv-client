@@ -47,5 +47,5 @@ export class Entity {
 		this.despawn = minEntity.despawn;
 	}
 
-	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) { }
+	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }
