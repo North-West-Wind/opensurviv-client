@@ -2,7 +2,8 @@
 An open-source implementation of [surviv.io](https://surviv.io), a 2D battle royale game available online for free.
 
 ### Client
-This repository is the client side code of Open Surviv.io. All assets (images, sounds) are stored here and rendering happens here.
+This repository is the client side code of Open Surviv.io. All assets (images, sounds) are stored here and rendering happens here.  
+Assets are re-created from scratch using InkScape.
 
 ## Usage
 The required JavaScript file is pre-compiled. It should be sufficient to just open the HTML file in a browser.  

@@ -4,11 +4,11 @@ import { Player } from "../entities";
 
 const crateImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 crateImg.onload = () => crateImg.loaded = true;
-crateImg.src = "assets/images/game/objects/crate.png";
+crateImg.src = "assets/images/game/objects/crate.svg";
 
 const crateResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 crateResidueImg.onload = () => crateResidueImg.loaded = true;
-crateResidueImg.src = "assets/images/game/objects/residues/crate.png";
+crateResidueImg.src = "assets/images/game/objects/residues/crate.svg";
 
 export default class Crate extends GameObject {
 	type = "crate";

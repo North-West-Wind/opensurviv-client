@@ -9,7 +9,7 @@ treeImg.src = "assets/images/game/objects/tree.svg";
 
 const treeResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 treeResidueImg.onload = () => treeResidueImg.loaded = true;
-treeResidueImg.src = "assets/images/game/objects/residues/tree.png";
+treeResidueImg.src = "assets/images/game/objects/residues/tree.svg";
 
 export default class Tree extends GameObject {
 	type = "tree";
