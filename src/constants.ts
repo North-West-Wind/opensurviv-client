@@ -11,6 +11,7 @@ export enum CommonNumber {
 export enum KeyBind {
 	MENU = "Escape",
 	HIDE_HUD = "F1",
+	MAP = "g",
 	RIGHT = "d",
 	UP = "w",
 	LEFT = "a",
@@ -18,3 +19,5 @@ export enum KeyBind {
 }
 
 export const movementKeys = [KeyBind.RIGHT, KeyBind.UP, KeyBind.LEFT, KeyBind.DOWN].map(k => <string> k);
+
+export const GRID_INTERVAL = 20;

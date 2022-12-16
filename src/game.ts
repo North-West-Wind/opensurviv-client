@@ -1,9 +1,10 @@
 import { encode, decode } from "msgpack-lite";
 import { KeyBind, movementKeys } from "./constants";
 import { animate, setRunning } from "./renderer";
-import { addKeyPressed, addMousePressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleHud, toggleMenu } from "./states";
+import { getMapCanvas, getMapCtx, initMap } from "./rendering/map";
+import { addKeyPressed, addMousePressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleHud, toggleMap, toggleMenu } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
-import { castCorrectObject } from "./store/objects";
+import { castCorrectObject, castMinObject } from "./store/objects";
 import { Entity } from "./types/entities";
 import { MinEntity, MinGameObject } from "./types/minimized";
 import { GameObject } from "./types/objects";
@@ -29,7 +30,7 @@ function init(address: string) {
 	// Address for debugging
 	ws = new WebSocket("ws://" + address);
 	ws.binaryType = "arraybuffer";
-	
+
 	ws.onmessage = (event) => {
 		const data = decode(new Uint8Array(event.data));
 		id = data.id;
@@ -41,27 +42,35 @@ function init(address: string) {
 		setRunning(true);
 		animate();
 		document.getElementById("menu")?.classList.add("hidden");
-	
+
 		const interval = setInterval(() => {
 			if (connected) ws.send(encode(new PingPacket()).buffer);
 			else clearInterval(interval);
 		}, 1000);
-	
+
 		ws.onmessage = (event) => {
 			const data = decode(new Uint8Array(event.data));
 			switch (data.type) {
 				case "game":
-					const gamePkt = <GamePacket> data;
+					const gamePkt = <GamePacket>data;
 					entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
 					objects = gamePkt.objects.map((object: MinGameObject) => castCorrectObject(object));
 					player = new Player(gamePkt.player);
 					break;
 				case "map":
-					const _mapPkt = <MapPacket> data;
+					// This should happen once only normally
+					const mapPkt = <MapPacket>data;
+					initMap();
+					const mapCanvas = getMapCanvas();
+					const mapCtx = getMapCtx();
+					const scale = mapCanvas.width / size[0];
+					for (const object of mapPkt.objects.map(obj => castCorrectObject(castMinObject(obj))).sort((a, b) => a.zIndex - b.zIndex))
+						object.renderMap(mapCanvas, mapCtx, scale);
+					break;
 			}
 		}
 	}
-	
+
 	// Reset everything when connection closes
 	ws.onclose = () => {
 		connected = false;
@@ -77,13 +86,14 @@ function init(address: string) {
 }
 
 document.getElementById("connect")?.addEventListener("click", () => {
-	username = (<HTMLInputElement> document.getElementById("username")).value;
-	init((<HTMLInputElement> document.getElementById("address")).value);
+	username = (<HTMLInputElement>document.getElementById("username")).value;
+	init((<HTMLInputElement>document.getElementById("address")).value);
 });
 
 document.getElementById("disconnect")?.addEventListener("click", () => {
 	ws.close();
 	document.getElementById("settings")?.classList.add("hidden");
+	toggleMenu();
 });
 
 window.onkeydown = (event) => {
@@ -97,6 +107,7 @@ window.onkeydown = (event) => {
 		toggleMenu();
 	}
 	if (event.key == KeyBind.HIDE_HUD) toggleHud();
+	if (event.key == KeyBind.MAP) toggleMap();
 	if (isMenuHidden()) {
 		const index = movementKeys.indexOf(event.key);
 		if (index >= 0)

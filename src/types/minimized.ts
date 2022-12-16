@@ -39,6 +39,12 @@ export interface MinGameObject {
 	despawn: boolean;
 }
 
+export interface MinMinGameObject {
+	type: string;
+	position: MinVec2;
+	hitbox: MinHitbox;
+}
+
 export interface MinWeapon {
 	id: string;
 	name: string;

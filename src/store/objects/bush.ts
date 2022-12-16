@@ -1,6 +1,7 @@
 import { Player } from "../entities";
 import { GameObject } from "../../types/objects";
 import { MinGameObject } from "../../types/minimized";
+import { circleFromCenter } from "../../utils";
 
 const bushImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 bushImg.onload = () => bushImg.loaded = true;
@@ -30,5 +31,10 @@ export default class Bush extends GameObject {
 		const width = scale * this.hitbox.comparable * 2 * (this.despawn ? 0.5 : 1), height = width * img.naturalWidth / img.naturalHeight;
 		ctx.drawImage(img, -width / 2, -height / 2, width, height);
 		ctx.resetTransform();
+	}
+
+	renderMap(_canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		ctx.fillStyle = "#005f00";
+		circleFromCenter(ctx, this.position.x * scale, this.position.y * scale, 2 * scale);
 	}
 }

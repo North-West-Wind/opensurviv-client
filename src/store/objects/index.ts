@@ -1,4 +1,5 @@
-import { MinGameObject } from "../../types/minimized";
+import { CircleHitbox, Vec2 } from "../../types/maths";
+import { MinGameObject, MinMinGameObject } from "../../types/minimized";
 import { GameObject } from "../../types/objects";
 import Bush from "./bush";
 import Crate from "./crate";
@@ -20,4 +21,9 @@ export function castCorrectObject(minObject: MinGameObject & any) {
 		default:
 			return new GameObject(minObject);
 	}
+}
+
+export function castMinObject(minMinObject: MinMinGameObject & any) {
+	const copy = minMinObject;
+	return Object.assign(copy, { direction: Vec2.ONE, hitbox: new CircleHitbox(0), despawn: false });
 }

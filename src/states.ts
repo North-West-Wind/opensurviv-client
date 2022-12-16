@@ -18,3 +18,7 @@ export function toggleMenu() { menuHidden = !menuHidden; }
 var hudHidden = false;
 export function isHudHidden() { return hudHidden; }
 export function toggleHud() { hudHidden = !hudHidden; }
+
+var mapOpened = false;
+export function isMapOpened() { return mapOpened; }
+export function toggleMap() { mapOpened = !mapOpened; }

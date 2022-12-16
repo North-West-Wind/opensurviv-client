@@ -22,4 +22,11 @@ export default class Crate extends GameObject {
 		ctx.drawImage(this.despawn ? crateResidueImg : crateImg, -width / 2, -height / 2, width, height);
 		ctx.resetTransform();
 	}
+
+	renderMap(_canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		ctx.translate(this.position.x * scale, this.position.y * scale);
+		ctx.fillStyle = "#683c05";
+		ctx.fillRect(-2 * scale, -2 * scale, 4 * scale, 4 * scale);
+		ctx.resetTransform();
+	}
 }

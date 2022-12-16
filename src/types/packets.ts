@@ -1,7 +1,6 @@
 import { Player } from "../store/entities";
 import { MovementDirection } from "./maths";
-import { MinEntity, MinGameObject } from "./minimized";
-import { GameObject } from "./objects";
+import { MinEntity, MinGameObject, MinMinGameObject } from "./minimized";
 
 // Packet to ping the server
 export class PingPacket {
@@ -71,5 +70,5 @@ export class GamePacket {
 // Packet from server containing map data
 export class MapPacket {
 	type = "map";
-	objects!: GameObject[];
+	objects!: MinMinGameObject[];
 }

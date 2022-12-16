@@ -23,6 +23,7 @@ export default class Gun extends Entity {
 	type = "gun";
 	name: string;
 	color: GunColor;
+	zIndex = 8;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);

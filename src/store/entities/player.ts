@@ -5,7 +5,7 @@ import { Fists } from "../weapons";
 
 const deathImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 deathImg.onload = () => deathImg.loaded = true;
-deathImg.src = "assets/images/game/entities/death.png";
+deathImg.src = "assets/images/game/entities/death.svg";
 
 interface AdditionalEntity {
 	id: string;
@@ -22,7 +22,7 @@ export default class Player extends Entity {
 	boost: number;
 	scope: number;
 	inventory: Inventory;
-	zIndex = 1;
+	zIndex = 9;
 
 	constructor(minEntity: (MinEntity & AdditionalEntity) | Player) {
 		super(minEntity);
@@ -48,11 +48,14 @@ export default class Player extends Entity {
 			// If player is holding nothing, render fist
 			(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
 		} else {
-			ctx.drawImage(deathImg, -radius, -radius, radius * 2, radius * 2);
+			ctx.drawImage(deathImg, -radius * 2, -radius * 2, radius * 4, radius * 4);
 			ctx.textAlign = "center";
 			ctx.textBaseline = "top";
-			ctx.font = `400 ${scale / 2}px Jura`;
-			ctx.fillText(this.username, 0, radius);
+			ctx.font = `700 ${scale}px Jura`;
+			ctx.fillStyle = "#60605f";
+			ctx.fillText(this.username, 2, radius * 2 + 2);
+			ctx.fillStyle = "#80807f"
+			ctx.fillText(this.username, 0, radius * 2);
 			ctx.resetTransform();
 		}
 	}
