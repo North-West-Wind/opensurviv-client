@@ -2,7 +2,7 @@ import { encode, decode } from "msgpack-lite";
 import { KeyBind, movementKeys } from "./constants";
 import { animate, setRunning } from "./renderer";
 import { getMapCanvas, getMapCtx, initMap } from "./rendering/map";
-import { addKeyPressed, addMousePressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleHud, toggleMap, toggleMenu } from "./states";
+import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObject, castMinObject } from "./store/objects";
 import { Entity } from "./types/entities";
@@ -97,7 +97,7 @@ document.getElementById("disconnect")?.addEventListener("click", () => {
 });
 
 window.onkeydown = (event) => {
-	if (!connected) return;
+	if (!connected || isKeyPressed(event.key)) return;
 	event.stopPropagation();
 	addKeyPressed(event.key);
 	const settingsElem = document.getElementById("settings");
@@ -105,9 +105,10 @@ window.onkeydown = (event) => {
 		if (isMenuHidden()) settingsElem?.classList.remove("hidden");
 		else settingsElem?.classList.add("hideen");
 		toggleMenu();
-	}
-	if (event.key == KeyBind.HIDE_HUD) toggleHud();
-	if (event.key == KeyBind.MAP) toggleMap();
+	} else if (event.key == KeyBind.HIDE_HUD) toggleHud();
+	else if (event.key == KeyBind.WORLD_MAP) toggleMap();
+	else if (event.key == KeyBind.HIDE_MAP) toggleMinimap();
+	else if (event.key == KeyBind.BIG_MAP) toggleBigMap();
 	if (isMenuHidden()) {
 		const index = movementKeys.indexOf(event.key);
 		if (index >= 0)

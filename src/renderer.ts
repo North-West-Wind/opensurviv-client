@@ -1,8 +1,8 @@
 import { GRID_INTERVAL } from "./constants";
 import { getPlayer, getEntities, getObjects, getSize } from "./game";
 import { drawHud } from "./rendering/hud";
-import { drawMap } from "./rendering/map";
-import { isHudHidden, isMapOpened } from "./states";
+import { drawMap, drawMinimap } from "./rendering/map";
+import { isHudHidden, isMapHidden, isMapOpened } from "./states";
 import { Entity } from "./types/entities";
 import { GameObject } from "./types/objects";
 import { lineBetween } from "./utils";
@@ -51,6 +51,7 @@ export function animate() {
 	
 			if (!isHudHidden()) drawHud(player, canvas, ctx);
 			if (isMapOpened()) drawMap(canvas, ctx);
+			else if (!isMapHidden()) drawMinimap(player, canvas, ctx);
 		}
 	} catch (err) { console.error(err); }
 

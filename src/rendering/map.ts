@@ -1,10 +1,14 @@
-import { GRID_INTERVAL } from "../constants";
+import { GRID_INTERVAL, MINIMAP_SIZE } from "../constants";
 import { getPlayer, getSize } from "../game";
+import { isBigMap } from "../states";
 import { Player } from "../store/entities";
 import { circleFromCenter, lineBetween } from "../utils";
 
 const mapCanvas = document.createElement("canvas");
 var mapCtx: CanvasRenderingContext2D;
+var constScale: number;
+
+const tmpCanvas = document.createElement("canvas");
 
 export function getMapCanvas() { return mapCanvas; }
 export function getMapCtx() { return mapCtx; }
@@ -15,6 +19,7 @@ export function initMap() {
 	const minScreen = Math.min(window.screen.availWidth, window.screen.availHeight);
 	mapCanvas.width = minScreen * size[0] / maxSide;
 	mapCanvas.height = minScreen * size[1] / maxSide;
+	constScale = minScreen / maxSide;
 	mapCtx = <CanvasRenderingContext2D> mapCanvas.getContext("2d");
 	mapCtx.fillStyle = "#80B251";
 	mapCtx.fillRect(0, 0, mapCanvas.width, mapCanvas.height);
@@ -48,4 +53,22 @@ export function drawMap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D
 	ctx.fillStyle = "#F8C675";
 	circleFromCenter(ctx, (canvas.width - width) / 2 + player.position.x * scale, (canvas.height - height) / 2 + player.position.y * scale, 8);
 	circleFromCenter(ctx, (canvas.width - width) / 2 + player.position.x * scale, (canvas.height - height) / 2 + player.position.y * scale, 12, false, true);
+}
+
+export function drawMinimap(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+	const size = MINIMAP_SIZE * constScale * (isBigMap() ? 1.5 : 1);
+	const x = player.position.x * constScale - size / 2;
+	const y = player.position.y * constScale - size / 2;
+	const imageData = mapCtx.getImageData(x, y, size, size);
+	tmpCanvas.width = tmpCanvas.height = size;
+	tmpCanvas.getContext("2d")?.putImageData(imageData, 0, 0);
+	const margin = canvas.width / 100;
+	const side = canvas.width / (8 / (isBigMap() ? 1.5 : 1));
+	ctx.drawImage(tmpCanvas, margin, canvas.height - margin - side, side, side);
+	ctx.strokeStyle = "#000";
+	ctx.lineWidth = 2;
+	ctx.strokeRect(margin, canvas.height - margin - side, side, side);
+	ctx.fillStyle = "#F8C675";
+	circleFromCenter(ctx, margin + side / 2, canvas.height - margin - side / 2, 8);
+	circleFromCenter(ctx, margin + side / 2, canvas.height - margin - side / 2, 12, false, true);
 }

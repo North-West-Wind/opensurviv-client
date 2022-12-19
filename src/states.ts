@@ -22,3 +22,11 @@ export function toggleHud() { hudHidden = !hudHidden; }
 var mapOpened = false;
 export function isMapOpened() { return mapOpened; }
 export function toggleMap() { mapOpened = !mapOpened; }
+
+var mapHidden = false;
+export function isMapHidden() { return mapHidden; }
+export function toggleMinimap() { mapHidden = !mapHidden; }
+
+var bigMap = false;
+export function isBigMap() { return bigMap; }
+export function toggleBigMap() { bigMap = !bigMap; }
