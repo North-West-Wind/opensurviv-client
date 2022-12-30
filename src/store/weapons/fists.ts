@@ -1,6 +1,6 @@
 import { CommonNumber, CommonAngle } from "../../constants";
-import { CircleHitbox, Vec2 } from "../../types/maths";
-import { Weapon } from "../../types/weapons";
+import { CircleHitbox, Vec2 } from "../../types/math";
+import { Weapon } from "../../types/weapon";
 import { circleFromCenter } from "../../utils";
 import { animations } from "../animations";
 import { Player } from "../entities";

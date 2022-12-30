@@ -1,4 +1,4 @@
-import { Animation } from "./entities";
+import { Animation } from "./entity";
 
 export interface MinVec2 {
 	x: number;
@@ -31,7 +31,7 @@ export interface MinInventory {
 	holding: MinWeapon;
 }
 
-export interface MinGameObject {
+export interface MinObstacle {
 	type: string;
 	position: MinVec2;
 	direction: MinVec2;
@@ -39,7 +39,7 @@ export interface MinGameObject {
 	despawn: boolean;
 }
 
-export interface MinMinGameObject {
+export interface MinMinObstacle {
 	type: string;
 	position: MinVec2;
 	hitbox: MinHitbox;

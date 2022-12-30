@@ -1,5 +1,5 @@
 import { MinWeapon } from "../../types/minimized";
-import { Weapon } from "../../types/weapons";
+import { Weapon } from "../../types/weapon";
 import Fists from "./fists";
 
 export { default as Fists } from "./fists";

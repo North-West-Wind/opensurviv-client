@@ -1,6 +1,6 @@
 import { Player } from "../store/entities";
-import { MovementDirection } from "./maths";
-import { MinEntity, MinGameObject, MinMinGameObject } from "./minimized";
+import { MovementDirection } from "./math";
+import { MinEntity, MinObstacle, MinMinObstacle } from "./minimized";
 
 // Packet to ping the server
 export class PingPacket {
@@ -63,12 +63,12 @@ export class MouseMovePacket {
 export class GamePacket {
 	type = "game";
 	entities!: MinEntity[];
-	objects!: MinGameObject[];
+	obstacles!: MinObstacle[];
 	player!: Player;
 }
 
 // Packet from server containing map data
 export class MapPacket {
 	type = "map";
-	objects!: MinMinGameObject[];
+	obstacles!: MinMinObstacle[];
 }

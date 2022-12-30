@@ -1,6 +1,6 @@
 import { Player } from "../entities";
-import { GameObject } from "../../types/objects";
-import { MinGameObject } from "../../types/minimized";
+import { Obstacle } from "../../types/obstacle";
+import { MinObstacle } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
 
 const bushImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
@@ -12,12 +12,12 @@ bushResidueImg.onload = () => bushResidueImg.loaded = true;
 bushResidueImg.src = "assets/images/game/objects/residues/bush.svg";
 
 // Bush
-export default class Bush extends GameObject {
+export default class Bush extends Obstacle {
 	type = "bush";
 	zIndex = 10;
 
-	constructor(minObject: MinGameObject) {
-		super(minObject);
+	constructor(minObstacle: MinObstacle) {
+		super(minObstacle);
 		if (this.despawn) this.zIndex = 0;
 	}
 

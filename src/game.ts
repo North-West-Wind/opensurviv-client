@@ -4,24 +4,24 @@ import { animate, setRunning } from "./renderer";
 import { getMapCanvas, getMapCtx, initMap } from "./rendering/map";
 import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
-import { castCorrectObject, castMinObject } from "./store/objects";
-import { Entity } from "./types/entities";
-import { MinEntity, MinGameObject } from "./types/minimized";
-import { GameObject } from "./types/objects";
-import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket } from "./types/packets";
+import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
+import { Entity } from "./types/entity";
+import { MinEntity, MinObstacle } from "./types/minimized";
+import { Obstacle } from "./types/obstacle";
+import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket } from "./types/packet";
 
 var id: string | null;
 var username: string | null;
 var size: number[] = [];
 var player: Player | null;
 var entities: Entity[] = [];
-var objects: GameObject[] = [];
+var obstacles: Obstacle[] = [];
 
 export function getId() { return id; }
 export function getSize() { return size; }
 export function getPlayer() { return player; }
 export function getEntities() { return entities; }
-export function getObjects() { return objects; }
+export function getObstacles() { return obstacles; }
 
 var ws: WebSocket;
 var connected = false;
@@ -54,7 +54,7 @@ function init(address: string) {
 				case "game":
 					const gamePkt = <GamePacket>data;
 					entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
-					objects = gamePkt.objects.map((object: MinGameObject) => castCorrectObject(object));
+					obstacles = gamePkt.obstacles.map((obstacle: MinObstacle) => castCorrectObstacle(obstacle));
 					player = new Player(gamePkt.player);
 					break;
 				case "map":
@@ -64,8 +64,8 @@ function init(address: string) {
 					const mapCanvas = getMapCanvas();
 					const mapCtx = getMapCtx();
 					const scale = mapCanvas.width / size[0];
-					for (const object of mapPkt.objects.map(obj => castCorrectObject(castMinObject(obj))).sort((a, b) => a.zIndex - b.zIndex))
-						object.renderMap(mapCanvas, mapCtx, scale);
+					for (const obstacle of mapPkt.obstacles.map(obs => castCorrectObstacle(castMinObstacle(obs))).sort((a, b) => a.zIndex - b.zIndex))
+						obstacle.renderMap(mapCanvas, mapCtx, scale);
 					break;
 			}
 		}
@@ -81,7 +81,7 @@ function init(address: string) {
 		size = [];
 		player = null;
 		entities = [];
-		objects = [];
+		obstacles = [];
 	}
 }
 

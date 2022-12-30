@@ -1,4 +1,4 @@
-import { Entity } from "../../types/entities";
+import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 
 interface AdditionalEntity {

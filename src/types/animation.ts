@@ -1,4 +1,4 @@
-import { Vec2 } from "./maths";
+import { Vec2 } from "./math";
 
 export class DefinedAnimation {
 	id: string;

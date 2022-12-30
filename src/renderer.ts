@@ -1,10 +1,10 @@
 import { GRID_INTERVAL } from "./constants";
-import { getPlayer, getEntities, getObjects, getSize } from "./game";
+import { getPlayer, getEntities, getObstacles, getSize } from "./game";
 import { drawHud } from "./rendering/hud";
 import { drawMap, drawMinimap } from "./rendering/map";
 import { isHudHidden, isMapHidden, isMapOpened } from "./states";
-import { Entity } from "./types/entities";
-import { GameObject } from "./types/objects";
+import { Entity } from "./types/entity";
+import { Obstacle } from "./types/obstacle";
 import { lineBetween } from "./utils";
 
 const canvas = <HTMLCanvasElement> document.getElementById("game");
@@ -43,8 +43,8 @@ export function animate() {
 			for (let ii = 0; ii <= size[1]; ii += GRID_INTERVAL) lineBetween(ctx, Math.max(x, 0), canvas.height / 2 - (player.position.y - ii) * scale, Math.min(x + width, canvas.width), canvas.height / 2 - (player.position.y - ii) * scale);
 			ctx.globalAlpha = 1;
 	
-			var combined: (Entity | GameObject)[] = [];
-			combined = combined.concat(getEntities(), getObjects());
+			var combined: (Entity | Obstacle)[] = [];
+			combined = combined.concat(getEntities(), getObstacles());
 			combined.push(player);
 
 			combined.sort((a, b) => a.zIndex - b.zIndex).forEach(thing => thing.render(player, canvas, ctx, scale));

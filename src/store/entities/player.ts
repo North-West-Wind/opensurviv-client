@@ -1,4 +1,4 @@
-import { Entity, Inventory } from "../../types/entities";
+import { Entity, Inventory } from "../../types/entity";
 import { MinEntity, MinInventory } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
 import { Fists } from "../weapons";

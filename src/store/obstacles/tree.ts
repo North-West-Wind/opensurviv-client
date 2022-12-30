@@ -1,6 +1,6 @@
 import { Player } from "../entities";
-import { GameObject } from "../../types/objects";
-import { MinGameObject } from "../../types/minimized";
+import { Obstacle } from "../../types/obstacle";
+import { MinObstacle } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
 
 const treeImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
@@ -11,12 +11,12 @@ const treeResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(new
 treeResidueImg.onload = () => treeResidueImg.loaded = true;
 treeResidueImg.src = "assets/images/game/objects/residues/tree.svg";
 
-export default class Tree extends GameObject {
+export default class Tree extends Obstacle {
 	type = "tree";
 	zIndex = 1000;
 
-	constructor(minObject: MinGameObject) {
-		super(minObject);
+	constructor(minObstacle: MinObstacle) {
+		super(minObstacle);
 		if (this.despawn) this.zIndex = 0;
 	}
 

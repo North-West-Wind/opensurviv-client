@@ -1,5 +1,5 @@
 import { Player } from "../store/entities";
-import { Vec2 } from "./maths";
+import { Vec2 } from "./math";
 import { MinWeapon } from "./minimized";
 
 export class Weapon implements MinWeapon {

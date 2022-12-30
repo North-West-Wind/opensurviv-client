@@ -1,8 +1,8 @@
 import { Player } from "../store/entities";
 import { castCorrectWeapon } from "../store/weapons";
-import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./maths";
+import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./math";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "./minimized";
-import { Weapon } from "./weapons";
+import { Weapon } from "./weapon";
 
 // Data about animations
 export interface Animation {

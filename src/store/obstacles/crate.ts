@@ -1,5 +1,5 @@
-import { RectHitbox } from "../../types/maths";
-import { GameObject } from "../../types/objects";
+import { RectHitbox } from "../../types/math";
+import { Obstacle } from "../../types/obstacle";
 import { Player } from "../entities";
 
 const crateImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
@@ -10,7 +10,7 @@ const crateResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(ne
 crateResidueImg.onload = () => crateResidueImg.loaded = true;
 crateResidueImg.src = "assets/images/game/objects/residues/crate.svg";
 
-export default class Crate extends GameObject {
+export default class Crate extends Obstacle {
 	type = "crate";
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {

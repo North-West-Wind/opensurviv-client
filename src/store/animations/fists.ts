@@ -1,5 +1,5 @@
-import { DefinedAnimation } from "../../types/animations";
-import { Vec2 } from "../../types/maths";
+import { DefinedAnimation } from "../../types/animation";
+import { Vec2 } from "../../types/math";
 
 const LEFT_FIST = new DefinedAnimation(
 	"left_fist",
