@@ -5,11 +5,13 @@ import { getMapCanvas, getMapCtx, initMap } from "./rendering/map";
 import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
-import { getCorrectTerrain } from "./store/terrains";
+import { castCorrectTerrain } from "./store/terrains";
 import { Vec2 } from "./types/math";
 import { MinEntity, MinObstacle } from "./types/minimized";
+import { Obstacle } from "./types/obstacle";
 import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket } from "./types/packet";
-import { World } from "./types/terrain";
+import { RenderableMapLayerN1 } from "./types/render";
+import { Terrain, World } from "./types/terrain";
 
 export var world = new World();
 
@@ -31,7 +33,7 @@ function init(address: string) {
 	ws.onmessage = (event) => {
 		const data = <AckPacket> decode(new Uint8Array(event.data));
 		id = data.id;
-		world = new World(new Vec2(data.size[0], data.size[1]), getCorrectTerrain(data.terrain));
+		world = new World(new Vec2(data.size[0], data.size[1]), castCorrectTerrain(data.terrain));
 		ws.send(encode({ username, id }).buffer);
 		connected = true;
 
@@ -61,8 +63,14 @@ function init(address: string) {
 					const mapCanvas = getMapCanvas();
 					const mapCtx = getMapCtx();
 					const scale = mapCanvas.width / world.size.x;
-					for (const obstacle of mapPkt.obstacles.map(obs => castCorrectObstacle(castMinObstacle(obs))).sort((a, b) => a.zIndex - b.zIndex))
-						obstacle.renderMap(mapCanvas, mapCtx, scale);
+					// Draw terrains on map, -ve layer -> layer 0
+					world.terrains = mapPkt.terrains.map(ter => castCorrectTerrain(ter));
+					(<(Terrain & RenderableMapLayerN1)[]> world.terrains.filter((terrain: any) => !!terrain["renderMapLayerN1"])).forEach(terrain => terrain.renderMapLayerN1(mapCanvas, mapCtx, scale));
+					world.terrains.forEach(terrain => terrain.renderMap(mapCanvas, mapCtx, scale));
+					// Draw obstacles on map, -ve layer -> layer 0
+					const obstacles = mapPkt.obstacles.map(obs => castCorrectObstacle(castMinObstacle(obs))).sort((a, b) => a.zIndex - b.zIndex);
+					(<(Obstacle & RenderableMapLayerN1)[]> obstacles.filter((obstacle: any) => !!obstacle["renderMapLayerN1"])).forEach(obstacle => obstacle.renderMapLayerN1(mapCanvas, mapCtx, scale));
+					obstacles.forEach(obstacle => obstacle.renderMap(mapCanvas, mapCtx, scale));
 					break;
 			}
 		}

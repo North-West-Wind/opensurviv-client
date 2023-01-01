@@ -1,8 +1,8 @@
 import { Player } from "../store/entities";
-import { Vec2 } from "./math";
 import { MinWeapon } from "./minimized";
+import { Renderable } from "./render";
 
-export class Weapon implements MinWeapon {
+export abstract class Weapon implements MinWeapon, Renderable {
 	id: string;
 	name: string;
 
@@ -11,5 +11,10 @@ export class Weapon implements MinWeapon {
 		this.name = minWeapon.name;
 	}
 
-	render(_player: Player, _relative: Vec2, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
+	abstract render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
+}
+
+// Dummy weapon
+export class DummyWeapon extends Weapon {
+	render(_player: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }

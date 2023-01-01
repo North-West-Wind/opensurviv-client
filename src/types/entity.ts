@@ -2,6 +2,7 @@ import { Player } from "../store/entities";
 import { castCorrectWeapon } from "../store/weapons";
 import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./math";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "./minimized";
+import { Renderable } from "./render";
 import { Weapon } from "./weapon";
 
 // Data about animations
@@ -20,7 +21,7 @@ export class Inventory {
 }
 
 // An entity with position, velocity and hitbox
-export class Entity {
+export abstract class Entity implements Renderable {
 	type: string;
 	position: Vec2;
 	direction: Vec2;
@@ -47,5 +48,9 @@ export class Entity {
 		this.despawn = minEntity.despawn;
 	}
 
+	abstract render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
+}
+
+export class DummyEntity extends Entity {
 	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }

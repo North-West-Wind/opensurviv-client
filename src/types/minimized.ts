@@ -49,3 +49,7 @@ export interface MinWeapon {
 	id: string;
 	name: string;
 }
+
+export interface MinTerrain {
+	id: string;
+}

@@ -1,4 +1,4 @@
-import { Entity } from "../../types/entity";
+import { DummyEntity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import Bullet from "./bullet";
 import Gun from "./gun";
@@ -18,6 +18,6 @@ export function castCorrectEntity(minEntity: MinEntity & any) {
 		case "gun":
 			return new Gun(minEntity);
 		default:
-			return new Entity(minEntity);
+			return new DummyEntity(minEntity);
 	}
 }

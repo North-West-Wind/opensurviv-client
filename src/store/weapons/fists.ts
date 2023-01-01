@@ -12,7 +12,7 @@ export default class Fists extends Weapon {
 		super({ id: "fists", name: "Fists" });
 	}
 
-	render(player: Player, relative: Vec2, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+	render(player: Player, _canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const radius = scale * (<CircleHitbox> player.hitbox).radius;
 		const fistScale = radius * 1.2 * CommonNumber.SIN45;
 		const fistExtend = Vec2.ONE.scaleAll(fistScale);
@@ -39,9 +39,8 @@ export default class Fists extends Weapon {
 		const fistRadius = radius / 3;
 		ctx.lineWidth = fistRadius / 3;
 		ctx.strokeStyle = "#000000";
-		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
-		ctx.rotate(player.direction.angle());
+		// x2 to counter previous rotation in player
+		ctx.rotate(player.direction.angle() * 2);
 		for (const fist of fists) circleFromCenter(ctx, fist.x, fist.y, fistRadius, true, true);
-		ctx.resetTransform();
 	}
 }

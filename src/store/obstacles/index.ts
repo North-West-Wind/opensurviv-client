@@ -1,6 +1,6 @@
 import { CircleHitbox, Vec2 } from "../../types/math";
 import { MinObstacle, MinMinObstacle } from "../../types/minimized";
-import { Obstacle } from "../../types/obstacle";
+import { DummyObstacle } from "../../types/obstacle";
 import Bush from "./bush";
 import Crate from "./crate";
 import Tree from "./tree";
@@ -19,7 +19,7 @@ export function castCorrectObstacle(minObstacle: MinObstacle & any) {
 		case "crate":
 			return new Crate(minObstacle);
 		default:
-			return new Obstacle(minObstacle);
+			return new DummyObstacle(minObstacle);
 	}
 }
 

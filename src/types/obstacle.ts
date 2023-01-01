@@ -1,9 +1,10 @@
 import { Player } from "../store/entities";
 import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./math";
 import { MinCircleHitbox, MinObstacle, MinRectHitbox } from "./minimized";
+import { Renderable, RenderableMap } from "./render";
 
 // Obstacles inside the game
-export class Obstacle {
+export abstract class Obstacle implements Renderable, RenderableMap {
 	type = "";
 	position: Vec2;
 	direction: Vec2;
@@ -25,7 +26,13 @@ export class Obstacle {
 		this.despawn = minObstacle.despawn;
 	}
 
-	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
+	abstract render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
 
+	abstract renderMap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
+}
+
+// Dummy obstacle for default casting
+export class DummyObstacle extends Obstacle {
+	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 	renderMap(_canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }

@@ -1,5 +1,5 @@
 import { MinWeapon } from "../../types/minimized";
-import { Weapon } from "../../types/weapon";
+import { DummyWeapon } from "../../types/weapon";
 import Fists from "./fists";
 
 export { default as Fists } from "./fists";
@@ -9,6 +9,6 @@ export function castCorrectWeapon(minWeapon: MinWeapon & any) {
 		case "fists":
 			return new Fists();
 		default:
-			return new Weapon(minWeapon);
+			return new DummyWeapon(minWeapon);
 	}
 }

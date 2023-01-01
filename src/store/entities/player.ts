@@ -44,9 +44,10 @@ export default class Player extends Entity {
 			ctx.rotate(-this.direction.angle());
 			ctx.fillStyle = "#F8C675";
 			circleFromCenter(ctx, 0, 0, radius);
-			ctx.resetTransform();
+			// We will leave the transform for the weapon
 			// If player is holding nothing, render fist
-			(this.inventory.holding || new Fists()).render(this, relative, canvas, ctx, scale);
+			(this.inventory.holding || new Fists()).render(this, canvas, ctx, scale);
+			ctx.resetTransform();
 		} else {
 			ctx.drawImage(deathImg, -radius * 2, -radius * 2, radius * 4, radius * 4);
 			ctx.textAlign = "center";

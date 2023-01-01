@@ -1,6 +1,6 @@
 import { Player } from "../store/entities";
 import { MovementDirection } from "./math";
-import { MinEntity, MinObstacle, MinMinObstacle } from "./minimized";
+import { MinEntity, MinObstacle, MinMinObstacle, MinTerrain } from "./minimized";
 
 // Packet to ping the server
 export class PingPacket {
@@ -64,7 +64,7 @@ export class AckPacket {
 	type = "ack";
 	id!: string;
 	size!: number[];
-	terrain!: string;
+	terrain!: MinTerrain;
 }
 
 // Packet from server containing game data
@@ -79,4 +79,5 @@ export class GamePacket {
 export class MapPacket {
 	type = "map";
 	obstacles!: MinMinObstacle[];
+	terrains!: MinTerrain[];
 }

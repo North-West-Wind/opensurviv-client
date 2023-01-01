@@ -6,13 +6,6 @@ export function clamp(val: number, min: number, max: number) {
 	if (val > max) return max;
 	return val;
 }
-// Draws circle with canvas
-export function circle(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
-	ctx.beginPath();
-	ctx.arc(x + radius, y + radius, radius, 0, 2 * Math.PI, false);
-	if (fill) ctx.fill();
-	if (stroke) ctx.stroke();
-}
 // Draws circle with x, y center
 export function circleFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
 	ctx.beginPath();
