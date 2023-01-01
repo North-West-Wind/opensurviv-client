@@ -5,23 +5,20 @@ import { getMapCanvas, getMapCtx, initMap } from "./rendering/map";
 import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
-import { Entity } from "./types/entity";
+import { getCorrectTerrain } from "./store/terrains";
+import { Vec2 } from "./types/math";
 import { MinEntity, MinObstacle } from "./types/minimized";
-import { Obstacle } from "./types/obstacle";
-import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket } from "./types/packet";
+import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket } from "./types/packet";
+import { World } from "./types/terrain";
+
+export var world = new World();
 
 var id: string | null;
 var username: string | null;
-var size: number[] = [];
 var player: Player | null;
-var entities: Entity[] = [];
-var obstacles: Obstacle[] = [];
 
 export function getId() { return id; }
-export function getSize() { return size; }
 export function getPlayer() { return player; }
-export function getEntities() { return entities; }
-export function getObstacles() { return obstacles; }
 
 var ws: WebSocket;
 var connected = false;
@@ -32,9 +29,9 @@ function init(address: string) {
 	ws.binaryType = "arraybuffer";
 
 	ws.onmessage = (event) => {
-		const data = decode(new Uint8Array(event.data));
+		const data = <AckPacket> decode(new Uint8Array(event.data));
 		id = data.id;
-		size = data.size;
+		world = new World(new Vec2(data.size[0], data.size[1]), getCorrectTerrain(data.terrain));
 		ws.send(encode({ username, id }).buffer);
 		connected = true;
 
@@ -53,8 +50,8 @@ function init(address: string) {
 			switch (data.type) {
 				case "game":
 					const gamePkt = <GamePacket>data;
-					entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
-					obstacles = gamePkt.obstacles.map((obstacle: MinObstacle) => castCorrectObstacle(obstacle));
+					world.entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
+					world.obstacles = gamePkt.obstacles.map((obstacle: MinObstacle) => castCorrectObstacle(obstacle));
 					player = new Player(gamePkt.player);
 					break;
 				case "map":
@@ -63,7 +60,7 @@ function init(address: string) {
 					initMap();
 					const mapCanvas = getMapCanvas();
 					const mapCtx = getMapCtx();
-					const scale = mapCanvas.width / size[0];
+					const scale = mapCanvas.width / world.size.x;
 					for (const obstacle of mapPkt.obstacles.map(obs => castCorrectObstacle(castMinObstacle(obs))).sort((a, b) => a.zIndex - b.zIndex))
 						obstacle.renderMap(mapCanvas, mapCtx, scale);
 					break;
@@ -78,10 +75,8 @@ function init(address: string) {
 		document.getElementById("menu")?.classList.remove("hidden");
 		id = null;
 		username = null;
-		size = [];
 		player = null;
-		entities = [];
-		obstacles = [];
+		world = new World();
 	}
 }
 

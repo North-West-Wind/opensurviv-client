@@ -59,6 +59,14 @@ export class MouseMovePacket {
 	}
 }
 
+/// Packet from server acknowledgement
+export class AckPacket {
+	type = "ack";
+	id!: string;
+	size!: number[];
+	terrain!: string;
+}
+
 // Packet from server containing game data
 export class GamePacket {
 	type = "game";

@@ -1,5 +1,5 @@
 import { GRID_INTERVAL } from "./constants";
-import { getPlayer, getEntities, getObstacles, getSize } from "./game";
+import { getPlayer, world } from "./game";
 import { drawHud } from "./rendering/hud";
 import { drawMap, drawMinimap } from "./rendering/map";
 import { isHudHidden, isMapHidden, isMapOpened } from "./states";
@@ -23,7 +23,7 @@ const ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
 export function animate() {
 	// Don't panic when drawing error
 	try {
-		ctx.fillStyle = "#80B251";
+		ctx.fillStyle = `#${(world.defaultTerrain.color & 0xFFFFFF).toString(16)}`;
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		
 		const player = getPlayer();
@@ -32,19 +32,19 @@ export function animate() {
 			const scale = Math.max(canvas.width, canvas.height) / (20 + 20 * player.scope);
 			ctx.strokeStyle = "#000000";
 			ctx.lineWidth = scale / 4;
-			const size = getSize();
+			const size = world.size;
 			const x = canvas.width / 2 - player.position.x * scale;
 			const y = canvas.height / 2 - player.position.y * scale;
-			const width = size[0] * scale;
-			const height = size[1] * scale;
+			const width = size.x * scale;
+			const height = size.y * scale;
 			ctx.strokeRect(x, y, width, height);
 			ctx.globalAlpha = 0.2;
-			for (let ii = 0; ii <= size[0]; ii += GRID_INTERVAL) lineBetween(ctx, canvas.width / 2 - (player.position.x - ii) * scale, Math.max(y, 0), canvas.width / 2 - (player.position.x - ii) * scale, Math.min(y + height, canvas.height));
-			for (let ii = 0; ii <= size[1]; ii += GRID_INTERVAL) lineBetween(ctx, Math.max(x, 0), canvas.height / 2 - (player.position.y - ii) * scale, Math.min(x + width, canvas.width), canvas.height / 2 - (player.position.y - ii) * scale);
+			for (let ii = 0; ii <= size.x; ii += GRID_INTERVAL) lineBetween(ctx, canvas.width / 2 - (player.position.x - ii) * scale, Math.max(y, 0), canvas.width / 2 - (player.position.x - ii) * scale, Math.min(y + height, canvas.height));
+			for (let ii = 0; ii <= size.y; ii += GRID_INTERVAL) lineBetween(ctx, Math.max(x, 0), canvas.height / 2 - (player.position.y - ii) * scale, Math.min(x + width, canvas.width), canvas.height / 2 - (player.position.y - ii) * scale);
 			ctx.globalAlpha = 1;
 	
 			var combined: (Entity | Obstacle)[] = [];
-			combined = combined.concat(getEntities(), getObstacles());
+			combined = combined.concat(world.entities, world.obstacles);
 			combined.push(player);
 
 			combined.sort((a, b) => a.zIndex - b.zIndex).forEach(thing => thing.render(player, canvas, ctx, scale));

@@ -1,5 +1,5 @@
 import { GRID_INTERVAL, MINIMAP_SIZE } from "../constants";
-import { getPlayer, getSize } from "../game";
+import { getPlayer, world } from "../game";
 import { isBigMap } from "../states";
 import { Player } from "../store/entities";
 import { circleFromCenter, lineBetween } from "../utils";
@@ -14,11 +14,11 @@ export function getMapCanvas() { return mapCanvas; }
 export function getMapCtx() { return mapCtx; }
 
 export function initMap() {
-	const size = getSize();
-	const maxSide = Math.max(...size);
+	const size = world.size;
+	const maxSide = Math.max(size.x, size.y);
 	const minScreen = Math.min(window.screen.availWidth, window.screen.availHeight);
-	mapCanvas.width = minScreen * size[0] / maxSide;
-	mapCanvas.height = minScreen * size[1] / maxSide;
+	mapCanvas.width = minScreen * size.x / maxSide;
+	mapCanvas.height = minScreen * size.y / maxSide;
 	constScale = minScreen / maxSide;
 	mapCtx = <CanvasRenderingContext2D> mapCanvas.getContext("2d");
 	mapCtx.fillStyle = "#80B251";
@@ -27,8 +27,8 @@ export function initMap() {
 	mapCtx.strokeStyle = "#000000";
 	mapCtx.lineWidth = 1;
 	mapCtx.globalAlpha = 0.2;
-	for (let ii = 0; ii <= size[0]; ii += GRID_INTERVAL) lineBetween(mapCtx, ii * minScreen / maxSide, 0, ii * minScreen / maxSide, mapCanvas.height);
-	for (let ii = 0; ii <= size[1]; ii += GRID_INTERVAL) lineBetween(mapCtx, 0, ii * minScreen / maxSide, mapCanvas.width, ii * minScreen / maxSide);
+	for (let ii = 0; ii <= size.x; ii += GRID_INTERVAL) lineBetween(mapCtx, ii * minScreen / maxSide, 0, ii * minScreen / maxSide, mapCanvas.height);
+	for (let ii = 0; ii <= size.y; ii += GRID_INTERVAL) lineBetween(mapCtx, 0, ii * minScreen / maxSide, mapCanvas.width, ii * minScreen / maxSide);
 	mapCtx.globalAlpha = 1;
 }
 
@@ -39,11 +39,11 @@ export function drawMap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D
 	if (scaleByHeight * mapCanvas.width > canvas.width) {
 		width = canvas.width;
 		height = scaleByWidth * mapCanvas.height;
-		scale = canvas.width / getSize()[0];
+		scale = canvas.width / world.size.x;
 	} else {
 		width = scaleByHeight * mapCanvas.width;
 		height = canvas.height;
-		scale = canvas.height / getSize()[1];
+		scale = canvas.height / world.size.y;
 	}
 	ctx.drawImage(mapCanvas, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
 	ctx.strokeStyle = "#000";
