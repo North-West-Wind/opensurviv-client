@@ -5,6 +5,12 @@ export interface MinVec2 {
 	y: number;
 }
 
+export interface MinLine {
+	a: MinVec2;
+	b: MinVec2;
+	segment: boolean;
+}
+
 export interface MinRectHitbox {
 	type: string;
 	width: number;
@@ -52,4 +58,5 @@ export interface MinWeapon {
 
 export interface MinTerrain {
 	id: string;
+	border: number;
 }

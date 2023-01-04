@@ -2,6 +2,9 @@ import { GRID_INTERVAL, MINIMAP_SIZE } from "../constants";
 import { getPlayer, world } from "../game";
 import { isBigMap } from "../states";
 import { Player } from "../store/entities";
+import { Obstacle } from "../types/obstacle";
+import { RenderableMapLayerN1 } from "../types/render";
+import { Terrain } from "../types/terrain";
 import { circleFromCenter, lineBetween } from "../utils";
 
 const mapCanvas = document.createElement("canvas");
@@ -10,11 +13,8 @@ var constScale: number;
 
 const tmpCanvas = document.createElement("canvas");
 
-export function getMapCanvas() { return mapCanvas; }
-export function getMapCtx() { return mapCtx; }
-
 // Initialize the map when MapPacket is received
-export function initMap() {
+export function initMap(obstacles: Obstacle[]) {
 	// Determine the dimension
 	const size = world.size;
 	const maxSide = Math.max(size.x, size.y);
@@ -22,10 +22,17 @@ export function initMap() {
 	mapCanvas.width = minScreen * size.x / maxSide;
 	mapCanvas.height = minScreen * size.y / maxSide;
 	constScale = minScreen / maxSide;
+	const scale = mapCanvas.width / world.size.x;
 	mapCtx = <CanvasRenderingContext2D> mapCanvas.getContext("2d");
+
 	// Fill map background
 	mapCtx.fillStyle = world.defaultTerrain.colorToHex();
 	mapCtx.fillRect(0, 0, mapCanvas.width, mapCanvas.height);
+
+	// Draw terrains on map, -ve layer -> layer 0
+	(<(Terrain & RenderableMapLayerN1)[]> world.terrains.filter((terrain: any) => !!terrain["renderMapLayerN1"])).forEach(terrain => terrain.renderMapLayerN1(mapCanvas, mapCtx, scale));
+	world.terrains.forEach(terrain => terrain.renderMap(mapCanvas, mapCtx, scale));
+
 	// Draw the grid
 	mapCtx.strokeStyle = "#000000";
 	mapCtx.lineWidth = 1;
@@ -33,7 +40,10 @@ export function initMap() {
 	for (let ii = 0; ii <= size.x; ii += GRID_INTERVAL) lineBetween(mapCtx, ii * minScreen / maxSide, 0, ii * minScreen / maxSide, mapCanvas.height);
 	for (let ii = 0; ii <= size.y; ii += GRID_INTERVAL) lineBetween(mapCtx, 0, ii * minScreen / maxSide, mapCanvas.width, ii * minScreen / maxSide);
 	mapCtx.globalAlpha = 1;
-	// Map is then passed to obstacles to draw themselves
+	
+	// Draw obstacles on map, -ve layer -> layer 0
+	(<(Obstacle & RenderableMapLayerN1)[]> obstacles.filter((obstacle: any) => !!obstacle["renderMapLayerN1"])).forEach(obstacle => obstacle.renderMapLayerN1(mapCanvas, mapCtx, scale));
+	obstacles.forEach(obstacle => obstacle.renderMap(mapCanvas, mapCtx, scale));
 }
 
 // Draw world map

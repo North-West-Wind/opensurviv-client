@@ -38,21 +38,18 @@ export function animate() {
 			const y = canvas.height / 2 - player.position.y * scale;
 			const width = size.x * scale;
 			const height = size.y * scale;
-			// Draw world border
-			ctx.strokeStyle = "#000000";
-			ctx.lineWidth = scale / 4;
-			ctx.strokeRect(x, y, width, height);
-			// Draw grid lines
-			ctx.globalAlpha = 0.2;
-			for (let ii = 0; ii <= size.x; ii += GRID_INTERVAL) lineBetween(ctx, canvas.width / 2 - (player.position.x - ii) * scale, Math.max(y, 0), canvas.width / 2 - (player.position.x - ii) * scale, Math.min(y + height, canvas.height));
-			for (let ii = 0; ii <= size.y; ii += GRID_INTERVAL) lineBetween(ctx, Math.max(x, 0), canvas.height / 2 - (player.position.y - ii) * scale, Math.min(x + width, canvas.width), canvas.height / 2 - (player.position.y - ii) * scale);
-			ctx.globalAlpha = 1;
 
 			// Draw terrains
 			// Do negative layer first
 			(<(Terrain & RenderableLayerN1)[]> world.terrains.filter((terrain: any) => !!terrain["renderLayerN1"])).forEach(terrain => terrain.renderLayerN1(player, canvas, ctx, scale));
 			// Do layer zero
 			world.terrains.forEach(terrain => terrain.render(player, canvas, ctx, scale));
+
+			// Draw grid lines
+			ctx.globalAlpha = 0.2;
+			for (let ii = 0; ii <= size.x; ii += GRID_INTERVAL) lineBetween(ctx, canvas.width / 2 - (player.position.x - ii) * scale, Math.max(y, 0), canvas.width / 2 - (player.position.x - ii) * scale, Math.min(y + height, canvas.height));
+			for (let ii = 0; ii <= size.y; ii += GRID_INTERVAL) lineBetween(ctx, Math.max(x, 0), canvas.height / 2 - (player.position.y - ii) * scale, Math.min(x + width, canvas.width), canvas.height / 2 - (player.position.y - ii) * scale);
+			ctx.globalAlpha = 1;
 			
 			// Draw obstacles and entities
 			var combined: (Entity | Obstacle)[] = [];
@@ -64,6 +61,24 @@ export function animate() {
 			(<((Entity | Obstacle) & RenderableLayerN1)[]> combined.filter((entOrObs: any) => !!entOrObs["renderLayerN1"])).forEach(entOrObs => entOrObs.renderLayerN1(player, canvas, ctx, scale));
 			// Do layer zero
 			combined.forEach(thing => thing.render(player, canvas, ctx, scale));
+
+			// Fill areas outside the border
+			ctx.fillStyle = world.defaultTerrain.colorToHex();
+			// The corners: top-left, top-right, bottom-left, bottom-right
+			ctx.fillRect(0, 0, canvas.width / 2 - player.position.x * scale, canvas.height / 2 - player.position.y * scale);
+			ctx.fillRect(canvas.width, 0, (world.size.x - player.position.x) * scale - canvas.width / 2, canvas.height / 2 - player.position.y * scale);
+			ctx.fillRect(0, canvas.height, canvas.width / 2 - player.position.x * scale, (world.size.y - player.position.y) * scale - canvas.height / 2);
+			ctx.fillRect(canvas.width, canvas.height, (world.size.x - player.position.x) * scale - canvas.width / 2, (world.size.y - player.position.y) * scale - canvas.height / 2);
+			// The sides: top, bottom, left, right
+			ctx.fillRect(canvas.width / 2 - player.position.x * scale, 0, world.size.x * scale, canvas.height / 2 - player.position.y * scale);
+			ctx.fillRect(canvas.width / 2 - player.position.x * scale, canvas.height, world.size.x * scale, (world.size.y - player.position.y) * scale - canvas.height / 2);
+			ctx.fillRect(0, canvas.height / 2 - player.position.y * scale, canvas.width / 2 - player.position.x * scale, world.size.y * scale);
+			ctx.fillRect(canvas.width, canvas.height / 2 - player.position.y * scale, (world.size.x - player.position.x) * scale - canvas.width / 2, world.size.y * scale);
+
+			// Draw world border
+			ctx.strokeStyle = "#000000";
+			ctx.lineWidth = scale / 4;
+			ctx.strokeRect(x, y, width, height);
 	
 			// Draw overlays
 			if (!isHudHidden()) drawHud(player, canvas, ctx);

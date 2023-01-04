@@ -1,17 +1,15 @@
 import { encode, decode } from "msgpack-lite";
 import { KeyBind, movementKeys } from "./constants";
 import { animate, setRunning } from "./renderer";
-import { getMapCanvas, getMapCtx, initMap } from "./rendering/map";
+import { initMap } from "./rendering/map";
 import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
 import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
 import { castCorrectTerrain } from "./store/terrains";
 import { Vec2 } from "./types/math";
 import { MinEntity, MinObstacle } from "./types/minimized";
-import { Obstacle } from "./types/obstacle";
 import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket } from "./types/packet";
-import { RenderableMapLayerN1 } from "./types/render";
-import { Terrain, World } from "./types/terrain";
+import { World } from "./types/terrain";
 
 export var world = new World();
 
@@ -59,18 +57,8 @@ function init(address: string) {
 				case "map":
 					// This should happen once only normally
 					const mapPkt = <MapPacket>data;
-					initMap();
-					const mapCanvas = getMapCanvas();
-					const mapCtx = getMapCtx();
-					const scale = mapCanvas.width / world.size.x;
-					// Draw terrains on map, -ve layer -> layer 0
 					world.terrains = mapPkt.terrains.map(ter => castCorrectTerrain(ter));
-					(<(Terrain & RenderableMapLayerN1)[]> world.terrains.filter((terrain: any) => !!terrain["renderMapLayerN1"])).forEach(terrain => terrain.renderMapLayerN1(mapCanvas, mapCtx, scale));
-					world.terrains.forEach(terrain => terrain.renderMap(mapCanvas, mapCtx, scale));
-					// Draw obstacles on map, -ve layer -> layer 0
-					const obstacles = mapPkt.obstacles.map(obs => castCorrectObstacle(castMinObstacle(obs))).sort((a, b) => a.zIndex - b.zIndex);
-					(<(Obstacle & RenderableMapLayerN1)[]> obstacles.filter((obstacle: any) => !!obstacle["renderMapLayerN1"])).forEach(obstacle => obstacle.renderMapLayerN1(mapCanvas, mapCtx, scale));
-					obstacles.forEach(obstacle => obstacle.renderMap(mapCanvas, mapCtx, scale));
+					initMap(mapPkt.obstacles.map(obs => castCorrectObstacle(castMinObstacle(obs))));
 					break;
 			}
 		}

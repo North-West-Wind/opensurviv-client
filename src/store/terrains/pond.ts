@@ -12,6 +12,7 @@ interface AdditionalTerrain {
 export default class Pond extends DotTerrain implements RenderableLayerN1, RenderableMapLayerN1 {
 	id = "pond";
 	color = 0xFF3481ab;
+	secondaryColor = 0xFF905e26;
 
 	constructor(minTerrain: MinTerrain & AdditionalTerrain) {
 		super(minTerrain);
@@ -28,8 +29,8 @@ export default class Pond extends DotTerrain implements RenderableLayerN1, Rende
 	renderLayerN1(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const relative = this.position.addVec(you.position.inverse());
 		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
-		ctx.fillStyle = "#905e26";
-		circleFromCenter(ctx, 0, 0, this.radius * 1.25 * scale);
+		ctx.fillStyle = this.colorToHex(this.secondaryColor);
+		circleFromCenter(ctx, 0, 0, (this.radius + this.border) * scale);
 		ctx.resetTransform();
 	}
 
@@ -39,7 +40,7 @@ export default class Pond extends DotTerrain implements RenderableLayerN1, Rende
 	}
 
 	renderMapLayerN1(_canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
-		ctx.fillStyle = "#905e26";
-		circleFromCenter(ctx, this.position.x * scale, this.position.y * scale, this.radius * 1.25 * scale);
+		ctx.fillStyle = this.colorToHex(this.secondaryColor);
+		circleFromCenter(ctx, this.position.x * scale, this.position.y * scale, (this.radius + this.border) * scale);
 	}
 }
