@@ -3,7 +3,7 @@ import { getPlayer, world } from "../game";
 import { isBigMap } from "../states";
 import { Player } from "../store/entities";
 import { Obstacle } from "../types/obstacle";
-import { RenderableMapLayerN1 } from "../types/render";
+import { RenderableMapLayerN1 } from "../types/extenstions";
 import { Terrain } from "../types/terrain";
 import { circleFromCenter, lineBetween } from "../utils";
 
@@ -42,6 +42,7 @@ export function initMap(obstacles: Obstacle[]) {
 	mapCtx.globalAlpha = 1;
 	
 	// Draw obstacles on map, -ve layer -> layer 0
+	obstacles = obstacles.sort((a, b) => a.zIndex - b.zIndex);
 	(<(Obstacle & RenderableMapLayerN1)[]> obstacles.filter((obstacle: any) => !!obstacle["renderMapLayerN1"])).forEach(obstacle => obstacle.renderMapLayerN1(mapCanvas, mapCtx, scale));
 	obstacles.forEach(obstacle => obstacle.renderMap(mapCanvas, mapCtx, scale));
 }

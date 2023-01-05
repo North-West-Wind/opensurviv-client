@@ -1,7 +1,7 @@
 import { Player } from "../store/entities";
 import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./math";
 import { MinCircleHitbox, MinObstacle, MinRectHitbox } from "./minimized";
-import { Renderable, RenderableMap } from "./render";
+import { Renderable, RenderableMap } from "./extenstions";
 
 // Obstacles inside the game
 export abstract class Obstacle implements Renderable, RenderableMap {

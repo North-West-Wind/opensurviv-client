@@ -15,3 +15,8 @@ export interface RenderableMap {
 export interface RenderableMapLayerN1 {
 	renderMapLayerN1(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
 }
+
+export interface BorderedTerrain extends RenderableLayerN1, RenderableMapLayerN1 {
+	border: number;
+	secondaryColor: number;
+}

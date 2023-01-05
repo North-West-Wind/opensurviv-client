@@ -5,7 +5,7 @@ import { drawMap, drawMinimap } from "./rendering/map";
 import { isHudHidden, isMapHidden, isMapOpened } from "./states";
 import { Entity } from "./types/entity";
 import { Obstacle } from "./types/obstacle";
-import { RenderableLayerN1 } from "./types/render";
+import { RenderableLayerN1 } from "./types/extenstions";
 import { Terrain } from "./types/terrain";
 import { lineBetween } from "./utils";
 

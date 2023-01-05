@@ -3,7 +3,7 @@ import { Terrain } from "../../types/terrain";
 import { Player } from "../entities";
 
 export default class Plain extends Terrain {
-	color = 0xFF80B251;
+	color = 0x80B251;
 
 	constructor(minTerrain: MinTerrain) {
 		super(minTerrain);

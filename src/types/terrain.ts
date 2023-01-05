@@ -4,7 +4,8 @@ import { Entity } from "./entity";
 import { Line, Vec2 } from "./math";
 import { MinLine, MinTerrain, MinVec2 } from "./minimized";
 import { Obstacle } from "./obstacle";
-import { Renderable, RenderableMap } from "./render";
+import { Renderable, RenderableMap } from "./extenstions";
+import { circleFromCenter } from "../utils";
 
 export class World {
 	size: Vec2;
@@ -25,7 +26,7 @@ export abstract class Terrain implements Renderable, RenderableMap {
 	id: string;
 	border: number;
 	type = "generic";
-	// Use ARGB
+	// Use RGB
 	color = 0;
 
 	constructor(minTerrain: MinTerrain) {
@@ -35,14 +36,14 @@ export abstract class Terrain implements Renderable, RenderableMap {
 
 	colorToHex(color?: number) {
 		if (!color) color = this.color;
-		return "#" + (color & 0xFFFFFF).toString(16);
+		return "#" + color.toString(16);
 	}
 
 	abstract render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
 	abstract renderMap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
 }
 
-export abstract class DotTerrain extends Terrain {
+export class DotTerrain extends Terrain {
 	type = "dot";
 	position: Vec2;
 	radius: number;
@@ -52,9 +53,22 @@ export abstract class DotTerrain extends Terrain {
 		this.position = new Vec2(minTerrain.position.x, minTerrain.position.y);
 		this.radius = minTerrain.radius;
 	}
+
+	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		const relative = this.position.addVec(you.position.inverse());
+		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
+		ctx.fillStyle = this.colorToHex();
+		circleFromCenter(ctx, 0, 0, this.radius * scale);
+		ctx.resetTransform();
+	}
+
+	renderMap(_canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		ctx.fillStyle = this.colorToHex();
+		circleFromCenter(ctx, this.position.x * scale, this.position.y * scale, this.radius * scale);
+	}
 }
 
-export abstract class LineTerrain extends Terrain {
+export class LineTerrain extends Terrain {
 	type = "line";
 	line: Line;
 	range: number;
@@ -66,9 +80,59 @@ export abstract class LineTerrain extends Terrain {
 		this.range = minTerrain.range;
 		this.boundary = { start: Vec2.fromMinVec2(minTerrain.boundary[0]), end: Vec2.fromMinVec2(minTerrain.boundary[1]) };
 	}
+
+	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		ctx.translate(canvas.width / 2, canvas.height / 2);
+		ctx.scale(scale, scale);
+		ctx.translate(-you.position.x, -you.position.y);
+		const lines = this.line.toParallel(this.range, false);
+		const start = new Line(this.line.a, this.boundary.start.addVec(this.line.a), false);
+		const end = new Line(this.line.b, this.boundary.end.addVec(this.line.b), false);
+		const a = lines[0].intersection(start);
+		if (!a) return;
+		const b = lines[0].intersection(end);
+		if (!b) return;
+		const c = lines[1].intersection(end);
+		if (!c) return;
+		const d = lines[1].intersection(start);
+		if (!d) return;
+		ctx.fillStyle = this.colorToHex();
+		ctx.beginPath();
+		ctx.moveTo(a.x - 1/scale, a.y - 1/scale);
+		ctx.lineTo(b.x, b.y);
+		ctx.lineTo(c.x, c.y);
+		ctx.lineTo(d.x - 1/scale, d.y - 1/scale);
+		ctx.closePath();
+		ctx.fill();
+		ctx.resetTransform();
+	}
+
+	renderMap(_canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		ctx.scale(scale, scale);
+		const lines = this.line.toParallel(this.range, false);
+		const start = new Line(this.line.a, this.boundary.start.addVec(this.line.a), false);
+		const end = new Line(this.line.b, this.boundary.end.addVec(this.line.b), false);
+		const a = lines[0].intersection(start);
+		if (!a) return;
+		const b = lines[0].intersection(end);
+		if (!b) return;
+		const c = lines[1].intersection(end);
+		if (!c) return;
+		const d = lines[1].intersection(start);
+		if (!d) return;
+		ctx.fillStyle = this.colorToHex();
+		ctx.beginPath();
+		ctx.moveTo(a.x - 1/scale, a.y - 1/scale);
+		ctx.lineTo(b.x, b.y);
+		ctx.lineTo(c.x, c.y);
+		ctx.lineTo(d.x - 1/scale, d.y - 1/scale);
+		ctx.closePath();
+		ctx.fill();
+		ctx.resetTransform();
+	}
 }
 
-export abstract class PiecewiseTerrain extends Terrain {
+export class PiecewiseTerrain extends Terrain {
 	type = "piecewise";
 	lines: LineTerrain[] = [];
 
@@ -77,4 +141,13 @@ export abstract class PiecewiseTerrain extends Terrain {
 		for (const line of minTerrain.lines)
 			this.lines.push(<LineTerrain> castCorrectTerrain(line));
 	}
+
+	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		this.lines.forEach(line => line.render(you, canvas, ctx, scale));
+	}
+
+	renderMap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		this.lines.forEach(line => line.renderMap(canvas, ctx, scale));
+	}
+
 }

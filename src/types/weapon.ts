@@ -1,6 +1,6 @@
 import { Player } from "../store/entities";
 import { MinWeapon } from "./minimized";
-import { Renderable } from "./render";
+import { Renderable } from "./extenstions";
 
 export abstract class Weapon implements MinWeapon, Renderable {
 	id: string;
