@@ -15,6 +15,7 @@ export var world = new World();
 
 var id: string | null;
 var username: string | null;
+var address: string | null;
 var player: Player | null;
 
 export function getId() { return id; }
@@ -22,6 +23,7 @@ export function getPlayer() { return player; }
 
 var ws: WebSocket;
 var connected = false;
+let errorActive = false;
 
 function init(address: string) {
 	// Address for debugging
@@ -29,7 +31,7 @@ function init(address: string) {
 	ws.binaryType = "arraybuffer";
 
 	ws.onmessage = (event) => {
-		const data = <AckPacket> decode(new Uint8Array(event.data));
+		const data = <AckPacket>decode(new Uint8Array(event.data));
 		id = data.id;
 		world = new World(new Vec2(data.size[0], data.size[1]), castCorrectTerrain(data.terrain));
 		ws.send(encode({ username, id }).buffer);
@@ -74,12 +76,51 @@ function init(address: string) {
 		player = null;
 		world = new World();
 	}
+
+	ws.onerror = () => {
+		//show WebSocket connection errors?
+	}
 }
 
 document.getElementById("connect")?.addEventListener("click", () => {
+	const errorText = <HTMLDivElement>document.getElementById("error-div")
 	username = (<HTMLInputElement>document.getElementById("username")).value;
-	init((<HTMLInputElement>document.getElementById("address")).value);
+	address = (<HTMLInputElement>document.getElementById("address")).value;
+	const invalid = check(username, address);
+	if (invalid) {
+		errorText.innerHTML = invalid.message;
+		errorText.style.display = "block";
+		return;
+	}
+	if (errorActive) {
+		errorText.style.display = "none";
+	}
+	init(address);
 });
+
+function check(username: string, address: string): Error | void {
+	if (!username) {
+		const err = new Error("Please provide a username.");
+		errorActive = true;
+		return err;
+	} else if (username.length > 50) {
+		const err = new Error("Username too long! Try another username.");
+		errorActive = true;
+		return err;
+	}
+
+	if (!address) {
+		const err = new Error("Please provide an address.");
+		errorActive = true;
+		return err;
+	} else if (!address.startsWith("localhost")) {
+		if (!/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(address)) {
+			const err = new Error("Invalid address");
+			errorActive = true;
+			return err;
+		}
+	}
+}
 
 document.getElementById("disconnect")?.addEventListener("click", () => {
 	ws.close();
@@ -94,7 +135,7 @@ window.onkeydown = (event) => {
 	const settingsElem = document.getElementById("settings");
 	if (event.key == KeyBind.MENU) {
 		if (isMenuHidden()) settingsElem?.classList.remove("hidden");
-		else settingsElem?.classList.add("hideen");
+		else settingsElem?.classList.add("hidden");
 		toggleMenu();
 	} else if (event.key == KeyBind.HIDE_HUD) toggleHud();
 	else if (event.key == KeyBind.WORLD_MAP) toggleMap();

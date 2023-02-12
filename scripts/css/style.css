@@ -50,9 +50,22 @@ div#menu {
     display: none;
 }
 
+.no-margin {
+    margin: 0;
+}
+
 #logo {
-    margin: 5vh auto;
+    margin: 5vh 5vh 3vh 5vh;
     height: 25vh;
+}
+
+#server-error-panel {
+    background-image: linear-gradient(to right, rgba(210, 0, 0, 0), rgba(210, 0, 0, 0.9), rgba(210, 0, 0, 0));
+}
+
+.error-div {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1vh;
 }
 
 .panel {
@@ -106,4 +119,10 @@ div#menu {
     background-color: #6E3E76;
     transition: all ease .25s;
     cursor: pointer;
+}
+
+.red {
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
 }
