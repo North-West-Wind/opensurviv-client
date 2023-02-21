@@ -86,9 +86,10 @@ document.getElementById("connect")?.addEventListener("click", () => {
 	const errorText = <HTMLDivElement>document.getElementById("error-div")
 	username = (<HTMLInputElement>document.getElementById("username")).value;
 	address = (<HTMLInputElement>document.getElementById("address")).value;
-	const invalid = check(username, address);
-	if (invalid) {
-		errorText.innerHTML = invalid.message;
+	try {
+		check(username, address);
+	} catch (error: any) {
+		errorText.innerHTML = error.message;
 		errorText.style.display = "block";
 		return;
 	}
@@ -100,24 +101,20 @@ document.getElementById("connect")?.addEventListener("click", () => {
 
 function check(username: string, address: string): Error | void {
 	if (!username) {
-		const err = new Error("Please provide a username.");
 		errorActive = true;
-		return err;
+		throw new Error("Please provide a username.");
 	} else if (username.length > 50) {
-		const err = new Error("Username too long! Try another username.");
 		errorActive = true;
-		return err;
+		throw new Error("Username too long! Try another username.");
 	}
 
 	if (!address) {
-		const err = new Error("Please provide an address.");
 		errorActive = true;
-		return err;
+		throw new Error("Please provide an address.");
 	} else if (!address.startsWith("localhost")) {
 		if (!/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(address)) {
-			const err = new Error("Invalid address");
 			errorActive = true;
-			return err;
+			throw new Error("Invalid address");
 		}
 	}
 }
