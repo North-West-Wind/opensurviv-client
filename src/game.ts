@@ -111,11 +111,6 @@ function check(username: string, address: string): Error | void {
 	if (!address) {
 		errorActive = true;
 		throw new Error("Please provide an address.");
-	} else if (!address.startsWith("localhost")) {
-		if (!/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(address)) {
-			errorActive = true;
-			throw new Error("Invalid address");
-		}
 	}
 }
 
