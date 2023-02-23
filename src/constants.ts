@@ -24,3 +24,4 @@ export const movementKeys = [KeyBind.RIGHT, KeyBind.UP, KeyBind.LEFT, KeyBind.DO
 
 export const GRID_INTERVAL = 20;
 export const MINIMAP_SIZE = 100;
+export const TIMEOUT = 10000;
