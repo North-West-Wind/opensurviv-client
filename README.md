@@ -3,7 +3,7 @@ An open-source implementation of [surviv.io](https://surviv.io), a 2D battle roy
 
 ### Client
 This repository is the client side code of Open Surviv.io. All assets (images, sounds) are stored here and rendering happens here.  
-Assets are re-created from scratch using Inkscape.
+Assets are taken from [surviv.io's creator toolkit](https://drive.google.com/drive/folders/1qhaDdNCsisBu_7gvMNmyn_zkG4kyAZix)
 
 ## Usage
 The required JavaScript file is pre-compiled. It should be sufficient to just open the HTML file in a browser.  
