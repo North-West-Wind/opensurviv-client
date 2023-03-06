@@ -18,7 +18,9 @@ export enum KeyBind {
 	UP = "w",
 	LEFT = "a",
 	DOWN = "s",
-	INTERACT = "f"
+	INTERACT = "f",
+	MELEE = "e",
+	LAST_USED = "q"
 }
 
 export const movementKeys = [KeyBind.RIGHT, KeyBind.UP, KeyBind.LEFT, KeyBind.DOWN].map(k => <string> k);

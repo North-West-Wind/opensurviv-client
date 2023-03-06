@@ -6,9 +6,10 @@ import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPr
 import { castCorrectEntity, Player } from "./store/entities";
 import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
 import { castCorrectTerrain } from "./store/terrains";
+import { Inventory } from "./types/entity";
 import { Vec2 } from "./types/math";
 import { MinEntity, MinObstacle } from "./types/minimized";
-import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket, InteractPacket } from "./types/packet";
+import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket, InteractPacket, SwitchWeaponPacket } from "./types/packet";
 import { World } from "./types/terrain";
 
 export var world = new World();
@@ -142,6 +143,8 @@ window.onkeydown = (event) => {
 			ws.send(encode(new MovementPressPacket(index)).buffer);
 		else if (event.key == KeyBind.INTERACT)
 			ws.send(encode(new InteractPacket()).buffer);
+		else if (!isNaN(parseInt(event.key)))
+			ws.send(encode(new SwitchWeaponPacket(parseInt(event.key) + 1 - ((<Inventory>player?.inventory).holding || 0))));
 	}
 }
 
@@ -172,6 +175,13 @@ window.onmouseup = (event) => {
 	event.stopPropagation();
 	removeMousePressed(event.button);
 	ws.send(encode(new MouseReleasePacket(event.button)));
+}
+
+window.onwheel = (event) => {
+	if (!connected || !player) return;
+	event.stopPropagation();
+	const delta = event.deltaY < 0 ? -1 : 1;
+	ws.send(encode(new SwitchWeaponPacket(delta)));
 }
 // /** @param {MouseEvent} event */
 // window.oncontextmenu = (event) => {

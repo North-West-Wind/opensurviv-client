@@ -35,6 +35,7 @@ function drawInventory(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRen
 	const inventory = <Inventory>player.inventory;
 	var str = "";
 	for (let ii = 0; ii < inventory.weapons.length; ii++) {
+		if (!inventory.weapons[ii]) continue;
 		if (ii != 0) str += " ";
 		if (ii == inventory.holding) str += `[${inventory.weapons[ii].name}]`;
 		else str += inventory.weapons[ii].name;

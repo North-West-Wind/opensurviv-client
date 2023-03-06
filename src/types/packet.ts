@@ -64,6 +64,16 @@ export class InteractPacket {
 	type = "interact";
 }
 
+// Packet to notify weapon switching
+export class SwitchWeaponPacket {
+	type = "switchweapon";
+	delta: number;
+
+	constructor(delta: number) {
+		this.delta = delta;
+	}
+}
+
 /// Packet from server acknowledgement
 export class AckPacket {
 	type = "ack";
