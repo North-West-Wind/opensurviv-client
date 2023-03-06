@@ -23,7 +23,7 @@ You will only need to do this if you modified the code.
 ## Developer Guidelines
 If you want to contribute to the project, you should create a fork and make PRs. Here are some notes to you:
 
-1. Use `PascalCase` for naming classes and `camelCase` for naming variables. This is done to stay consistent with my code. Sorry if you don't like these naming conventions. Commit messages need not be consistent, but should be readable.
+1. Use `PascalCase` for naming classes, `camelCase` for naming variables and `snake_case` for naming files. This is done to stay consistent with my code. Sorry if you don't like these naming conventions. Commit messages need not be consistent, but should be readable.
 2. Add comments. It's good to be detailed.
 3. If possible, re-create assets (textures, sound, music), so we can maybe not get copystriked. It hasn't happened yet, but I am a bit worried.
 
