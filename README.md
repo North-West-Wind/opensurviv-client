@@ -3,7 +3,7 @@ An open-source implementation of [surviv.io](https://surviv.io), a 2D battle roy
 
 ### Client
 This repository is the client side code of Open Surviv.io. All assets (images, sounds) are stored here and rendering happens here.  
-Assets are taken from [surviv.io's creator toolkit](https://drive.google.com/drive/folders/1qhaDdNCsisBu_7gvMNmyn_zkG4kyAZix)
+Assets are taken from [surviv.io's creator toolkit](https://drive.google.com/drive/folders/1qhaDdNCsisBu_7gvMNmyn_zkG4kyAZix) and will be re-created in SVG format eventually using Inkscape.
 
 ## Usage
 The required JavaScript file is pre-compiled. It should be sufficient to just open the HTML file in a browser.  
@@ -19,6 +19,13 @@ You will only need to do this if you modified the code.
 2. Open your terminal and `cd` into the directory it is cloned.
 3. Run `npm install` and `npm run build`.
 4. Open `index.html` in a browser.
+
+## Developer Guidelines
+If you want to contribute to the project, you should create a fork and make PRs. Here are some notes to you:
+
+1. Use `PascalCase` for naming classes and `camelCase` for naming variables. This is done to stay consistent with my code. Sorry if you don't like these naming conventions. Commit messages need not be consistent, but should be readable.
+2. Add comments. It's good to be detailed.
+3. If possible, re-create assets (textures, sound, music), so we can maybe not get copystriked. It hasn't happened yet, but I am a bit worried.
 
 ## The Story Behind
 [surviv.io](https://surviv.io) has existed since 2017. It was at first quite popular, and really fun, until the initial developers, Justin Kim and Nick Clark, sold it to Kongregate (Kong) in March 2020. Unfortunately, Kong did not pay enough attention to their acquisition, and ended up just squeezing profits from [surviv.io](https://surviv.io) in the mobile market.
