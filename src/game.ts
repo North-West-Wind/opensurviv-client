@@ -23,30 +23,12 @@ export function getPlayer() { return player; }
 
 var ws: WebSocket;
 var connected = false;
-let errorActive = false;
 
 async function init(address: string) {
 	// Address for debugging
 	ws = new WebSocket("ws://" + address);
 	ws.binaryType = "arraybuffer";
 
-
-	ws.onmessage = (event) => {
-		const data = <AckPacket>decode(new Uint8Array(event.data));
-		id = data.id;
-		world = new World(new Vec2(data.size[0], data.size[1]), castCorrectTerrain(data.terrain));
-		ws.send(encode({ username, id }).buffer);
-		connected = true;
-
-		// Start animating after connection established
-		setRunning(true);
-		animate();
-		document.getElementById("menu")?.classList.add("hidden");
-
-		const interval = setInterval(() => {
-			if (connected) ws.send(encode(new PingPacket()).buffer);
-			else clearInterval(interval);
-		}, 1000);
 	await new Promise((res, rej) => {
 		const timer = setTimeout(() => {
 			rej(new Error("WebSocket timeout"));
@@ -89,27 +71,6 @@ async function init(address: string) {
 				}
 			}
 		}
-
-	}
-
-	// Reset everything when connection closes
-	ws.onclose = () => {
-		connected = false;
-		setRunning(false);
-		document.getElementById("menu")?.classList.remove("hidden");
-		id = null;
-		username = null;
-		player = null;
-		world = new World();
-	}
-
-	ws.onerror = () => {
-		//show WebSocket connection errors?
-	}
-}
-
-document.getElementById("connect")?.addEventListener("click", () => {
-	const errorText = <HTMLDivElement>document.getElementById("error-div")
 	
 		// Reset everything when connection closes
 		ws.onclose = () => {
@@ -142,30 +103,6 @@ document.getElementById("connect")?.addEventListener("click", async () => {
 		errorText.innerHTML = error.message;
 		errorText.style.display = "block";
 		return;
-	}
-	if (errorActive) {
-		errorText.style.display = "none";
-	}
-	init(address);
-});
-
-function check(username: string, address: string): Error | void {
-	if (!username) {
-		errorActive = true;
-		throw new Error("Please provide a username.");
-	} else if (username.length > 50) {
-		errorActive = true;
-		throw new Error("Username too long! Try another username.");
-	}
-
-	if (!address) {
-		errorActive = true;
-		throw new Error("Please provide an address.");
-	} else if (!address.startsWith("localhost")) {
-		if (!/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(address)) {
-			errorActive = true;
-			throw new Error("Invalid address");
-		}
 	}
 });
 

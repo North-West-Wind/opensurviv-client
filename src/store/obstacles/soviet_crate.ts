@@ -10,7 +10,7 @@ const crateResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(ne
 crateResidueImg.onload = () => crateResidueImg.loaded = true;
 crateResidueImg.src = "assets/images/game/objects/residues/crate.svg";
 
-export default class soviet_Crate extends Obstacle {
+export default class SovietCrate extends Obstacle {
 	type = "soviet_crate";
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {

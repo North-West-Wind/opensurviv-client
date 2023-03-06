@@ -11,7 +11,7 @@ const treeResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(new
 treeResidueImg.onload = () => treeResidueImg.loaded = true;
 treeResidueImg.src = "assets/images/game/objects/residues/tree.svg";
 
-export default class mosin_Tree extends Obstacle {
+export default class MosinTree extends Obstacle {
 	type = "mosin_tree";
 	zIndex = 1000;
 
