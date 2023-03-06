@@ -1,3 +1,4 @@
+import { GunColor } from "../../constants";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
@@ -11,13 +12,6 @@ interface AdditionalEntity {
 }
 
 const HEX_COLORS = ["#F2A500", "#F20000", "#0061F2", "#039700"];
-
-export enum GunColor {
-	YELLOW = 0,
-	RED = 1,
-	BLUE = 2,
-	GREEN = 3
-}
 
 export default class Gun extends Entity {
 	type = "gun";
@@ -45,6 +39,11 @@ export default class Gun extends Entity {
 		if (img) {
 			ctx.drawImage(img, -radius, -radius, 2*radius, 2*radius);
 		}
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.fillStyle = "#fff";
+		ctx.font = `${canvas.height / 54}px Arial`;
+		ctx.fillText(this.name, 0, 0);
 		ctx.resetTransform();
 	}
 }

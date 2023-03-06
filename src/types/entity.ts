@@ -4,6 +4,7 @@ import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./math";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "./minimized";
 import { Renderable } from "./extenstions";
 import { Weapon } from "./weapon";
+import { GunColor } from "../constants";
 
 // Data about animations
 export interface Animation {
@@ -11,8 +12,27 @@ export interface Animation {
 	duration: number;
 }
 
-// Inventory, mainly for players
 export class Inventory {
+	holding: number;
+	weapons: Weapon[];
+	// Array of 2 numbers. Order: gun slots, melee slots
+	slots: number[];
+	// Indices are colors. Refer to GunColor
+	ammos: number[];
+	// Utilities. Similar working to ammos, but yet to be implemented
+	utilities: number[];
+
+	constructor(holding: number, slots: number[], weapons?: Weapon[], ammos?: number[], utilities?: number[]) {
+		this.holding = holding;
+		this.slots = slots;
+		this.weapons = weapons || Array(slots.reduce((a, b) => a + b));
+		this.ammos = ammos || Array(Object.keys(GunColor).length).fill(0);
+		this.utilities = utilities || []; // TODO: Use a utility enum to generate 0s
+	}
+}
+
+// Inventory, mainly for players
+export class PartialInventory {
 	holding: Weapon;
 
 	constructor(minInv: MinInventory) {

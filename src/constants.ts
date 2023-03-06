@@ -26,3 +26,10 @@ export const movementKeys = [KeyBind.RIGHT, KeyBind.UP, KeyBind.LEFT, KeyBind.DO
 export const GRID_INTERVAL = 20;
 export const MINIMAP_SIZE = 100;
 export const TIMEOUT = 10000;
+
+export enum GunColor {
+	YELLOW = 0,
+	RED = 1,
+	BLUE = 2,
+	GREEN = 3
+}

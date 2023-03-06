@@ -1,5 +1,6 @@
-import { Entity, Inventory } from "../../types/entity";
-import { MinEntity, MinInventory } from "../../types/minimized";
+import { Entity, Inventory, PartialInventory } from "../../types/entity";
+import { Vec2, RectHitbox, CircleHitbox } from "../../types/math";
+import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
 import { Fists } from "../weapons";
 
@@ -13,6 +14,7 @@ interface AdditionalEntity {
 	boost: number;
 	scope: number;
 	inventory: MinInventory;
+	canInteract?: boolean;
 }
 
 export default class Player extends Entity {
@@ -21,7 +23,8 @@ export default class Player extends Entity {
 	username: string;
 	boost: number;
 	scope: number;
-	inventory: Inventory;
+	inventory: PartialInventory | Inventory;
+	canInteract: boolean;
 	zIndex = 9;
 
 	constructor(minEntity: (MinEntity & AdditionalEntity) | Player) {
@@ -31,9 +34,34 @@ export default class Player extends Entity {
 		this.boost = minEntity.boost;
 		this.scope = minEntity.scope;
 		if (typeof minEntity.inventory.holding === "number") {
-			const weapon = (<any> minEntity.inventory).weapons[minEntity.inventory.holding];
-			this.inventory = new Inventory({ holding: weapon });
-		} else this.inventory = new Inventory(minEntity.inventory);
+			const inventory = <Inventory>minEntity.inventory;
+			this.inventory = new Inventory(inventory.holding, inventory.slots, inventory.weapons, inventory.ammos, inventory.utilities);
+		} else this.inventory = new PartialInventory(<MinInventory>minEntity.inventory);
+		this.canInteract = minEntity.canInteract || false;
+	}
+
+	copy(minEntity: (MinEntity & AdditionalEntity) | Player) {
+		this.position = new Vec2(minEntity.position.x, minEntity.position.y);
+		this.direction = new Vec2(minEntity.direction.x, minEntity.direction.y);
+		if (minEntity.hitbox.type === "rect") {
+			const rect = <MinRectHitbox> minEntity.hitbox;
+			this.hitbox = new RectHitbox(rect.width, rect.height);
+		} else {
+			const circle = <MinCircleHitbox> minEntity.hitbox;
+			this.hitbox = new CircleHitbox(circle.radius);
+		}
+		this.animation = minEntity.animation;
+		this.health = this.maxHealth = 100;
+		this.despawn = minEntity.despawn;
+		this.id = minEntity.id;
+		this.username = minEntity.username;
+		this.boost = minEntity.boost;
+		this.scope = minEntity.scope;
+		if (typeof minEntity.inventory.holding === "number") {
+			const inventory = <Inventory>minEntity.inventory;
+			this.inventory = new Inventory(inventory.holding, inventory.slots, inventory.weapons, inventory.ammos, inventory.utilities);
+		} else this.inventory = new PartialInventory(<MinInventory>minEntity.inventory);
+		this.canInteract = minEntity.canInteract || false;
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
@@ -46,7 +74,11 @@ export default class Player extends Entity {
 			circleFromCenter(ctx, 0, 0, radius);
 			// We will leave the transform for the weapon
 			// If player is holding nothing, render fist
-			(this.inventory.holding || new Fists()).render(this, canvas, ctx, scale);
+			var weapon = new Fists();
+			//console.log(this.inventory);
+			//if (typeof this.inventory.holding === "number") weapon = (<Inventory>this.inventory).weapons[this.inventory.holding];
+			//else weapon = (<PartialInventory>this.inventory).holding;
+			weapon.render(this, canvas, ctx, scale);
 			ctx.resetTransform();
 		} else {
 			ctx.drawImage(deathImg, -radius * 2, -radius * 2, radius * 4, radius * 4);

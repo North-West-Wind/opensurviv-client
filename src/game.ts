@@ -60,7 +60,8 @@ async function init(address: string) {
 						const gamePkt = <GamePacket>data;
 						world.entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
 						world.obstacles = gamePkt.obstacles.map((obstacle: MinObstacle) => castCorrectObstacle(obstacle));
-						player = new Player(gamePkt.player);
+						if (!player) player = new Player(gamePkt.player);
+						else player.copy(gamePkt.player);
 						break;
 					case "map":
 						// This should happen once only normally

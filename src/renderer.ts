@@ -8,6 +8,7 @@ import { Obstacle } from "./types/obstacle";
 import { RenderableLayerN1 } from "./types/extenstions";
 import { Terrain } from "./types/terrain";
 import { lineBetween } from "./utils";
+import { drawPrompt } from "./rendering/prompt";
 
 const canvas = <HTMLCanvasElement> document.getElementById("game");
 canvas.width = window.innerWidth;
@@ -84,6 +85,7 @@ export function animate() {
 			if (!isHudHidden()) drawHud(player, canvas, ctx);
 			if (isMapOpened()) drawMap(canvas, ctx);
 			else if (!isMapHidden()) drawMinimap(player, canvas, ctx);
+			if (player.canInteract) drawPrompt(canvas, ctx, scale);
 		}
 	} catch (err) { console.error(err); }
 

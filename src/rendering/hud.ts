@@ -1,9 +1,11 @@
 import { Player } from "../store/entities";
+import { Inventory } from "../types/entity";
 import { roundRect } from "../utils";
 
 // Calls all the HUD related functions
 export function drawHud(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
 	drawHealth(player, canvas, ctx);
+	drawInventory(player, canvas, ctx);
 }
 
 // Draws the player's health
@@ -22,4 +24,20 @@ function drawHealth(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRender
 	else ctx.fillStyle = "#fff";
 	ctx.globalAlpha = 1;
 	roundRect(ctx, (canvas.width - innerWidth) / 2, canvas.height - height, innerWidth * player.health / player.maxHealth, innerHeight, padding / 2);
+}
+
+// Draws the player's inventory (temporary)
+function drawInventory(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+	ctx.fillStyle = "#fff";
+	ctx.font = `${canvas.height / 27}px Arial`;
+	ctx.textBaseline = "bottom";
+	ctx.textAlign = "end";
+	const inventory = <Inventory>player.inventory;
+	var str = "";
+	for (let ii = 0; ii < inventory.weapons.length; ii++) {
+		if (ii != 0) str += " ";
+		if (ii == inventory.holding) str += `[${inventory.weapons[ii].name}]`;
+		else str += inventory.weapons[ii].name;
+	}
+	ctx.fillText(str, canvas.width * 191/192, canvas.height - canvas.width / 192);
 }
