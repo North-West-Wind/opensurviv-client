@@ -8,7 +8,7 @@ import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
 import { castCorrectTerrain } from "./store/terrains";
 import { Vec2 } from "./types/math";
 import { MinEntity, MinObstacle } from "./types/minimized";
-import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket } from "./types/packet";
+import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket, InteractPacket } from "./types/packet";
 import { World } from "./types/terrain";
 
 export var world = new World();
@@ -139,6 +139,8 @@ window.onkeydown = (event) => {
 		const index = movementKeys.indexOf(event.key);
 		if (index >= 0)
 			ws.send(encode(new MovementPressPacket(index)).buffer);
+		else if (event.key == KeyBind.INTERACT)
+			ws.send(encode(new InteractPacket()).buffer);
 	}
 }
 

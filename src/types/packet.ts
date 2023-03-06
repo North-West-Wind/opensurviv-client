@@ -59,6 +59,11 @@ export class MouseMovePacket {
 	}
 }
 
+// Packet to notify interaction (e.g. pickup)
+export class InteractPacket {
+	type = "interact";
+}
+
 /// Packet from server acknowledgement
 export class AckPacket {
 	type = "ack";
@@ -67,7 +72,7 @@ export class AckPacket {
 	terrain!: MinTerrain;
 }
 
-// Packet from server containing game data
+/// Packet from server containing game data
 export class GamePacket {
 	type = "game";
 	entities!: MinEntity[];
@@ -75,7 +80,7 @@ export class GamePacket {
 	player!: Player;
 }
 
-// Packet from server containing map data
+/// Packet from server containing map data
 export class MapPacket {
 	type = "map";
 	obstacles!: MinMinObstacle[];
