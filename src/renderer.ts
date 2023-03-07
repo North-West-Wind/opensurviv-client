@@ -22,8 +22,13 @@ window.onresize = () => {
 var running = false;
 export function setRunning(r: boolean) { running = r; }
 
+var lastTime: number;
+
 const ctx = <CanvasRenderingContext2D> canvas.getContext("2d");
-export function animate() {
+export function animate(currentTime: number) {
+	if (!lastTime) lastTime = currentTime;
+	const elapsed = currentTime - lastTime;
+	lastTime = currentTime;
 	// Don't panic when drawing error
 	try {
 		// Fill canvas with default terrain color
@@ -61,7 +66,10 @@ export function animate() {
 			// Do negative layer first
 			(<((Entity | Obstacle) & RenderableLayerN1)[]> combined.filter((entOrObs: any) => !!entOrObs["renderLayerN1"])).forEach(entOrObs => entOrObs.renderLayerN1(player, canvas, ctx, scale));
 			// Do layer zero
-			combined.forEach(thing => thing.render(player, canvas, ctx, scale));
+			combined.forEach(thing => {
+				thing.render(player, canvas, ctx, scale);
+				thing.renderTick(elapsed);
+			});
 
 			// Fill areas outside the border
 			ctx.fillStyle = world.defaultTerrain.colorToHex();

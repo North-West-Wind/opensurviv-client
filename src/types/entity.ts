@@ -5,12 +5,8 @@ import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "./minim
 import { Renderable } from "./extenstions";
 import { Weapon } from "./weapon";
 import { GunColor } from "../constants";
-
-// Data about animations
-export interface Animation {
-	name: string;
-	duration: number;
-}
+import { DEFINED_ANIMATIONS } from "../store/animations";
+import { Animation } from "./animation";
 
 export class Inventory {
 	holding: number;
@@ -42,17 +38,23 @@ export class PartialInventory {
 
 // An entity with position, velocity and hitbox
 export abstract class Entity implements Renderable {
-	type: string;
-	position: Vec2;
-	direction: Vec2;
-	hitbox: Hitbox;
-	animation: Animation;
-	health: number;
-	maxHealth: number;
-	despawn: boolean;
+	id!: string;
+	type!: string;
+	position!: Vec2;
+	direction!: Vec2;
+	hitbox!: Hitbox;
+	animations: Animation[] = [];
+	health!: number;
+	maxHealth!: number;
+	despawn!: boolean;
 	zIndex = 0;
 
 	constructor(minEntity: MinEntity) {
+		this.copy(minEntity);
+	}
+
+	copy(minEntity: MinEntity) {
+		this.id = minEntity.id;
 		this.type = minEntity.type;
 		this.position = new Vec2(minEntity.position.x, minEntity.position.y);
 		this.direction = new Vec2(minEntity.direction.x, minEntity.direction.y);
@@ -63,12 +65,27 @@ export abstract class Entity implements Renderable {
 			const circle = <MinCircleHitbox> minEntity.hitbox;
 			this.hitbox = new CircleHitbox(circle.radius);
 		}
-		this.animation = minEntity.animation;
 		this.health = this.maxHealth = 100;
 		this.despawn = minEntity.despawn;
+		for (const anim of minEntity.animations)
+			if (DEFINED_ANIMATIONS.has(anim)) {
+				const duration = DEFINED_ANIMATIONS.get(anim)!.duration;
+				this.animations.push({ id: anim, duration: duration });
+			}
 	}
 
 	abstract render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
+
+	renderTick(time: number) {
+		const removable: number[] = [];
+		for (let ii = 0; ii < this.animations.length; ii++) {
+			this.animations[ii].duration -= time;
+			if (this.animations[ii].duration <= 0)
+				removable.push(ii);
+		}
+		for (let ii = removable.length - 1; ii >= 0; ii--)
+			this.animations.splice(removable[ii], 1);
+	}
 }
 
 export class DummyEntity extends Entity {

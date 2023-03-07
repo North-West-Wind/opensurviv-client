@@ -29,6 +29,12 @@ export default class Ammo extends Entity {
 		this.color = minEntity.color;
 	}
 
+	copy(minEntity: MinEntity & AdditionalEntity) {
+		super.copy(minEntity);
+		this.amount = minEntity.amount;
+		this.color = minEntity.color;
+	}
+
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const relative = this.position.addVec(you.position.inverse());
 		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
@@ -36,7 +42,7 @@ export default class Ammo extends Entity {
 		ctx.scale(scale, scale);
 		const length = this.hitbox.comparable * Math.sin(CommonAngle.PI_TWO);
 		ctx.strokeStyle = COLOR_SCHEME[this.color][0];
-		ctx.lineWidth = 0.25;
+		ctx.lineWidth = 0.2;
 		ctx.fillStyle = COLOR_SCHEME[this.color][1];
 		ctx.fillRect(-length / 2, -length / 2, length, length);
 		ctx.strokeRect(-length / 2, -length / 2, length, length);

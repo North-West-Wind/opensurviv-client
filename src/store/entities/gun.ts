@@ -25,6 +25,12 @@ export default class Gun extends Entity {
 		this.color = minEntity.color;
 	}
 
+	copy(minEntity: MinEntity & AdditionalEntity) {
+		super.copy(minEntity);
+		this.name = minEntity.name;
+		this.color = minEntity.color;
+	}
+
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const relative = this.position.addVec(you.position.inverse());
 		const radius = scale * this.hitbox.comparable;

@@ -1,11 +1,12 @@
-import { Player } from "../store/entities";
+import { castCorrectEntity, Player } from "../store/entities";
 import { castCorrectTerrain, Plain } from "../store/terrains";
 import { Entity } from "./entity";
 import { Line, Vec2 } from "./math";
-import { MinLine, MinTerrain, MinVec2 } from "./minimized";
+import { MinEntity, MinLine, MinObstacle, MinTerrain, MinVec2 } from "./minimized";
 import { Obstacle } from "./obstacle";
 import { Renderable, RenderableMap } from "./extenstions";
 import { circleFromCenter } from "../utils";
+import { castCorrectObstacle } from "../store/obstacles";
 
 export class World {
 	size: Vec2;
@@ -19,6 +20,30 @@ export class World {
 		this.size = size;
 		if (!defaultTerrain) defaultTerrain = new Plain({ id: "plain", border: 0 });
 		this.defaultTerrain = defaultTerrain;
+	}
+
+	updateEntities(entities: MinEntity[]) {
+		const pending: Entity[] = [];
+		for (const entity of entities) {
+			const existing = this.entities.find(e => e.id == entity.id);
+			if (existing) {
+				existing.copy(entity);
+				pending.push(existing);
+			} else pending.push(castCorrectEntity(entity));
+		}
+		this.entities = pending;
+	}
+
+	updateObstacles(obstacles: MinObstacle[]) {
+		const pending: Obstacle[] = [];
+		for (const obstacle of obstacles) {
+			const existing = this.obstacles.find(e => e.id == obstacle.id);
+			if (existing) {
+				existing.copy(obstacle);
+				pending.push(existing);
+			} else pending.push(castCorrectObstacle(obstacle));
+		}
+		this.obstacles = pending;
 	}
 }
 

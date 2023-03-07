@@ -37,5 +37,5 @@ export function castCorrectObstacle(minObstacle: MinObstacle & any) {
 
 export function castMinObstacle(minMinObstacle: MinMinObstacle & any) {
 	const copy = minMinObstacle;
-	return Object.assign(copy, { direction: Vec2.ONE, hitbox: new CircleHitbox(0), despawn: false });
+	return Object.assign(copy, { direction: Vec2.ONE, hitbox: new CircleHitbox(0), despawn: false, animations: [] });
 }

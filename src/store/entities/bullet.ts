@@ -16,5 +16,10 @@ export default class Bullet extends Entity {
 		this.dmg = minEntity.dmg;
 	}
 
+	copy(minEntity: MinEntity & AdditionalEntity) {
+		super.copy(minEntity);
+		this.dmg = minEntity.dmg;
+	}
+
 	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
 }

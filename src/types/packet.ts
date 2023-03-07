@@ -78,6 +78,7 @@ export class SwitchWeaponPacket {
 export class AckPacket {
 	type = "ack";
 	id!: string;
+	tps!: number;
 	size!: number[];
 	terrain!: MinTerrain;
 }
@@ -87,7 +88,7 @@ export class GamePacket {
 	type = "game";
 	entities!: MinEntity[];
 	obstacles!: MinObstacle[];
-	player!: Player;
+	player!: any;
 }
 
 /// Packet from server containing map data

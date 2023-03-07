@@ -15,6 +15,7 @@ import { World } from "./types/terrain";
 export var world = new World();
 
 var id: string | null;
+var tps = 1; // Default should be 1, so even if no TPS detail from server, we will not be dividing by 0
 var username: string | null;
 var address: string | null;
 var player: Player | null;
@@ -39,6 +40,7 @@ async function init(address: string) {
 		ws.onmessage = (event) => {
 			const data = <AckPacket>decode(new Uint8Array(event.data));
 			id = data.id;
+			tps = data.tps;
 			world = new World(new Vec2(data.size[0], data.size[1]), castCorrectTerrain(data.terrain));
 			ws.send(encode({ username, id }).buffer);
 			connected = true;
@@ -46,7 +48,7 @@ async function init(address: string) {
 	
 			// Start animating after connection established
 			setRunning(true);
-			animate();
+			animate(0);
 			document.getElementById("menu")?.classList.add("hidden");
 	
 			const interval = setInterval(() => {
@@ -59,8 +61,8 @@ async function init(address: string) {
 				switch (data.type) {
 					case "game":
 						const gamePkt = <GamePacket>data;
-						world.entities = gamePkt.entities.map((entity: MinEntity) => castCorrectEntity(entity));
-						world.obstacles = gamePkt.obstacles.map((obstacle: MinObstacle) => castCorrectObstacle(obstacle));
+						world.updateEntities(gamePkt.entities);
+						world.updateObstacles(gamePkt.obstacles);
 						if (!player) player = new Player(gamePkt.player);
 						else player.copy(gamePkt.player);
 						break;
@@ -80,6 +82,7 @@ async function init(address: string) {
 			setRunning(false);
 			document.getElementById("menu")?.classList.remove("hidden");
 			id = null;
+			tps = 1;
 			username = null;
 			player = null;
 			world = new World();

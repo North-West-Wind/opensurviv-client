@@ -13,7 +13,7 @@ interface AdditionalEntity {
 	username: string;
 	boost: number;
 	scope: number;
-	inventory: MinInventory;
+	inventory: MinInventory | Inventory;
 	canInteract?: boolean;
 }
 
@@ -27,7 +27,7 @@ export default class Player extends Entity {
 	canInteract: boolean;
 	zIndex = 9;
 
-	constructor(minEntity: (MinEntity & AdditionalEntity) | Player) {
+	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
 		this.id = minEntity.id;
 		this.username = minEntity.username;
@@ -40,7 +40,8 @@ export default class Player extends Entity {
 		this.canInteract = minEntity.canInteract || false;
 	}
 
-	copy(minEntity: (MinEntity & AdditionalEntity) | Player) {
+	copy(minEntity: MinEntity & AdditionalEntity) {
+		super.copy(minEntity);
 		this.position = new Vec2(minEntity.position.x, minEntity.position.y);
 		this.direction = new Vec2(minEntity.direction.x, minEntity.direction.y);
 		if (minEntity.hitbox.type === "rect") {
@@ -50,7 +51,6 @@ export default class Player extends Entity {
 			const circle = <MinCircleHitbox> minEntity.hitbox;
 			this.hitbox = new CircleHitbox(circle.radius);
 		}
-		this.animation = minEntity.animation;
 		this.health = this.maxHealth = 100;
 		this.despawn = minEntity.despawn;
 		this.id = minEntity.id;
