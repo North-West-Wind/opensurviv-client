@@ -19,14 +19,13 @@ const COLOR_SCHEME = [
 
 export default class Ammo extends Entity {
 	type = "ammo";
-	amount: number;
-	color: GunColor;
+	amount!: number;
+	color!: GunColor;
 	zIndex = 8;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
-		this.amount = minEntity.amount;
-		this.color = minEntity.color;
+		this.copy(minEntity);
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

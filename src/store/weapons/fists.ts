@@ -1,5 +1,7 @@
+import { WEAPON_SUPPLIERS } from ".";
 import { CommonNumber, CommonAngle } from "../../constants";
 import { CircleHitbox, Vec2 } from "../../types/math";
+import { WeaponSupplier } from "../../types/supplier";
 import { Weapon } from "../../types/weapon";
 import { circleFromCenter } from "../../utils";
 import { DEFINED_ANIMATIONS } from "../animations";
@@ -7,9 +9,19 @@ import { Player } from "../entities";
 
 const fistAnimations = ["left_fist", "right_fist"];
 
+class FistsSupplier implements WeaponSupplier {
+	create() {
+		return new Fists();
+	}
+}
+
 export default class Fists extends Weapon {
-	constructor() {
-		super({ id: "fists", name: "Fists" });
+	static readonly ID = "fists";
+	id = Fists.ID;
+	name = "Fists";
+
+	static {
+		WEAPON_SUPPLIERS.set(Fists.ID, new FistsSupplier());
 	}
 
 	render(player: Player, _canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
@@ -41,10 +53,9 @@ export default class Fists extends Weapon {
 		}
 	
 		const fistRadius = radius / 3;
+		ctx.fillStyle = "#F8C675";
 		ctx.lineWidth = fistRadius / 3;
 		ctx.strokeStyle = "#000000";
-		// x2 to counter previous rotation in player
-		ctx.rotate(player.direction.angle() * 2);
 		for (const fist of fists) circleFromCenter(ctx, fist.x, fist.y, fistRadius, true, true);
 	}
 }

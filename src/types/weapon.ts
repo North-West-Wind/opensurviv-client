@@ -3,15 +3,20 @@ import { MinWeapon } from "./minimized";
 import { Renderable } from "./extenstions";
 
 export abstract class Weapon implements MinWeapon, Renderable {
-	id: string;
-	name: string;
-
-	constructor(minWeapon: MinWeapon) {
-		this.id = minWeapon.id;
-		this.name = minWeapon.name;
-	}
+	id!: string;
+	name!: string;
 
 	abstract render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void;
+}
+
+// Melee weapons should directly extend Weapon class
+//export abstract class MeleeWeapon extends Weapon { }
+
+export abstract class GunWeapon extends Weapon {
+	// For animation
+	recoil: "small" | "medium" | "large" = "small";
+	magazine = 0;
+	dual = -1;
 }
 
 // Dummy weapon

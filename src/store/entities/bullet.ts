@@ -9,11 +9,11 @@ interface AdditionalEntity {
 export default class Bullet extends Entity {
 	type = "bullet";
 	// Used for rendering bullet size
-	dmg: number;
+	dmg!: number;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
-		this.dmg = minEntity.dmg;
+		this.copy(minEntity);
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

@@ -15,14 +15,13 @@ const HEX_COLORS = ["#F2A500", "#F20000", "#0061F2", "#039700"];
 
 export default class Gun extends Entity {
 	type = "gun";
-	name: string;
-	color: GunColor;
+	name!: string;
+	color!: GunColor;
 	zIndex = 8;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
-		this.name = minEntity.name;
-		this.color = minEntity.color;
+		this.copy(minEntity);
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {
