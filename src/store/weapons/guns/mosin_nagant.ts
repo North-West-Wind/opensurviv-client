@@ -39,7 +39,7 @@ export default class Mosin_Nagant extends GunWeapon {
 		ctx.strokeStyle = "#000";
 		ctx.lineWidth = 0.025 * scale;
 		//ctx.fillRect(player.hitbox.comparable * scale, -0.15 * scale, 1.2 * scale, 0.3 * scale);
-		roundRect(ctx, player.hitbox.comparable * scale, -0.15 * scale, 1.9 * scale, 0.3 * scale, 0.15 * scale, true, true);
+		roundRect(ctx, player.hitbox.comparable * scale, -0.15 * scale, 3.0 * scale, 0.3 * scale, 0.15 * scale, true, true);
 		ctx.fillStyle = "#F8C675";
 		ctx.lineWidth = fistRadius / 3;
 		ctx.strokeStyle = "#000000";

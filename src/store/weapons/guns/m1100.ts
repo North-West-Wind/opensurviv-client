@@ -6,16 +6,16 @@ import { GunWeapon } from "../../../types/weapon";
 import { circleFromCenter, roundRect } from "../../../utils";
 import { Player } from "../../entities";
 
-class M870Supplier implements WeaponSupplier {
+class M1100Supplier implements WeaponSupplier {
 	create(minWeapon: any) {
-		return new M870(minWeapon);
+		return new M1100(minWeapon);
 	}
 }
 
-export default class M870 extends GunWeapon {
-	static readonly ID = "m870";
-	id = M870.ID;
-	name = "M870";
+export default class M1100 extends GunWeapon {
+	static readonly ID = "m1100";
+	id = M1100.ID;
+	name = "M1100";
 
 	constructor(weapon: MinWeapon | GunWeapon) {
 		super();
@@ -27,7 +27,7 @@ export default class M870 extends GunWeapon {
 	}
 
 	static {
-		WEAPON_SUPPLIERS.set(M870.ID, new M870Supplier());
+		WEAPON_SUPPLIERS.set(M1100.ID, new M1100Supplier());
 	}
 
 	render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
@@ -39,7 +39,7 @@ export default class M870 extends GunWeapon {
 		ctx.strokeStyle = "#000";
 		ctx.lineWidth = 0.025 * scale;
 		//ctx.fillRect(player.hitbox.comparable * scale, -0.15 * scale, 1.2 * scale, 0.3 * scale);
-		roundRect(ctx, player.hitbox.comparable * scale, -0.15 * scale, 2.5 * scale, 0.3 * scale, 0.15 * scale, true, true);
+		roundRect(ctx, player.hitbox.comparable * scale, -0.15 * scale, 2.2 * scale, 0.3 * scale, 0.15 * scale, true, true);
 		ctx.fillStyle = "#F8C675";
 		ctx.lineWidth = fistRadius / 3;
 		ctx.strokeStyle = "#000000";
