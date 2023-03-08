@@ -19,6 +19,10 @@ export abstract class GunWeapon extends Weapon {
 	dual = -1;
 }
 
+export abstract class GrenadeWeapon extends Weapon {
+	type!: "frag" | "mirv" | "smoke";
+}
+
 // Dummy weapon
 export class DummyWeapon extends Weapon {
 	render(_player: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
