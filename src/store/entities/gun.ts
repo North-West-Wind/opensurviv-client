@@ -1,12 +1,21 @@
+import { readdirSync } from "fs";
 import { ENTITY_SUPPLIERS } from ".";
 import { GunColor } from "../../constants";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
+import { WEAPON_SUPPLIERS } from "../weapons";
 import Player from "./player";
 
 const images = new Map<string, HTMLImageElement & { loaded: boolean }>();
+for (const id of WEAPON_SUPPLIERS.keys()) {
+	const img: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
+	img.onload = () => img.loaded = true;
+	img.src = `assets/images/game/loots/guns/${id}.png`;
+
+	images.set(id, img);
+}
 
 interface AdditionalEntity {
 	name: string;
@@ -54,14 +63,15 @@ export default class Gun extends Entity {
 		ctx.fillStyle = HEX_COLORS[this.color] + "66"; // <- alpha/opacity
 		circleFromCenter(ctx, 0, 0, radius, true, false);
 		const img = images.get(this.name);
-		if (img) {
-			ctx.drawImage(img, -radius, -radius, 2*radius, 2*radius);
+		if (!img?.loaded) {
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillStyle = "#fff";
+			ctx.font = `${canvas.height / 54}px Arial`;
+			ctx.fillText(this.name, 0, 0);
+		} else {
+			ctx.drawImage(img, -0.6*radius, -0.6*radius, 1.2*radius, 1.2*radius);
 		}
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		ctx.fillStyle = "#fff";
-		ctx.font = `${canvas.height / 54}px Arial`;
-		ctx.fillText(this.name, 0, 0);
 		ctx.resetTransform();
 	}
 }
