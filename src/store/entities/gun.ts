@@ -1,21 +1,11 @@
-import { readdirSync } from "fs";
 import { ENTITY_SUPPLIERS } from ".";
 import { GunColor } from "../../constants";
+import { getWeaponImage } from "../../textures";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
-import { WEAPON_SUPPLIERS } from "../weapons";
 import Player from "./player";
-
-const images = new Map<string, HTMLImageElement & { loaded: boolean }>();
-for (const id of WEAPON_SUPPLIERS.keys()) {
-	const img: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
-	img.onload = () => img.loaded = true;
-	img.src = `assets/images/game/loots/guns/${id}.png`;
-
-	images.set(id, img);
-}
 
 interface AdditionalEntity {
 	name: string;
@@ -62,7 +52,7 @@ export default class Gun extends Entity {
 		circleFromCenter(ctx, 0, 0, radius, false, true);
 		ctx.fillStyle = HEX_COLORS[this.color] + "66"; // <- alpha/opacity
 		circleFromCenter(ctx, 0, 0, radius, true, false);
-		const img = images.get(this.name);
+		const img = getWeaponImage(this.name);
 		if (!img?.loaded) {
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
@@ -70,7 +60,7 @@ export default class Gun extends Entity {
 			ctx.font = `${canvas.height / 54}px Arial`;
 			ctx.fillText(this.name, 0, 0);
 		} else {
-			ctx.drawImage(img, -0.6*radius, -0.6*radius, 1.2*radius, 1.2*radius);
+			ctx.drawImage(img, -0.7*radius, -0.7*radius, 1.4*radius, 1.4*radius);
 		}
 		ctx.resetTransform();
 	}

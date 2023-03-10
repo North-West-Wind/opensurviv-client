@@ -55,7 +55,7 @@ export default class Player extends Entity {
 			this.inventory = new Inventory(inventory.holding, inventory.slots, inventory.weapons.map(w => w ? castCorrectWeapon(w) : w), inventory.ammos, inventory.utilities);
 		} else this.inventory = new PartialInventory(<MinInventory>minEntity.inventory);
 		this.canInteract = minEntity.canInteract || false;
-		if (this.despawn) this.zIndex = 0;
+		if (this.despawn) this.zIndex = 7;
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {

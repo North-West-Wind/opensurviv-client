@@ -7,23 +7,15 @@ import { circleFromCenter, roundRect } from "../../../utils";
 import { Player } from "../../entities";
 
 class FragGrenadeSupplier implements WeaponSupplier {
-	create(minWeapon: any) {
-		return new FragGrenade(minWeapon);
+	create() {
+		return new FragGrenade();
 	}
 }
 
 export default class FragGrenade extends GrenadeWeapon {
-	static readonly ID = "fragGrenade";
+	static readonly ID = "frag_grenade";
 	id = FragGrenade.ID;
 	name = "Frag Grenade";
-
-	constructor(weapon: MinWeapon | GunWeapon) {
-		super();
-		// This is a full weapon
-		if ((<any>weapon)["recoil"]) {
-			const fullWeapon = <GunWeapon>weapon;
-		}
-	}
 
 	static {
 		WEAPON_SUPPLIERS.set(FragGrenade.ID, new FragGrenadeSupplier());

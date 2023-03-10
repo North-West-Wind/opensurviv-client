@@ -1,4 +1,5 @@
 import { ENTITY_SUPPLIERS } from ".";
+import { getWeaponImage } from "../../textures";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
@@ -47,15 +48,16 @@ export default class Grenade extends Entity {
 		circleFromCenter(ctx, 0, 0, radius, false, true);
 		ctx.fillStyle = "#00000066"; // <- alpha/opacity
 		circleFromCenter(ctx, 0, 0, radius, true, false);
-		const img = images.get(this.name);
-		if (img) {
-			ctx.drawImage(img, -radius, -radius, 2*radius, 2*radius);
+		const img = getWeaponImage(this.name);
+		if (!img?.loaded) {
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillStyle = "#fff";
+			ctx.font = `${canvas.height / 54}px Arial`;
+			ctx.fillText(this.name, 0, 0);
+		} else {
+			ctx.drawImage(img, -0.6*radius, -0.6*radius, 1.2*radius, 1.2*radius);
 		}
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		ctx.fillStyle = "#fff";
-		ctx.font = `${canvas.height / 54}px Arial`;
-		ctx.fillText(this.name, 0, 0);
 		ctx.resetTransform();
 	}
 }
