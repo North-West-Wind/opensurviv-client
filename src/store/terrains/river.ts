@@ -1,13 +1,32 @@
 import { Line } from "../../types/math";
 import { MinTerrain, MinLine, MinVec2 } from "../../types/minimized";
 import { BorderedTerrain } from "../../types/extenstions";
-import { LineTerrain, PiecewiseTerrain } from "../../types/terrain";
+import { LineTerrain, PiecewiseTerrain, Terrain } from "../../types/terrain";
 import { Player } from "../entities";
+import { TerrainSupplier } from "../../types/supplier";
+import { TERRAIN_SUPPLIERS } from ".";
+
+class RiverSegmentSupplier implements TerrainSupplier {
+	create(minTerrain: MinTerrain & { line: MinLine, range: number, boundary: MinVec2[] }) {
+		return new RiverSegment(minTerrain);
+	}
+}
+
+class RiverSupplier implements TerrainSupplier {
+	create(minTerrain: MinTerrain & { lines: (MinTerrain & { line: MinLine, range: number, boundary: MinVec2[] })[] }) {
+		return new River(minTerrain);
+	}
+}
 
 export class RiverSegment extends LineTerrain implements BorderedTerrain {
-	id = "river_segment";
+	static readonly ID = "river_segment";
+	id = RiverSegment.ID;
 	color = 0x3481ab;
 	secondaryColor = 0x905e26;
+
+	static {
+		TERRAIN_SUPPLIERS.set(RiverSegment.ID, new RiverSegmentSupplier());
+	}
 
 	renderLayerN1(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		ctx.translate(canvas.width / 2, canvas.height / 2);
@@ -61,13 +80,19 @@ export class RiverSegment extends LineTerrain implements BorderedTerrain {
 }
 
 export default class River extends PiecewiseTerrain implements BorderedTerrain {
-	id = "river";
+	static readonly ID = "river";
+	id = River.ID;
 	color = 0xFF3481ab;
 	secondaryColor = 0xFF905e26;
 
 	constructor(minTerrain: MinTerrain & { lines: (MinTerrain & { line: MinLine, range: number, boundary: MinVec2[] })[] }) {
 		super(minTerrain);
 	}
+
+	static {
+		TERRAIN_SUPPLIERS.set(River.ID, new RiverSupplier());
+	}
+
 	renderLayerN1(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		(<RiverSegment[]> this.lines).forEach(line => line.renderLayerN1(you, canvas, ctx, scale));
 	}
