@@ -7,6 +7,7 @@ import Stone from "./stone";
 import Tree from "./tree";
 import MosinTree from "./mosin_tree";
 import SovietCrate from "./soviet_crate";
+import GrenadeCrate from "./grenade_crate";
 
 export { default as Tree } from "./tree";
 export { default as Bush } from "./bush";
@@ -14,6 +15,7 @@ export { default as Crate } from "./crate";
 export { default as MosinTree } from "./mosin_tree";
 export { default as Stone } from "./stone";
 export { default as SovietCrate } from "./soviet_crate";
+export { default as GrenadeCrate} from "./grenade_crate";
 
 // This still need hard-coding unfortunately
 export function castCorrectObstacle(minObstacle: MinObstacle & any) {
@@ -30,6 +32,8 @@ export function castCorrectObstacle(minObstacle: MinObstacle & any) {
 			return new MosinTree(minObstacle);
 		case "soviet_crate":
 			return new SovietCrate(minObstacle);
+		case "grenade_crate":
+			return new GrenadeCrate(minObstacle);
 		default:
 			return new DummyObstacle(minObstacle);
 	}

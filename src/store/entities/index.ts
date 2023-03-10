@@ -2,6 +2,7 @@ import { DummyEntity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import Ammo from "./ammo";
 import Bullet from "./bullet";
+import Grenade from "./grenade";
 import Gun from "./gun";
 import Player from "./player";
 
@@ -18,6 +19,8 @@ export function castCorrectEntity(minEntity: MinEntity & any) {
 			return new Gun(minEntity);
 		case "ammo":
 			return new Ammo(minEntity);
+		case "grenade":
+			return new Grenade(minEntity);
 		default:
 			return new DummyEntity(minEntity);
 	}

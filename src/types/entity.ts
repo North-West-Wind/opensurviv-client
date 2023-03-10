@@ -3,7 +3,7 @@ import { castCorrectWeapon } from "../store/weapons";
 import { CircleHitbox, Hitbox, RectHitbox, Vec2 } from "./math";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "./minimized";
 import { Renderable } from "./extenstions";
-import { Weapon } from "./weapon";
+import {  Weapon } from "./weapon";
 import { GunColor } from "../constants";
 import { DEFINED_ANIMATIONS } from "../store/animations";
 import { Animation } from "./animation";
@@ -11,7 +11,7 @@ import { Animation } from "./animation";
 export class Inventory {
 	holding: number;
 	weapons: Weapon[];
-	// Array of 2 numbers. Order: gun slots, melee slots
+	// Array of 2 numbers. Order: gun slots, melee slots, grenade slot.
 	slots: number[];
 	// Indices are colors. Refer to GunColor
 	ammos: number[];
