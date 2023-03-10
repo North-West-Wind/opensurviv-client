@@ -6,15 +6,15 @@ import { GunWeapon } from "../../../types/weapon";
 import { circleFromCenter, roundRect } from "../../../utils";
 import { Player } from "../../entities";
 
-class Mosin_NagantSupplier implements WeaponSupplier {
+class MosinNagantSupplier implements WeaponSupplier {
 	create(minWeapon: any) {
-		return new Mosin_Nagant(minWeapon);
+		return new MosinNagant(minWeapon);
 	}
 }
 
-export default class Mosin_Nagant extends GunWeapon {
+export default class MosinNagant extends GunWeapon {
 	static readonly ID = "mosin_nagant";
-	id = Mosin_Nagant.ID;
+	id = MosinNagant.ID;
 	name = "Mosin_Nagant";
 
 	constructor(weapon: MinWeapon | GunWeapon) {
@@ -27,7 +27,7 @@ export default class Mosin_Nagant extends GunWeapon {
 	}
 
 	static {
-		WEAPON_SUPPLIERS.set(Mosin_Nagant.ID, new Mosin_NagantSupplier());
+		WEAPON_SUPPLIERS.set(MosinNagant.ID, new MosinNagantSupplier());
 	}
 
 	render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {

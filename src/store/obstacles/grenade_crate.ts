@@ -25,8 +25,8 @@ export default class GrenadeCrate extends Obstacle {
 
 	renderMap(_canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		ctx.translate(this.position.x * scale, this.position.y * scale);
-		ctx.fillStyle = "#683c05";
-		ctx.fillRect(-2 * scale, -2 * scale, 4 * scale, 4 * scale);
+		ctx.fillStyle = "#46502d";
+		ctx.fillRect(-1.5 * scale, -1.5 * scale, 3 * scale, 3 * scale);
 		ctx.resetTransform();
 	}
 }
