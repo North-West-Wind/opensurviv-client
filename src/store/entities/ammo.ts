@@ -1,11 +1,19 @@
+import { ENTITY_SUPPLIERS } from ".";
 import { CommonAngle, GunColor } from "../../constants";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
+import { EntitySupplier } from "../../types/supplier";
 import Player from "./player";
 
 interface AdditionalEntity {
 	amount: number;
 	color: GunColor;
+}
+
+class AmmoSupplier implements EntitySupplier {
+	create(minEntity: MinEntity & AdditionalEntity) {
+		return new Ammo(minEntity);
+	}
 }
 
 // Refer to gun color for the order
@@ -18,7 +26,8 @@ const COLOR_SCHEME = [
 ];
 
 export default class Ammo extends Entity {
-	type = "ammo";
+	static readonly ID = "ammo";
+	type = Ammo.ID;
 	amount!: number;
 	color!: GunColor;
 	zIndex = 8;
@@ -26,6 +35,10 @@ export default class Ammo extends Entity {
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
 		this.copy(minEntity);
+	}
+
+	static {
+		ENTITY_SUPPLIERS.set(Ammo.ID, new AmmoSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

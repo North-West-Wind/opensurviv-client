@@ -1,5 +1,7 @@
+import { ENTITY_SUPPLIERS } from ".";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
+import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
 import Player from "./player";
 
@@ -9,14 +11,25 @@ interface AdditionalEntity {
 	name: string;
 }
 
+class GrenadeSupplier implements EntitySupplier {
+	create(minEntity: MinEntity & AdditionalEntity) {
+		return new Grenade(minEntity);
+	}
+}
+
 export default class Grenade extends Entity {
-	type = "grenade";
+	static readonly ID = "grenade";
+	type = Grenade.ID;
 	// Used for rendering Grenade size
 	name!: string;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
 		this.copy(minEntity);
+	}
+
+	static {
+		ENTITY_SUPPLIERS.set(Grenade.ID, new GrenadeSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

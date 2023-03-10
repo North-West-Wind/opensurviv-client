@@ -1,6 +1,8 @@
+import { ENTITY_SUPPLIERS } from ".";
 import { GunColor } from "../../constants";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
+import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
 import Player from "./player";
 
@@ -11,10 +13,17 @@ interface AdditionalEntity {
 	color: GunColor;
 }
 
+class GunSupplier implements EntitySupplier {
+	create(minEntity: MinEntity & AdditionalEntity) {
+		return new Gun(minEntity);
+	}
+}
+
 const HEX_COLORS = ["#F2A500", "#F20000", "#0061F2", "#039700"];
 
 export default class Gun extends Entity {
-	type = "gun";
+	static readonly ID = "gun";
+	type = Gun.ID;
 	name!: string;
 	color!: GunColor;
 	zIndex = 8;
@@ -22,6 +31,10 @@ export default class Gun extends Entity {
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
 		this.copy(minEntity);
+	}
+
+	static {
+		ENTITY_SUPPLIERS.set(Gun.ID, new GunSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

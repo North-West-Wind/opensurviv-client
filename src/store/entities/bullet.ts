@@ -1,19 +1,32 @@
+import { ENTITY_SUPPLIERS } from ".";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
+import { EntitySupplier } from "../../types/supplier";
 import Player from "./player";
 
 interface AdditionalEntity {
 	dmg: number;
 }
 
+class BulletSupplier implements EntitySupplier {
+	create(minEntity: MinEntity & AdditionalEntity) {
+		return new Bullet(minEntity);
+	}
+}
+
 export default class Bullet extends Entity {
-	type = "bullet";
+	static readonly ID = "bullet";
+	type = Bullet.ID;
 	// Used for rendering bullet size
 	dmg!: number;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
 		this.copy(minEntity);
+	}
+
+	static {
+		ENTITY_SUPPLIERS.set(Bullet.ID, new BulletSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

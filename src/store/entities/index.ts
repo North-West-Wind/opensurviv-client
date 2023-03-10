@@ -1,27 +1,16 @@
 import { DummyEntity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
-import Ammo from "./ammo";
-import Bullet from "./bullet";
-import Grenade from "./grenade";
-import Gun from "./gun";
-import Player from "./player";
+import { EntitySupplier } from "../../types/supplier";
 
-export { Ammo, Bullet, Gun, Player };
+export const ENTITY_SUPPLIERS = new Map<string, EntitySupplier>();
+
+export { default as Ammo } from "./ammo";
+export { default as Bullet } from "./bullet";
+export { default as Grenade } from "./grenade";
+export { default as Gun } from "./gun";
+export { default as Player } from "./player";
 
 // This still need hard-coding unfortunately
 export function castCorrectEntity(minEntity: MinEntity & any) {
-	switch (minEntity.type) {
-		case "player":
-			return new Player(minEntity);
-		case "bullet":
-			return new Bullet(minEntity);
-		case "gun":
-			return new Gun(minEntity);
-		case "ammo":
-			return new Ammo(minEntity);
-		case "grenade":
-			return new Grenade(minEntity);
-		default:
-			return new DummyEntity(minEntity);
-	}
+	return ENTITY_SUPPLIERS.get(minEntity.type)?.create(minEntity) || new DummyEntity(minEntity);
 }

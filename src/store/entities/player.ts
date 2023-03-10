@@ -1,6 +1,8 @@
+import { ENTITY_SUPPLIERS } from ".";
 import { Entity, Inventory, PartialInventory } from "../../types/entity";
 import { Vec2, RectHitbox, CircleHitbox } from "../../types/math";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "../../types/minimized";
+import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
 import { castCorrectWeapon, Fists } from "../weapons";
 
@@ -17,8 +19,15 @@ interface AdditionalEntity {
 	canInteract?: boolean;
 }
 
+class PlayerSupplier implements EntitySupplier {
+	create(minEntity: MinEntity & AdditionalEntity) {
+		return new Player(minEntity);
+	}
+}
+
 export default class Player extends Entity {
-	type = "player";
+	static readonly ID = "player";
+	type = Player.ID;
 	id!: string;
 	username!: string;
 	boost!: number;
@@ -30,6 +39,10 @@ export default class Player extends Entity {
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
 		this.copy(minEntity);
+	}
+
+	static {
+		ENTITY_SUPPLIERS.set(Player.ID, new PlayerSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {
