@@ -2,6 +2,8 @@ import { Player } from "../entities";
 import { Obstacle } from "../../types/obstacle";
 import { MinObstacle } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
+import { ObstacleSupplier } from "../../types/supplier";
+import { OBSTACLE_SUPPLIERS } from ".";
 
 const bushImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 bushImg.onload = () => bushImg.loaded = true;
@@ -11,14 +13,25 @@ const bushResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(new
 bushResidueImg.onload = () => bushResidueImg.loaded = true;
 bushResidueImg.src = "assets/images/game/objects/residues/bush.svg";
 
+class BushSupplier implements ObstacleSupplier {
+	create(minObstacle: MinObstacle) {
+		return new Bush(minObstacle);
+	}
+}
+
 // Bush
 export default class Bush extends Obstacle {
-	type = "bush";
+	static readonly TYPE = "bush";
+	type = Bush.TYPE;
 	zIndex = 10;
 
 	constructor(minObstacle: MinObstacle) {
 		super(minObstacle);
 		if (this.despawn) this.zIndex = 0;
+	}
+
+	static {
+		OBSTACLE_SUPPLIERS.set(Bush.TYPE, new BushSupplier());
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void {

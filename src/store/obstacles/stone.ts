@@ -1,4 +1,7 @@
+import { OBSTACLE_SUPPLIERS } from ".";
+import { MinObstacle } from "../../types/minimized";
 import { Obstacle } from "../../types/obstacle";
+import { ObstacleSupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
 import { Player } from "../entities";
 
@@ -6,8 +9,19 @@ const stoneImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image
 stoneImg.onload = () => stoneImg.loaded = true;
 stoneImg.src = "assets/images/game/objects/stone.svg";
 
+class StoneSupplier implements ObstacleSupplier {
+	create(minObstacle: MinObstacle) {
+		return new Stone(minObstacle);
+	}
+}
+
 export default class Stone extends Obstacle {
-	type = "stone";
+	static readonly TYPE = "stone";
+	type = Stone.TYPE;
+
+	static {
+		OBSTACLE_SUPPLIERS.set(Stone.TYPE, new StoneSupplier());
+	}
 	
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		if (!stoneImg.loaded) return;

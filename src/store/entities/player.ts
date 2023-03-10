@@ -26,8 +26,8 @@ class PlayerSupplier implements EntitySupplier {
 }
 
 export default class Player extends Entity {
-	static readonly ID = "player";
-	type = Player.ID;
+	static readonly TYPE = "player";
+	type = Player.TYPE;
 	id!: string;
 	username!: string;
 	boost!: number;
@@ -42,7 +42,7 @@ export default class Player extends Entity {
 	}
 
 	static {
-		ENTITY_SUPPLIERS.set(Player.ID, new PlayerSupplier());
+		ENTITY_SUPPLIERS.set(Player.TYPE, new PlayerSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

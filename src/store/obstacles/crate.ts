@@ -1,5 +1,8 @@
+import { OBSTACLE_SUPPLIERS } from ".";
 import { RectHitbox } from "../../types/math";
+import { MinObstacle } from "../../types/minimized";
 import { Obstacle } from "../../types/obstacle";
+import { ObstacleSupplier } from "../../types/supplier";
 import { Player } from "../entities";
 
 const crateImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
@@ -10,8 +13,19 @@ const crateResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(ne
 crateResidueImg.onload = () => crateResidueImg.loaded = true;
 crateResidueImg.src = "assets/images/game/objects/residues/crate.svg";
 
+class CrateSupplier implements ObstacleSupplier {
+	create(minObstacle: MinObstacle) {
+		return new Crate(minObstacle);
+	}
+}
+
 export default class Crate extends Obstacle {
-	type = "crate";
+	static readonly TYPE = "crate";
+	type = Crate.TYPE;
+
+	static {
+		OBSTACLE_SUPPLIERS.set(Crate.TYPE, new CrateSupplier());
+	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		if (!crateImg.loaded || !crateResidueImg.loaded) return;

@@ -2,6 +2,8 @@ import { Player } from "../entities";
 import { Obstacle } from "../../types/obstacle";
 import { MinObstacle } from "../../types/minimized";
 import { circleFromCenter } from "../../utils";
+import { ObstacleSupplier } from "../../types/supplier";
+import { OBSTACLE_SUPPLIERS } from ".";
 
 const treeImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 treeImg.onload = () => treeImg.loaded = true;
@@ -11,13 +13,24 @@ const treeResidueImg: HTMLImageElement & { loaded: boolean } = Object.assign(new
 treeResidueImg.onload = () => treeResidueImg.loaded = true;
 treeResidueImg.src = "assets/images/game/objects/residues/tree.svg";
 
+class MosinTreeSupplier implements ObstacleSupplier {
+	create(minObstacle: MinObstacle) {
+		return new MosinTree(minObstacle);
+	}
+}
+
 export default class MosinTree extends Obstacle {
-	type = "mosin_tree";
+	static readonly TYPE = "mosin_tree";
+	type = MosinTree.TYPE;
 	zIndex = 1000;
 
 	constructor(minObstacle: MinObstacle) {
 		super(minObstacle);
 		if (this.despawn) this.zIndex = 0;
+	}
+
+	static {
+		OBSTACLE_SUPPLIERS.set(MosinTree.TYPE, new MosinTreeSupplier());
 	}
 
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {

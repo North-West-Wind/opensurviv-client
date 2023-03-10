@@ -22,8 +22,8 @@ class GunSupplier implements EntitySupplier {
 const HEX_COLORS = ["#F2A500", "#F20000", "#0061F2", "#039700"];
 
 export default class Gun extends Entity {
-	static readonly ID = "gun";
-	type = Gun.ID;
+	static readonly TYPE = "gun";
+	type = Gun.TYPE;
 	name!: string;
 	color!: GunColor;
 	zIndex = 8;
@@ -34,7 +34,7 @@ export default class Gun extends Entity {
 	}
 
 	static {
-		ENTITY_SUPPLIERS.set(Gun.ID, new GunSupplier());
+		ENTITY_SUPPLIERS.set(Gun.TYPE, new GunSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

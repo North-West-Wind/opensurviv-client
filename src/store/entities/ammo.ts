@@ -26,8 +26,8 @@ const COLOR_SCHEME = [
 ];
 
 export default class Ammo extends Entity {
-	static readonly ID = "ammo";
-	type = Ammo.ID;
+	static readonly TYPE = "ammo";
+	type = Ammo.TYPE;
 	amount!: number;
 	color!: GunColor;
 	zIndex = 8;
@@ -38,7 +38,7 @@ export default class Ammo extends Entity {
 	}
 
 	static {
-		ENTITY_SUPPLIERS.set(Ammo.ID, new AmmoSupplier());
+		ENTITY_SUPPLIERS.set(Ammo.TYPE, new AmmoSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

@@ -15,8 +15,8 @@ class BulletSupplier implements EntitySupplier {
 }
 
 export default class Bullet extends Entity {
-	static readonly ID = "bullet";
-	type = Bullet.ID;
+	static readonly TYPE = "bullet";
+	type = Bullet.TYPE;
 	// Used for rendering bullet size
 	dmg!: number;
 
@@ -26,7 +26,7 @@ export default class Bullet extends Entity {
 	}
 
 	static {
-		ENTITY_SUPPLIERS.set(Bullet.ID, new BulletSupplier());
+		ENTITY_SUPPLIERS.set(Bullet.TYPE, new BulletSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {

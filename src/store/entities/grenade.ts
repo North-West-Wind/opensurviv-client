@@ -18,8 +18,8 @@ class GrenadeSupplier implements EntitySupplier {
 }
 
 export default class Grenade extends Entity {
-	static readonly ID = "grenade";
-	type = Grenade.ID;
+	static readonly TYPE = "grenade";
+	type = Grenade.TYPE;
 	// Used for rendering Grenade size
 	name!: string;
 
@@ -29,7 +29,7 @@ export default class Grenade extends Entity {
 	}
 
 	static {
-		ENTITY_SUPPLIERS.set(Grenade.ID, new GrenadeSupplier());
+		ENTITY_SUPPLIERS.set(Grenade.TYPE, new GrenadeSupplier());
 	}
 
 	copy(minEntity: MinEntity & AdditionalEntity) {
