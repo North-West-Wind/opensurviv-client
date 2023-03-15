@@ -14,6 +14,7 @@ export { default as M1100 } from "./guns/m1100";
 export { default as MP220 } from "./guns/mp220";
 export { default as FragGrenade } from "./grenades/frag_grenade"
 export { default as AWM} from "./guns/awm";
+export { default as AK47} from "./guns/ak47";
 
 export function castCorrectWeapon(minWeapon: MinWeapon & any) {
 	return WEAPON_SUPPLIERS.get(minWeapon.id)?.create(minWeapon) || new Fists();
