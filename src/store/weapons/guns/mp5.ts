@@ -23,7 +23,6 @@ export default class MP5 extends GunWeapon {
 		if ((<any>weapon)["recoil"]) {
 			const fullWeapon = <GunWeapon>weapon;
 			this.magazine = fullWeapon.magazine;
-			this.dual = fullWeapon.dual;
 		}
 	}
 
