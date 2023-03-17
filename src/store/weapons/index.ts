@@ -1,3 +1,4 @@
+import { OPENSURVIV_DATA } from "../../constants";
 import { MeleeData, GunData } from "../../types/data";
 import { MinWeapon } from "../../types/minimized";
 import { WeaponSupplier } from "../../types/supplier";
@@ -10,14 +11,6 @@ export { default as FragGrenade } from "./grenades/frag_grenade";
 export function castCorrectWeapon(minWeapon: MinWeapon & any) {
 	return WEAPON_SUPPLIERS.get(minWeapon.id)?.create() || WEAPON_SUPPLIERS.get("fists")!.create();
 }
-
-const MELEE_LIST = [
-	"fists"
-];
-
-const GUN_LIST = [
-	"m9"
-];
 
 class MeleeSupplier implements WeaponSupplier {
 	id: string;
@@ -48,14 +41,14 @@ class GunSupplier implements WeaponSupplier {
 }
 
 (async() => {
-	for (const file of await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/melee/.list.json`).then(res => res.json())) {
-		const data = <MeleeData> await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/melee/${file}.json`).then(res => res.json());
+	for (const file of await fetch(`${OPENSURVIV_DATA}data/weapons/melee/.list.json`).then(res => res.json())) {
+		const data = <MeleeData> await fetch(`${OPENSURVIV_DATA}data/weapons/melee/${file}.json`).then(res => res.json());
 		WEAPON_SUPPLIERS.set(file, new MeleeSupplier(file, data));
 	}
 	
-	for (const file of await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/guns/.list.json`).then(res => res.json())) {
+	for (const file of await fetch(`${OPENSURVIV_DATA}data/weapons/guns/.list.json`).then(res => res.json())) {
 		if (file.startsWith(".")) continue;
-		const data = <GunData> await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/guns/${file}.json`).then(res => res.json())
+		const data = <GunData> await fetch(`${OPENSURVIV_DATA}data/weapons/guns/${file}.json`).then(res => res.json())
 		WEAPON_SUPPLIERS.set(file, new GunSupplier(file, data));
 	}
 })();

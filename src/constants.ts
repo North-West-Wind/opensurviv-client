@@ -37,3 +37,5 @@ export enum GunColor {
 	SUBSONIC = 4,
 	DEAGLE = 5
 }
+
+export const OPENSURVIV_DATA = "https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/";
