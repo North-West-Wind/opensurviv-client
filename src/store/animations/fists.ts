@@ -7,7 +7,7 @@ const LEFT_FIST = new DefinedAnimation(
 	[new Vec2(0, -1), Vec2.ONE, new Vec2(0, -1)],
 	Array(3).fill(Vec2.ONE),
 	[0, 0.5, 1],
-	500
+	250
 );
 
 const RIGHT_FIST = new DefinedAnimation(
@@ -15,7 +15,7 @@ const RIGHT_FIST = new DefinedAnimation(
 	[new Vec2(0, 1), Vec2.ONE, new Vec2(0, 1)],
 	Array(3).fill(Vec2.ONE),
 	[0, 0.5, 1],
-	500
+	250
 );
 
 export default function init() {

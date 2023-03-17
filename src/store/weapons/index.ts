@@ -1,21 +1,61 @@
+import { MeleeData, GunData } from "../../types/data";
 import { MinWeapon } from "../../types/minimized";
 import { WeaponSupplier } from "../../types/supplier";
+import { MeleeWeapon, GunWeapon } from "../../types/weapon";
 
 export const WEAPON_SUPPLIERS = new Map<string, WeaponSupplier>();
 
-import Fists from "./fists";
-
-export { default as Fists } from "./fists";
-export { default as M9 } from "./guns/m9";
-export { default as M870 } from "./guns/m870";
-export { default as Mosin_Nagant } from "./guns/mosin_nagant";
-export { default as MP5 } from "./guns/mp5";
-export { default as M1100 } from "./guns/m1100";
-export { default as MP220 } from "./guns/mp220";
-export { default as FragGrenade } from "./grenades/frag_grenade"
-export { default as AWM} from "./guns/awm";
-export { default as AK47} from "./guns/ak47";
+export { default as FragGrenade } from "./grenades/frag_grenade";
 
 export function castCorrectWeapon(minWeapon: MinWeapon & any) {
-	return WEAPON_SUPPLIERS.get(minWeapon.id)?.create(minWeapon) || new Fists();
+	return WEAPON_SUPPLIERS.get(minWeapon.id)?.create() || WEAPON_SUPPLIERS.get("fists")!.create();
 }
+
+const MELEE_LIST = [
+	"fists"
+];
+
+const GUN_LIST = [
+	"m9"
+];
+
+class MeleeSupplier implements WeaponSupplier {
+	id: string;
+	data: MeleeData;
+
+	constructor(id: string, data: MeleeData) {
+		this.id = id;
+		this.data = data;
+	}
+
+	create() {
+		return new MeleeWeapon(this.id, this.data);
+	}
+}
+
+class GunSupplier implements WeaponSupplier {
+	id: string;
+	data: GunData;
+
+	constructor(id: string, data: GunData) {
+		this.id = id;
+		this.data = data;
+	}
+
+	create() {
+		return new GunWeapon(this.id, this.data);
+	}
+}
+
+(async() => {
+	for (const file of await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/melee/.list.json`).then(res => res.json())) {
+		const data = <MeleeData> await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/melee/${file}.json`).then(res => res.json());
+		WEAPON_SUPPLIERS.set(file, new MeleeSupplier(file, data));
+	}
+	
+	for (const file of await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/guns/.list.json`).then(res => res.json())) {
+		if (file.startsWith(".")) continue;
+		const data = <GunData> await fetch(`https://raw.githubusercontent.com/North-West-Wind/opensurviv-data/main/data/weapons/guns/${file}.json`).then(res => res.json())
+		WEAPON_SUPPLIERS.set(file, new GunSupplier(file, data));
+	}
+})();

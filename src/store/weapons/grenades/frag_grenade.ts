@@ -14,8 +14,10 @@ class FragGrenadeSupplier implements WeaponSupplier {
 
 export default class FragGrenade extends GrenadeWeapon {
 	static readonly ID = "frag_grenade";
-	id = FragGrenade.ID;
-	name = "Frag Grenade";
+
+	constructor() {
+		super(FragGrenade.ID, "Frag Grenade");
+	}
 
 	static {
 		WEAPON_SUPPLIERS.set(FragGrenade.ID, new FragGrenadeSupplier());

@@ -21,5 +21,5 @@ export interface TerrainSupplier extends Supplier<Terrain> {
 }
 
 export interface WeaponSupplier extends Supplier<Weapon> {
-	create(minWeapon: MinWeapon & any): Weapon;
+	create(): Weapon;
 }

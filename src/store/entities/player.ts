@@ -4,7 +4,7 @@ import { Vec2, RectHitbox, CircleHitbox } from "../../types/math";
 import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
-import { castCorrectWeapon, Fists } from "../weapons";
+import { castCorrectWeapon, WEAPON_SUPPLIERS } from "../weapons";
 
 const deathImg: HTMLImageElement & { loaded: boolean } = Object.assign(new Image(), { loaded: false });
 deathImg.onload = () => deathImg.loaded = true;
@@ -68,7 +68,7 @@ export default class Player extends Entity {
 			circleFromCenter(ctx, 0, 0, radius);
 			// We will leave the transform for the weapon
 			// If player is holding nothing, render fist
-			var weapon = new Fists();
+			var weapon = WEAPON_SUPPLIERS.get("fists")!.create();
 			//console.log(this.inventory);
 			if (typeof this.inventory.holding === "number") weapon = (<Inventory>this.inventory).weapons[this.inventory.holding];
 			else weapon = (<PartialInventory>this.inventory).holding;
