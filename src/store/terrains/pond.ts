@@ -1,6 +1,6 @@
 import { MinTerrain, MinVec2 } from "../../types/minimized";
 import { BorderedTerrain } from "../../types/extenstions";
-import { DotTerrain, Terrain } from "../../types/terrain";
+import { DotTerrain } from "../../types/terrain";
 import { circleFromCenter } from "../../utils";
 import { Player } from "../entities";
 import { TerrainSupplier } from "../../types/supplier";

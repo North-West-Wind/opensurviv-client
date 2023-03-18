@@ -1,7 +1,7 @@
 import { TERRAIN_SUPPLIERS } from ".";
 import { MinLine, MinTerrain, MinVec2 } from "../../types/minimized";
 import { TerrainSupplier } from "../../types/supplier";
-import { LineTerrain, Terrain } from "../../types/terrain";
+import { LineTerrain } from "../../types/terrain";
 
 class SeaSupplier implements TerrainSupplier {
 	create(minTerrain: MinTerrain & { line: MinLine, range: number, boundary: MinVec2[] }) {

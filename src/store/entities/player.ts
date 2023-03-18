@@ -1,7 +1,6 @@
 import { ENTITY_SUPPLIERS } from ".";
 import { Entity, Inventory, PartialInventory } from "../../types/entity";
-import { Vec2, RectHitbox, CircleHitbox } from "../../types/math";
-import { MinCircleHitbox, MinEntity, MinInventory, MinRectHitbox } from "../../types/minimized";
+import { MinEntity, MinInventory } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
 import { circleFromCenter } from "../../utils";
 import { castCorrectWeapon, WEAPON_SUPPLIERS } from "../weapons";

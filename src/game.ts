@@ -3,12 +3,11 @@ import { KeyBind, movementKeys, TIMEOUT } from "./constants";
 import { animate, setRunning } from "./renderer";
 import { initMap } from "./rendering/map";
 import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
-import { castCorrectEntity, Player } from "./store/entities";
+import { Player } from "./store/entities";
 import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
 import { castCorrectTerrain } from "./store/terrains";
 import { Inventory } from "./types/entity";
 import { Vec2 } from "./types/math";
-import { MinEntity, MinObstacle } from "./types/minimized";
 import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket, InteractPacket, SwitchWeaponPacket } from "./types/packet";
 import { World } from "./types/terrain";
 

@@ -1,4 +1,3 @@
-import { Player } from "../store/entities";
 import { MovementDirection } from "./math";
 import { MinEntity, MinObstacle, MinMinObstacle, MinTerrain } from "./minimized";
 

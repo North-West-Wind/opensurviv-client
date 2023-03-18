@@ -1,11 +1,15 @@
 import { ENTITY_SUPPLIERS } from ".";
+import { GLOBAL_UNIT_MULTIPLIER } from "../../constants";
+import { getTracerColor } from "../../textures";
+import { TracerData } from "../../types/data";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
+import { circleFromCenter } from "../../utils";
 import Player from "./player";
 
 interface AdditionalEntity {
-	dmg: number;
+	tracer: TracerData;
 }
 
 class BulletSupplier implements EntitySupplier {
@@ -18,7 +22,7 @@ export default class Bullet extends Entity {
 	static readonly TYPE = "bullet";
 	type = Bullet.TYPE;
 	// Used for rendering bullet size
-	dmg!: number;
+	tracer!: TracerData;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
 		super(minEntity);
@@ -31,8 +35,16 @@ export default class Bullet extends Entity {
 
 	copy(minEntity: MinEntity & AdditionalEntity) {
 		super.copy(minEntity);
-		this.dmg = minEntity.dmg;
+		this.tracer = minEntity.tracer;
 	}
 
-	render(_you: Player, _canvas: HTMLCanvasElement, _ctx: CanvasRenderingContext2D, _scale: number) { }
+	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+		const relative = this.position.addVec(you.position.inverse());
+		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
+		ctx.rotate(-this.direction.angle());
+		ctx.scale(scale, scale);
+		ctx.fillStyle = `#${getTracerColor(this.tracer.type)?.regular || "000"}`;
+		circleFromCenter(ctx, 0, 0, this.tracer.width * GLOBAL_UNIT_MULTIPLIER / 2, true);
+		ctx.resetTransform();
+	}
 }

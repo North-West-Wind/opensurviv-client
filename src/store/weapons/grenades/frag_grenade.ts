@@ -1,8 +1,7 @@
 import { WEAPON_SUPPLIERS } from "..";
 import { Vec2 } from "../../../types/math";
-import { MinWeapon } from "../../../types/minimized";
 import { WeaponSupplier } from "../../../types/supplier";
-import { GrenadeWeapon, GunWeapon } from "../../../types/weapon";
+import { GrenadeWeapon } from "../../../types/weapon";
 import { circleFromCenter, roundRect } from "../../../utils";
 import { Player } from "../../entities";
 
@@ -23,7 +22,7 @@ export default class FragGrenade extends GrenadeWeapon {
 		WEAPON_SUPPLIERS.set(FragGrenade.ID, new FragGrenadeSupplier());
 	}
 
-	render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
+	render(player: Player, _canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const radius = scale * player.hitbox.comparable;
 		const fistRadius = radius / 3;
 		const fistPositions = [new Vec2(player.hitbox.comparable, 0.1), new Vec2(player.hitbox.comparable + 0.25, -0.1)];

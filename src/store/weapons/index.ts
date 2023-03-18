@@ -41,14 +41,15 @@ class GunSupplier implements WeaponSupplier {
 }
 
 (async() => {
-	for (const file of await fetch(`${OPENSURVIV_DATA}data/weapons/melee/.list.json`).then(res => res.json())) {
-		const data = <MeleeData> await fetch(`${OPENSURVIV_DATA}data/weapons/melee/${file}.json`).then(res => res.json());
+	for (const file of await fetch(`${OPENSURVIV_DATA}/data/weapons/melee/.list.json`).then(res => res.json())) {
+		const data = <MeleeData> await fetch(`${OPENSURVIV_DATA}/data/weapons/melee/${file}.json`).then(res => res.json());
 		WEAPON_SUPPLIERS.set(file, new MeleeSupplier(file, data));
 	}
 	
-	for (const file of await fetch(`${OPENSURVIV_DATA}data/weapons/guns/.list.json`).then(res => res.json())) {
+	for (const file of await fetch(`${OPENSURVIV_DATA}/data/weapons/guns/.list.json`).then(res => res.json())) {
 		if (file.startsWith(".")) continue;
-		const data = <GunData> await fetch(`${OPENSURVIV_DATA}data/weapons/guns/${file}.json`).then(res => res.json())
+		console.log("Loading", file);
+		const data = <GunData> await fetch(`${OPENSURVIV_DATA}/data/weapons/guns/${file}.json`).then(res => res.json())
 		WEAPON_SUPPLIERS.set(file, new GunSupplier(file, data));
 	}
 })();

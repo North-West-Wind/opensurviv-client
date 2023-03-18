@@ -1,7 +1,7 @@
 import { Line } from "../../types/math";
 import { MinTerrain, MinLine, MinVec2 } from "../../types/minimized";
 import { BorderedTerrain } from "../../types/extenstions";
-import { LineTerrain, PiecewiseTerrain, Terrain } from "../../types/terrain";
+import { LineTerrain, PiecewiseTerrain } from "../../types/terrain";
 import { Player } from "../entities";
 import { TerrainSupplier } from "../../types/supplier";
 import { TERRAIN_SUPPLIERS } from ".";

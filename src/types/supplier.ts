@@ -1,5 +1,5 @@
 import { Entity } from "./entity";
-import { MinEntity, MinObstacle, MinTerrain, MinWeapon } from "./minimized";
+import { MinEntity, MinObstacle, MinTerrain } from "./minimized";
 import { Obstacle } from "./obstacle";
 import { Terrain } from "./terrain";
 import { Weapon } from "./weapon";

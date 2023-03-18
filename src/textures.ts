@@ -1,4 +1,5 @@
 import { OPENSURVIV_DATA } from "./constants";
+import { TracerColor, TracerColorData } from "./types/data";
 
 const weapons = new Map<string, HTMLImageElement & { loaded: boolean }>();
 (async() => {
@@ -13,4 +14,16 @@ const weapons = new Map<string, HTMLImageElement & { loaded: boolean }>();
 
 export function getWeaponImage(id: string) {
 	return weapons.get(id);
+}
+
+const tracerColors = new Map<string, TracerColor>();
+(async() => {
+	const data = <TracerColorData> await fetch(`${OPENSURVIV_DATA}/data/colors/tracers.json`).then(res => res.json());
+	for (const id of Object.keys(data)) {
+		tracerColors.set(id, data[id]);
+	}
+})();
+
+export function getTracerColor(id: string) {
+	return tracerColors.get(id);
 }
