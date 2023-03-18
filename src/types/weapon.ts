@@ -79,7 +79,7 @@ export class GunWeapon extends Weapon {
 		ctx.strokeStyle = "#000";
 		ctx.lineWidth = 0.025 * scale;
 		//ctx.fillRect(player.hitbox.comparable * scale, -0.15 * scale, 1.2 * scale, 0.3 * scale);
-		roundRect(ctx, player.hitbox.comparable * scale, -0.15 * scale, this.length * GLOBAL_UNIT_MULTIPLIER * scale, 0.3 * scale, 0.15 * scale, true, true);
+		roundRect(ctx, player.hitbox.comparable * scale, -0.15 * scale, this.length * scale, 0.3 * scale, 0.15 * scale, true, true);
 		ctx.fillStyle = "#F8C675";
 		ctx.lineWidth = fistRadius / 3;
 		ctx.strokeStyle = "#000000";
