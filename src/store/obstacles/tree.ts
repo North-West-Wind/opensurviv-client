@@ -24,8 +24,8 @@ export default class Tree extends Obstacle {
 	type = Tree.TYPE;
 	zIndex = 1000;
 
-	constructor(minObstacle: MinObstacle) {
-		super(minObstacle);
+	copy(minObstacle: MinObstacle) {
+		super.copy(minObstacle);
 		if (this.despawn) this.zIndex = 0;
 	}
 

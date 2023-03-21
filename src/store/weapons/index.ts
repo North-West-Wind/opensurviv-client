@@ -47,8 +47,6 @@ class GunSupplier implements WeaponSupplier {
 	}
 	
 	for (const file of await fetch(`${OPENSURVIV_DATA}/data/weapons/guns/.list.json`).then(res => res.json())) {
-		if (file.startsWith(".")) continue;
-		console.log("Loading", file);
 		const data = <GunData> await fetch(`${OPENSURVIV_DATA}/data/weapons/guns/${file}.json`).then(res => res.json())
 		WEAPON_SUPPLIERS.set(file, new GunSupplier(file, data));
 	}

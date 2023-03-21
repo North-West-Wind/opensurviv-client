@@ -4,7 +4,7 @@ import { Renderable } from "./extenstions";
 import { roundRect, circleFromCenter } from "../utils";
 import { CircleHitbox, Vec2 } from "./math";
 import { GunData, MeleeData } from "./data";
-import { CommonNumber, CommonAngle, GLOBAL_UNIT_MULTIPLIER, GunColor } from "../constants";
+import { CommonNumber, CommonAngle, GunColor } from "../constants";
 import { DEFINED_ANIMATIONS } from "../store/animations";
 
 export enum WeaponType {
@@ -83,7 +83,7 @@ export class GunWeapon extends Weapon {
 		this.magazine = magazine;
 	}
 
-	render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void {
+	render(player: Player, _canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void {
 		const radius = scale * player.hitbox.comparable;
 		const fistRadius = radius / 3;
 		const fistPositions = [new Vec2(player.hitbox.comparable, 0.1), new Vec2(player.hitbox.comparable + 0.25, -0.1)];

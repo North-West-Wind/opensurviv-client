@@ -96,9 +96,11 @@ export type MeleeData = {
 }
 
 export interface TracerColor {
-	regular: string;
-	saturated: string;
-	chambered: string;
+	color: {
+		regular: string;
+		saturated: string;
+		chambered: string;
+	}
 }
 
 export type TracerColorData = {

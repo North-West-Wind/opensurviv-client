@@ -10,6 +10,7 @@ export function clamp(val: number, min: number, max: number) {
 export function circleFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, fill = true, stroke = false) {
 	ctx.beginPath();
 	ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+	ctx.closePath();
 	if (fill) ctx.fill();
 	if (stroke) ctx.stroke();
 }

@@ -1,11 +1,10 @@
 import { ENTITY_SUPPLIERS } from ".";
-import { GLOBAL_UNIT_MULTIPLIER } from "../../constants";
 import { getTracerColor } from "../../textures";
 import { TracerData } from "../../types/data";
 import { Entity } from "../../types/entity";
 import { MinEntity } from "../../types/minimized";
 import { EntitySupplier } from "../../types/supplier";
-import { circleFromCenter } from "../../utils";
+import { circleFromCenter, lineBetween } from "../../utils";
 import Player from "./player";
 
 interface AdditionalEntity {
@@ -41,10 +40,16 @@ export default class Bullet extends Entity {
 	render(you: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number) {
 		const relative = this.position.addVec(you.position.inverse());
 		ctx.translate(canvas.width / 2 + relative.x * scale, canvas.height / 2 + relative.y * scale);
-		ctx.rotate(-this.direction.angle());
+		ctx.rotate(this.direction.angle());
 		ctx.scale(scale, scale);
-		ctx.fillStyle = `#${getTracerColor(this.tracer.type)?.regular || "000"}`;
-		circleFromCenter(ctx, 0, 0, this.tracer.width * GLOBAL_UNIT_MULTIPLIER / 2, true);
+		ctx.fillStyle = `#${getTracerColor(this.tracer.type)?.color.regular || "000"}`;
+		const gradient = ctx.createLinearGradient(0, 0, -this.tracer.length * 2, 0);
+		gradient.addColorStop(0, ctx.fillStyle + "ff");
+		gradient.addColorStop(1, ctx.fillStyle + "00");
+		ctx.strokeStyle = gradient;
+		ctx.lineWidth = this.tracer.width * 2;
+		lineBetween(ctx, -this.tracer.length * 2, 0, 0, 0);
+		circleFromCenter(ctx, 0, 0, this.tracer.width, true);
 		ctx.resetTransform();
 	}
 }

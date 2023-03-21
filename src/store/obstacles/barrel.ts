@@ -23,12 +23,7 @@ class BarrelSupplier implements ObstacleSupplier {
 export default class Barrel extends Obstacle {
 	static readonly TYPE = "barrel";
 	type = Barrel.TYPE;
-	zIndex = 10;
-
-	constructor(minObstacle: MinObstacle) {
-		super(minObstacle);
-		if (this.despawn) this.zIndex = 0;
-	}
+	zIndex = 0;
 
 	static {
 		OBSTACLE_SUPPLIERS.set(Barrel.TYPE, new BarrelSupplier());
