@@ -4,10 +4,17 @@ import { Renderable } from "./extenstions";
 import { roundRect, circleFromCenter } from "../utils";
 import { CircleHitbox, Vec2 } from "./math";
 import { GunData, MeleeData } from "./data";
-import { CommonNumber, CommonAngle, GLOBAL_UNIT_MULTIPLIER } from "../constants";
+import { CommonNumber, CommonAngle, GLOBAL_UNIT_MULTIPLIER, GunColor } from "../constants";
 import { DEFINED_ANIMATIONS } from "../store/animations";
 
+export enum WeaponType {
+	MELEE = "melee",
+	GUN = "gun",
+	GRENADE = "grenade"
+}
+
 export abstract class Weapon implements MinWeapon, Renderable {
+	type!: WeaponType;
 	id: string;
 	name: string;
 
@@ -20,6 +27,7 @@ export abstract class Weapon implements MinWeapon, Renderable {
 }
 
 export class MeleeWeapon extends Weapon {
+	type = WeaponType.MELEE;
 	static readonly FIST_ANIMATIONS = ["left_fist", "right_fist"];
 
 	constructor(id: string, data: MeleeData) {
@@ -63,11 +71,16 @@ export class MeleeWeapon extends Weapon {
 }
 
 export class GunWeapon extends Weapon {
+	type = WeaponType.GUN;
+	color: GunColor;
 	length: number;
+	magazine: number;
 
-	constructor(id: string, data: GunData) {
+	constructor(id: string, data: GunData, magazine = 0) {
 		super(id, data.name);
+		this.color = data.color;
 		this.length = data.length;
+		this.magazine = magazine;
 	}
 
 	render(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, scale: number): void {
@@ -91,7 +104,8 @@ export class GunWeapon extends Weapon {
 }
 
 export abstract class GrenadeWeapon extends Weapon {
-	type!: "frag" | "mirv" | "smoke";
+	type = WeaponType.GRENADE;
+	//type!: "frag" | "mirv" | "smoke";
 }
 
 // Dummy weapon

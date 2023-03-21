@@ -73,6 +73,11 @@ export class SwitchWeaponPacket {
 	}
 }
 
+// Packet to notify weapon reloading
+export class ReloadWeaponPacket {
+	type = "reloadweapon";
+}
+
 /// Packet from server acknowledgement
 export class AckPacket {
 	type = "ack";

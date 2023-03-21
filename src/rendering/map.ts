@@ -1,7 +1,7 @@
 import { GRID_INTERVAL, MINIMAP_SIZE } from "../constants";
 import { getPlayer, world } from "../game";
 import { isBigMap } from "../states";
-import { Player } from "../store/entities";
+import { FullPlayer } from "../store/entities";
 import { Obstacle } from "../types/obstacle";
 import { RenderableMapLayerN1 } from "../types/extenstions";
 import { Terrain } from "../types/terrain";
@@ -69,14 +69,14 @@ export function drawMap(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D
 	ctx.lineWidth = 2;
 	ctx.strokeRect((canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
 	// Draw player icon
-	const player = <Player> getPlayer();
+	const player = <FullPlayer> getPlayer();
 	ctx.fillStyle = "#F8C675";
 	circleFromCenter(ctx, (canvas.width - width) / 2 + player.position.x * scale, (canvas.height - height) / 2 + player.position.y * scale, 8);
 	circleFromCenter(ctx, (canvas.width - width) / 2 + player.position.x * scale, (canvas.height - height) / 2 + player.position.y * scale, 12, false, true);
 }
 
 // Draw minimap
-export function drawMinimap(player: Player, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+export function drawMinimap(player: FullPlayer, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
 	// Determine the dimension
 	const size = MINIMAP_SIZE * constScale * (isBigMap() ? 1.5 : 1);
 	const x = player.position.x * constScale - size / 2;

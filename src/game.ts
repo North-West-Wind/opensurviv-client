@@ -3,7 +3,7 @@ import { KeyBind, movementKeys, TIMEOUT } from "./constants";
 import { animate, setRunning } from "./renderer";
 import { initMap } from "./rendering/map";
 import { addKeyPressed, addMousePressed, isKeyPressed, isMenuHidden, removeKeyPressed, removeMousePressed, toggleBigMap, toggleHud, toggleMap, toggleMenu, toggleMinimap } from "./states";
-import { Player } from "./store/entities";
+import { FullPlayer } from "./store/entities";
 import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
 import { castCorrectTerrain } from "./store/terrains";
 import { Inventory } from "./types/entity";
@@ -17,7 +17,7 @@ var id: string | null;
 var tps = 1; // Default should be 1, so even if no TPS detail from server, we will not be dividing by 0
 var username: string | null;
 var address: string | null;
-var player: Player | null;
+var player: FullPlayer | null;
 
 export function getId() { return id; }
 export function getPlayer() { return player; }
@@ -62,7 +62,7 @@ async function init(address: string) {
 						const gamePkt = <GamePacket>data;
 						world.updateEntities(gamePkt.entities);
 						world.updateObstacles(gamePkt.obstacles);
-						if (!player) player = new Player(gamePkt.player);
+						if (!player) player = new FullPlayer(gamePkt.player);
 						else player.copy(gamePkt.player);
 						break;
 					case "map":

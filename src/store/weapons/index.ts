@@ -35,8 +35,8 @@ class GunSupplier implements WeaponSupplier {
 		this.data = data;
 	}
 
-	create() {
-		return new GunWeapon(this.id, this.data);
+	create(magazine = 0) {
+		return new GunWeapon(this.id, this.data, magazine);
 	}
 }
 

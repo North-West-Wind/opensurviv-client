@@ -16,11 +16,13 @@ interface AdditionalEntity {
 	scope: number;
 	inventory: MinInventory | Inventory;
 	canInteract?: boolean;
+	reloadTicks: number;
+	maxReloadTicks: number;
 }
 
 class PlayerSupplier implements EntitySupplier {
 	create(minEntity: MinEntity & AdditionalEntity) {
-		return new Player(minEntity);
+		return new PartialPlayer(minEntity);
 	}
 }
 
@@ -29,10 +31,7 @@ export default class Player extends Entity {
 	type = Player.TYPE;
 	id!: string;
 	username!: string;
-	boost!: number;
-	scope!: number;
 	inventory!: PartialInventory | Inventory;
-	canInteract!: boolean;
 	zIndex = 9;
 
 	constructor(minEntity: MinEntity & AdditionalEntity) {
@@ -40,20 +39,13 @@ export default class Player extends Entity {
 		this.copy(minEntity);
 	}
 
-	static {
-		ENTITY_SUPPLIERS.set(Player.TYPE, new PlayerSupplier());
-	}
-
 	copy(minEntity: MinEntity & AdditionalEntity) {
 		super.copy(minEntity);
 		this.username = minEntity.username;
-		this.boost = minEntity.boost;
-		this.scope = minEntity.scope;
 		if (typeof minEntity.inventory.holding === "number") {
 			const inventory = <Inventory>minEntity.inventory;
 			this.inventory = new Inventory(inventory.holding, inventory.slots, inventory.weapons.map(w => w ? castCorrectWeapon(w) : w), inventory.ammos, inventory.utilities);
 		} else this.inventory = new PartialInventory(<MinInventory>minEntity.inventory);
-		this.canInteract = minEntity.canInteract || false;
 		if (this.despawn) this.zIndex = 7;
 	}
 
@@ -69,7 +61,7 @@ export default class Player extends Entity {
 			// If player is holding nothing, render fist
 			var weapon = WEAPON_SUPPLIERS.get("fists")!.create();
 			//console.log(this.inventory);
-			if (typeof this.inventory.holding === "number") weapon = (<Inventory>this.inventory).weapons[this.inventory.holding];
+			if (typeof this.inventory.holding === "number") weapon = (<Inventory>this.inventory).getWeapon()!;
 			else weapon = (<PartialInventory>this.inventory).holding;
 			weapon.render(this, canvas, ctx, scale);
 			ctx.resetTransform();
@@ -84,5 +76,31 @@ export default class Player extends Entity {
 			ctx.fillText(this.username, 0, radius * 2);
 			ctx.resetTransform();
 		}
+	}
+}
+
+export class PartialPlayer extends Player {
+	inventory!: PartialInventory;
+
+	static {
+		ENTITY_SUPPLIERS.set(Player.TYPE, new PlayerSupplier());
+	}
+}
+
+export class FullPlayer extends Player {
+	inventory!: Inventory;
+	boost!: number;
+	scope!: number;
+	canInteract?: boolean;
+	reloadTicks!: number;
+	maxReloadTicks!: number;
+
+	copy(minEntity: MinEntity & AdditionalEntity) {
+		super.copy(minEntity);
+		this.boost = minEntity.boost;
+		this.scope = minEntity.scope;
+		this.canInteract = minEntity.canInteract || false;
+		this.reloadTicks = minEntity.reloadTicks;
+		this.maxReloadTicks = minEntity.maxReloadTicks;
 	}
 }
