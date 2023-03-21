@@ -8,7 +8,7 @@ import { castCorrectObstacle, castMinObstacle } from "./store/obstacles";
 import { castCorrectTerrain } from "./store/terrains";
 import { Inventory } from "./types/entity";
 import { Vec2 } from "./types/math";
-import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket, InteractPacket, SwitchWeaponPacket } from "./types/packet";
+import { PingPacket, MovementPressPacket, MovementReleasePacket, MouseMovePacket, MousePressPacket, MouseReleasePacket, GamePacket, MapPacket, AckPacket, InteractPacket, SwitchWeaponPacket, ReloadWeaponPacket } from "./types/packet";
 import { World } from "./types/terrain";
 
 export var world = new World();
@@ -145,6 +145,8 @@ window.onkeydown = (event) => {
 			ws.send(encode(new MovementPressPacket(index)).buffer);
 		else if (event.key == KeyBind.INTERACT)
 			ws.send(encode(new InteractPacket()).buffer);
+		else if (event.key == KeyBind.RELOAD)
+			ws.send(encode(new ReloadWeaponPacket()).buffer);
 		else if (!isNaN(parseInt(event.key)))
 			ws.send(encode(new SwitchWeaponPacket(parseInt(event.key) + 1 - ((<Inventory>player?.inventory).holding || 0))));
 	}
